@@ -9,13 +9,17 @@ Plugin 'VundleVim/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end.
 Plugin 'itchyny/lightline.vim'
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'vim-ruby/vim-ruby'
 Plugin 'scrooloose/nerdtree'
-Plugin 'tpope/vim-rails'
-Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-endwise'
+Plugin 'sheerun/vim-polyglot'
+Plugin 'ervandew/supertab'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-bundler'
+Plugin 'tpope/vim-endwise'
+Plugin 'tpope/vim-surround'
 Plugin 'jiangmiao/auto-pairs'
 
 call vundle#end()            " required
@@ -38,16 +42,29 @@ let g:solarized_termcolors = 256
 let g:solarized_termtrans = 1
 colorscheme solarized
 
-" vim-ruby
-let g:ruby_fold = 1
-
 " nerdtree
 map <C-n> :NERDTreeToggle<CR>
+
+" vim-polyglot
+let g:ruby_fold = 1
+
+" supertab
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" YouCompleteMe
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+
+" ultisnips
+let g:UltiSnipsExpandTrigger = "<Tab>"
+let g:UltiSnipsJumpForwardTrigger = "<Tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
 
 " Other config options
 set number
 command W w !sudo tee % > /dev/null
 nnoremap <Space> za
 
-setlocal expandtab shiftwidth=4 tabstop=4
+set foldlevel=1
+set expandtab shiftwidth=4 tabstop=4
 autocmd FileType ruby setlocal shiftwidth=2 tabstop=2
