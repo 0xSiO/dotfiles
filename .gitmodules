@@ -46,6 +46,10 @@
     path = vim/bundle/vim-bundler
     url = https://github.com/tpope/vim-bundler
 
+[submodule "vim/bundle/vim-liquid"]
+    path = vim/bundle/vim-liquid
+    url = https://github.com/tpope/vim-liquid
+
 [submodule "vim/bundle/vim-endwise"]
     path = vim/bundle/vim-endwise
     url = https://github.com/tpope/vim-endwise

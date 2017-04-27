@@ -18,6 +18,7 @@ Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-bundler'
+Plugin 'tpope/vim-liquid'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-surround'
 Plugin 'jiangmiao/auto-pairs'
@@ -39,7 +40,7 @@ let g:lightline = {
 syntax enable
 set background=dark
 let g:solarized_termcolors = 256
-let g:solarized_termtrans = 1
+" let g:solarized_termtrans = 1
 colorscheme solarized
 
 " nerdtree
