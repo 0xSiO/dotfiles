@@ -1,14 +1,12 @@
 #!/bin/bash
-# This script generates a .gitmodules file from the plugins in my .vimrc
-
-> .gitmodules
+# Set up git submodules for Vim plugins, nvm, etc.
 
 # Vim plugins
 grep -oP "^Plugin '\K.+(?=')" vimrc | while read -r line ; do
     plugin=$(grep -oP "\/\K.+" <<< $line)
-    echo -e "[submodule \"vim/bundle/$plugin\"]
-    path = vim/bundle/$plugin
-    url = https://github.com/$line\n" >> .gitmodules
+    git submodule add https://github.com/$line vim/bundle/$plugin
 done
 
-git submodule update --init
+# nvm
+git submodule add https://github.com/creationix/nvm nvm
+

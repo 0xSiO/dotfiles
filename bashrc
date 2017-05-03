@@ -16,6 +16,8 @@ alias tp="sudo $HOME/.tpoint_fix"
 alias tether="sudo create_ap --config .tether_conf"
 alias gits="git submodule"
 
+source $HOME/.dotfiles/venv_functions.sh
+
 # rbenv config
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"

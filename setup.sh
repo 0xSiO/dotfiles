@@ -3,7 +3,7 @@
 
 dir=~/.dotfiles                    # dotfiles directory
 olddir=~/.dotfiles_old             # old dotfiles backup directory
-files="bashrc vimrc vim"           # list of files/folders to symlink in homedir
+files="bashrc venvs vimrc vim"     # list of files/folders to symlink in homedir
 
 echo "Creating $olddir for backup of existing dotfiles"
 mkdir -p $olddir
