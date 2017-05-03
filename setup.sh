@@ -1,9 +1,9 @@
 #!/bin/bash
 # This script creates symlinks from the home directory to any desired dotfiles in ~/.dotfiles
 
-dir=~/.dotfiles                    # dotfiles directory
-olddir=~/.dotfiles_old             # old dotfiles backup directory
-files="bashrc venvs vimrc vim"     # list of files/folders to symlink in homedir
+dir=~/.dotfiles
+olddir=~/.dotfiles_old
+files="bashrc nvm rbenv venvs vimrc vim"
 
 echo "Creating $olddir for backup of existing dotfiles"
 mkdir -p $olddir

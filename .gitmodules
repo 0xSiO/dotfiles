@@ -1,67 +1,72 @@
 [submodule "vim/bundle/Vundle.vim"]
-    path = vim/bundle/Vundle.vim
-    url = https://github.com/VundleVim/Vundle.vim
+	path = vim/bundle/Vundle.vim
+	url = https://github.com/VundleVim/Vundle.vim
 
 [submodule "vim/bundle/lightline.vim"]
-    path = vim/bundle/lightline.vim
-    url = https://github.com/itchyny/lightline.vim
+	path = vim/bundle/lightline.vim
+	url = https://github.com/itchyny/lightline.vim
 
 [submodule "vim/bundle/vim-colors-solarized"]
-    path = vim/bundle/vim-colors-solarized
-    url = https://github.com/altercation/vim-colors-solarized
+	path = vim/bundle/vim-colors-solarized
+	url = https://github.com/altercation/vim-colors-solarized
 
 [submodule "vim/bundle/nerdtree"]
-    path = vim/bundle/nerdtree
-    url = https://github.com/scrooloose/nerdtree
+	path = vim/bundle/nerdtree
+	url = https://github.com/scrooloose/nerdtree
 
 [submodule "vim/bundle/vim-commentary"]
-    path = vim/bundle/vim-commentary
-    url = https://github.com/tpope/vim-commentary
+	path = vim/bundle/vim-commentary
+	url = https://github.com/tpope/vim-commentary
 
 [submodule "vim/bundle/vim-polyglot"]
-    path = vim/bundle/vim-polyglot
-    url = https://github.com/sheerun/vim-polyglot
+	path = vim/bundle/vim-polyglot
+	url = https://github.com/sheerun/vim-polyglot
 
 [submodule "vim/bundle/supertab"]
-    path = vim/bundle/supertab
-    url = https://github.com/ervandew/supertab
+	path = vim/bundle/supertab
+	url = https://github.com/ervandew/supertab
 
 [submodule "vim/bundle/YouCompleteMe"]
-    path = vim/bundle/YouCompleteMe
-    url = https://github.com/Valloric/YouCompleteMe
+	path = vim/bundle/YouCompleteMe
+	url = https://github.com/Valloric/YouCompleteMe
 
 [submodule "vim/bundle/ultisnips"]
-    path = vim/bundle/ultisnips
-    url = https://github.com/SirVer/ultisnips
+	path = vim/bundle/ultisnips
+	url = https://github.com/SirVer/ultisnips
 
 [submodule "vim/bundle/vim-snippets"]
-    path = vim/bundle/vim-snippets
-    url = https://github.com/honza/vim-snippets
+	path = vim/bundle/vim-snippets
+	url = https://github.com/honza/vim-snippets
 
 [submodule "vim/bundle/vim-rails"]
-    path = vim/bundle/vim-rails
-    url = https://github.com/tpope/vim-rails
+	path = vim/bundle/vim-rails
+	url = https://github.com/tpope/vim-rails
 
 [submodule "vim/bundle/vim-bundler"]
-    path = vim/bundle/vim-bundler
-    url = https://github.com/tpope/vim-bundler
+	path = vim/bundle/vim-bundler
+	url = https://github.com/tpope/vim-bundler
 
 [submodule "vim/bundle/vim-liquid"]
-    path = vim/bundle/vim-liquid
-    url = https://github.com/tpope/vim-liquid
+	path = vim/bundle/vim-liquid
+	url = https://github.com/tpope/vim-liquid
 
 [submodule "vim/bundle/vim-endwise"]
-    path = vim/bundle/vim-endwise
-    url = https://github.com/tpope/vim-endwise
+	path = vim/bundle/vim-endwise
+	url = https://github.com/tpope/vim-endwise
 
 [submodule "vim/bundle/vim-surround"]
-    path = vim/bundle/vim-surround
-    url = https://github.com/tpope/vim-surround
+	path = vim/bundle/vim-surround
+	url = https://github.com/tpope/vim-surround
 
 [submodule "vim/bundle/auto-pairs"]
-    path = vim/bundle/auto-pairs
-    url = https://github.com/jiangmiao/auto-pairs
+	path = vim/bundle/auto-pairs
+	url = https://github.com/jiangmiao/auto-pairs
 
 [submodule "nvm"]
 	path = nvm
 	url = https://github.com/creationix/nvm
+
+[submodule "rbenv"]
+	path = rbenv
+	url = https://github.com/rbenv/rbenv
+
