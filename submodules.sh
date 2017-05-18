@@ -20,3 +20,5 @@ echo -e "[submodule \"nvm\"]
 echo -e "[submodule \"rbenv\"]
 \tpath = rbenv
 \turl = https://github.com/rbenv/rbenv\n" >> .gitmodules
+
+git add .gitmodules

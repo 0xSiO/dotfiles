@@ -1,11 +1,12 @@
 #!/bin/bash
-# This script creates symlinks from the home directory to any desired dotfiles in ~/.dotfiles
+# Create symlinks from the home directory to any desired dotfiles in ~/.dotfiles
+# and setup a pre-commit hook for updating submodules
 
 dir=~/.dotfiles
 olddir=~/.dotfiles_old
 files="bashrc nvm rbenv venvs vimrc vim"
 
-echo "Creating $olddir for backup of existing dotfiles"
+echo -e "\n== Creating $olddir for backup of existing dotfiles =="
 mkdir -p $olddir
 
 cd $dir
@@ -16,3 +17,8 @@ for file in $files; do
     echo -e "\nCreating symlink: .$file -> $dir/$file"
     ln -s $dir/$file ~/.$file
 done
+
+echo -e "\n== Setting up pre-commit hook =="
+ln -s $dir/submodules.sh .git/hooks/pre-commit
+
+echo -e "\n== Done! =="
