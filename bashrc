@@ -10,7 +10,6 @@ fi
 
 # User specific aliases and functions
 alias rm="rm -v"
-alias vi=vim
 alias vim=nvim
 alias tp="sudo $HOME/.tpoint_fix"
 alias tether="sudo create_ap --config .tether_conf"
