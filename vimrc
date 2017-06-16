@@ -61,3 +61,4 @@ nnoremap <Space> za
 set foldlevel=1
 set expandtab shiftwidth=4 tabstop=4
 autocmd FileType ruby setlocal shiftwidth=2 tabstop=2
+autocmd FileType crystal setlocal shiftwidth=2 tabstop=2
