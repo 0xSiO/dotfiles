@@ -10,9 +10,17 @@
 	path = vim/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree
 
+[submodule "vim/bundle/vim-nerdtree-tabs"]
+	path = vim/bundle/vim-nerdtree-tabs
+	url = https://github.com/jistr/vim-nerdtree-tabs
+
 [submodule "vim/bundle/vim-commentary"]
 	path = vim/bundle/vim-commentary
 	url = https://github.com/tpope/vim-commentary
+
+[submodule "vim/bundle/neomake"]
+	path = vim/bundle/neomake
+	url = https://github.com/neomake/neomake
 
 [submodule "vim/bundle/vim-polyglot"]
 	path = vim/bundle/vim-polyglot
@@ -34,17 +42,9 @@
 	path = vim/bundle/vim-snippets
 	url = https://github.com/honza/vim-snippets
 
-[submodule "vim/bundle/vim-rails"]
-	path = vim/bundle/vim-rails
-	url = https://github.com/tpope/vim-rails
-
 [submodule "vim/bundle/vim-bundler"]
 	path = vim/bundle/vim-bundler
 	url = https://github.com/tpope/vim-bundler
-
-[submodule "vim/bundle/vim-liquid"]
-	path = vim/bundle/vim-liquid
-	url = https://github.com/tpope/vim-liquid
 
 [submodule "vim/bundle/vim-endwise"]
 	path = vim/bundle/vim-endwise

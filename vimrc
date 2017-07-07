@@ -3,15 +3,15 @@ call plug#begin('~/.vim/bundle')
 Plug 'itchyny/lightline.vim'
 Plug 'altercation/vim-colors-solarized'
 Plug 'scrooloose/nerdtree'
+Plug 'jistr/vim-nerdtree-tabs'
 Plug 'tpope/vim-commentary'
+Plug 'neomake/neomake'
 Plug 'sheerun/vim-polyglot'
 Plug 'ervandew/supertab'
 Plug 'Valloric/YouCompleteMe'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'tpope/vim-rails'
 Plug 'tpope/vim-bundler'
-Plug 'tpope/vim-liquid'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
@@ -27,25 +27,29 @@ let g:lightline = {
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
+set noshowmode
 
 " vim-colors-solarized
 set background=dark
-let g:solarized_termcolors = 256
-" let g:solarized_termtrans = 1
 colorscheme solarized
+highlight EndOfBuffer ctermfg=black ctermbg=none
 
 " nerdtree
-map <C-n> :NERDTreeToggle<CR>
+map <C-n> :NERDTreeTabsToggle<CR>
 
 " vim-polyglot
 let g:ruby_fold = 1
+let g:rustfmt_autosave = 1
+
+" neomake
+autocmd! BufWritePost * Neomake
 
 " supertab
 let g:SuperTabDefaultCompletionType = '<C-n>'
 
 " YouCompleteMe
-nnoremap <C-g> :YcmCompleter GoTo<CR>
-inoremap <C-g> <Esc>:YcmCompleter GoTo<CR>
+map <C-g> :YcmCompleter GoTo<CR>
+imap <C-g> <Esc>:YcmCompleter GoTo<CR>
 let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
@@ -57,8 +61,10 @@ let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
 
 " Other config options
 set number
+set mouse=a mousemodel=popup
 command W w !sudo tee % > /dev/null
-nnoremap <Space> za
+noremap <Space> za
+map <M-t> :below new<CR>:terminal<CR>
 
 set foldlevel=1
 set expandtab shiftwidth=4 tabstop=4
