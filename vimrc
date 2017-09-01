@@ -32,6 +32,7 @@ set noshowmode
 " vim-colors-solarized
 set background=dark
 colorscheme solarized
+let g:solarized_termcolors = 256
 highlight EndOfBuffer ctermfg=black ctermbg=none
 
 " nerdtree
