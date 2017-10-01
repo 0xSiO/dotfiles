@@ -16,3 +16,6 @@ alias tether="sudo create_ap --config .tether_conf"
 alias gits="git submodule"
 
 source $HOME/.dotfiles/venv_functions.sh
+
+# Travis setup
+[ -f /home/luc/.travis/travis.sh ] && source /home/luc/.travis/travis.sh
