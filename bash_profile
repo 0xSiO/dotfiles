@@ -17,11 +17,11 @@ eval "$(rbenv init -)"
 NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 # [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-PATH="$NVM_DIR/versions/node/v8.6.0/bin:$PATH"
+PATH="$NVM_DIR/versions/node/v10.0.0/bin:$PATH"
 
 # rust config
 PATH="$HOME/.cargo/bin:$PATH"
-RUST_SRC_PATH="$HOME/.multirust/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
+RUST_SRC_PATH="$HOME/.multirust/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
 
 export PATH NVM_DIR RUST_SRC_PATH
 

@@ -41,9 +41,10 @@ map <C-n> :NERDTreeTabsToggle<CR>
 " vim-polyglot
 let g:ruby_fold = 1
 let g:rustfmt_autosave = 1
+let g:rust_fold = 1
 
 " neomake
-autocmd! BufWritePost * Neomake
+" autocmd! BufWritePost * Neomake
 
 " supertab
 let g:SuperTabDefaultCompletionType = '<C-n>'
