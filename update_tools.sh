@@ -3,6 +3,8 @@
 
 GIT_PULL="git pull origin master"
 
+echo $(date)
+
 dnf upgrade -y
 
 # Update rust, rbenv, nvm, and vim plugins
