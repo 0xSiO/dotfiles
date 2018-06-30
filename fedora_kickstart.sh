@@ -86,8 +86,12 @@ git clone --recursive git@github.com:lucis-fluxum/dotfiles.git ~/.dotfiles
 mkdir ~/.config/nvim
 ln -sf $HOME/.vimrc $HOME/.config/nvim/init.vim
 
-echo -e "\n=== Copying a couple scripts ==="
-chmod 644 ~/.dotfiles/korora_profile.sh && cp ~/.dotfiles/korora_profile.sh /etc/profile.d/
+echo -e "\n=== Grabbing a couple scripts ==="
+curl -o /etc/profile.d/korora_profile.sh \
+    https://raw.githubusercontent.com/kororaproject/kp-korora-extras/master/upstream/korora.sh
+chmod 644 /etc/profile.d/korora_profile.sh
+curl -o /usr/share/korora-extras/dircolors.ansi-universal \
+    https://raw.githubusercontent.com/kororaproject/kp-korora-extras/master/upstream/dircolors.ansi-universal
 cp ~/.dotfiles/update_tools.sh /etc/cron.daily/update-tools
 
 echo -e "\n=== Installing rbenv/ruby-build ==="
