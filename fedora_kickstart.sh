@@ -5,6 +5,11 @@ if [ "$SUDO_COMMAND" != "/usr/bin/bash" ]; then
     exit
 fi
 
+if [ ! -d "$HOME/.ssh" ]; then
+    echo "Set up your ssh keypair."
+    exit
+fi
+
 # Trackpoint fix (Lenovo laptop only)
 # echo -e '\nalias tp="sudo $HOME/.tpoint_fix"' >> ~/.bashrc
 # echo 'echo 255 > /sys/devices/platform/i8042/serio1/serio2/speed' > ~/.tpoint_fix
