@@ -29,7 +29,7 @@ curl https://dist.crystal-lang.org/rpm/setup.sh | bash
 dnf install -y numix-icon-theme-circle arc-theme hack-fonts \
     mongodb mongodb-server mariadb mariadb-server \
     ffmpeg ffmpeg-devel ffmpegthumbnailer gstreamer-ffmpeg vlc \
-    neovim crystal cmake dconf-editor
+    neovim crystal cmake automake kernel-devel python-devel python3-devel dconf-editor
 
 # gstreamer plugins galore
 dnf install -y gstreamer gstreamer-ffmpeg gstreamer-plugins-bad gstreamer-plugins-bad-free \
@@ -114,6 +114,7 @@ LATEST_NODE=$(nvm ls-remote | tail -n1 | grep -oP 'v\d+\.\d+\.\d+')
 nvm install $LATEST_NODE
 nvm use --delete-prefix default
 ln -sf $NVM_DIR/versions/node/$(nvm current)/bin/node /usr/local/bin/node
+npm install -g typescript
 
 echo -e "\n=== Extra setup for neovim ==="
 pip install --user neovim && pip3 install --user neovim
@@ -122,6 +123,7 @@ npm install -g neovim
 
 echo -e "\n=== Installing rust ==="
 curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path --default-host x86_64-unknown-linux-gnu --default-toolchain nightly
+rustup component add rust-src rustfmt-preview rust-analysis rls-preview
 cargo install cargo-update cargo-outdated cargo-fix ripgrep tokei
 
 chown -hR $SUDO_USER:$SUDO_USER ~/
