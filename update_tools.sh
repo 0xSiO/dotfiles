@@ -17,7 +17,7 @@ cd ~/.nvm && $GIT_PULL
 
 npm update -g
 
-nvim +PlugUpgrade +PlugUpdate +qa!
+nvim --headless +PlugUpgrade +PlugUpdate +qa!
 
 # This is very resource-intensive, only run when needed
 # cd ~/.dotfiles/vim/bundle/YouCompleteMe
