@@ -7,6 +7,9 @@ fi
 
 # User specific environment and startup programs
 
+export EDITOR=/bin/nvim
+export PAGER=/bin/less
+
 PATH="$PATH:$HOME/.local/bin:$HOME/bin"
 
 # rbenv config

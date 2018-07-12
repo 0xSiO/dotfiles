@@ -17,5 +17,10 @@ alias gits="git submodule"
 
 source $HOME/.dotfiles/venv_functions.sh
 
+# Neat cheatsheets for developers
+cht() {
+    curl https://cht.sh/$1
+}
+
 # Travis setup
 [ -f /home/luc/.travis/travis.sh ] && source /home/luc/.travis/travis.sh
