@@ -22,5 +22,9 @@ cht() {
     curl https://cht.sh/$1
 }
 
+loadnvm() {
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+}
+
 # Travis setup
 [ -f /home/luc/.travis/travis.sh ] && source /home/luc/.travis/travis.sh

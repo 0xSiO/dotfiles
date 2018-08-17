@@ -20,7 +20,7 @@ eval "$(rbenv init -)"
 NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 # [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-PATH="$NVM_DIR/versions/node/v10.5.0/bin:$PATH"
+PATH="$NVM_DIR/versions/node/v10.9.0/bin:$PATH"
 
 # rust config
 PATH="$HOME/.cargo/bin:$PATH"

@@ -112,6 +112,7 @@ NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 LATEST_NODE=$(nvm ls-remote | tail -n1 | grep -oP 'v\d+\.\d+\.\d+')
 nvm install $LATEST_NODE
+nvm alias default $LATEST_NODE
 nvm use --delete-prefix default
 ln -sf $NVM_DIR/versions/node/$(nvm current)/bin/node /usr/local/bin/node
 npm install -g typescript
@@ -124,7 +125,7 @@ npm install -g neovim
 echo -e "\n=== Installing rust ==="
 curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path --default-host x86_64-unknown-linux-gnu --default-toolchain nightly
 rustup component add rust-src rustfmt-preview rust-analysis rls-preview
-cargo install cargo-update cargo-outdated cargo-fix ripgrep tokei
+cargo install cargo-audit cargo-fix cargo-outdated cargo-update ripgrep tokei
 
 chown -hR $SUDO_USER:$SUDO_USER ~/
 rm -rf /tmp/*
