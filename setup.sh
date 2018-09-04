@@ -4,7 +4,7 @@
 
 dir=~/.dotfiles
 olddir=~/.dotfiles_old
-files="bashrc bash_profile nvm rbenv venvs vimrc vim"
+files="bashrc bash_profile irbrc nvm rbenv venvs vimrc vim"
 
 echo -e "\n== Creating $olddir for backup of existing dotfiles =="
 mkdir -p $olddir
