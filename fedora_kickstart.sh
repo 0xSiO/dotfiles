@@ -29,7 +29,8 @@ curl https://dist.crystal-lang.org/rpm/setup.sh | bash
 dnf install -y numix-icon-theme-circle arc-theme hack-fonts \
     mongodb mongodb-server mariadb mariadb-server \
     ffmpeg ffmpeg-devel ffmpegthumbnailer gstreamer-ffmpeg vlc \
-    neovim crystal cmake automake kernel-devel python-devel python3-devel dconf-editor
+    neovim crystal cmake automake kernel-devel python-devel python3-devel \
+    dconf-editor gnome-terminal-nautilus transmission-gtk
 
 # gstreamer plugins galore
 dnf install -y gstreamer gstreamer-ffmpeg gstreamer-plugins-bad gstreamer-plugins-bad-free \
@@ -90,6 +91,8 @@ echo -e "\n=== Grabbing a couple scripts ==="
 curl -o /etc/profile.d/korora_profile.sh \
     https://raw.githubusercontent.com/kororaproject/kp-korora-extras/master/upstream/korora.sh
 chmod 644 /etc/profile.d/korora_profile.sh
+
+mkdir /usr/share/korora-extras
 curl -o /usr/share/korora-extras/dircolors.ansi-universal \
     https://raw.githubusercontent.com/kororaproject/kp-korora-extras/master/upstream/dircolors.ansi-universal
 cp ~/.dotfiles/update_tools.sh /etc/cron.daily/update-tools
