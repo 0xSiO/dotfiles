@@ -29,8 +29,8 @@ curl https://dist.crystal-lang.org/rpm/setup.sh | bash
 dnf install -y numix-icon-theme-circle arc-theme hack-fonts \
     mongodb mongodb-server mariadb mariadb-server \
     ffmpeg ffmpeg-devel ffmpegthumbnailer gstreamer-ffmpeg vlc \
-    neovim crystal cmake automake kernel-devel python-devel python3-devel \
-    dconf-editor gnome-terminal-nautilus transmission-gtk
+    neovim crystal gcc-c++ cmake automake kernel-devel python-devel python3-devel postfix \
+    dconf-editor gnome-terminal-nautilus transmission-gtk deja-dup
 
 # gstreamer plugins galore
 dnf install -y gstreamer gstreamer-ffmpeg gstreamer-plugins-bad gstreamer-plugins-bad-free \
@@ -44,12 +44,21 @@ dnf install -y gstreamer gstreamer-ffmpeg gstreamer-plugins-bad gstreamer-plugin
 # Change default thumbnailer
 cd /usr/share/thumbnailers
 mv -n totem.thumbnailer totem.thumbnailer.old
-ln -s ffmpegthumbnailer.thumbnailer totem.thumbnailer
+ln -sf ffmpegthumbnailer.thumbnailer totem.thumbnailer
 cd ~
 
 # Glorious global dark theme
 echo "[Settings]
 gtk-application-prefer-dark-theme=1" > ~/.config/gtk-3.0/settings.ini
+
+# Randomize MAC address every time you connect to WiFi
+echo "[device]
+wifi.scan-rand-mac-address=yes
+
+[connection]
+wifi.cloned-mac-address=random
+ethernet.cloned-mac-address=random
+connection.stable-id=\${CONNECTION}/\${BOOT}" > /etc/NetworkManager/conf.d/00-macrandomize.conf
 
 # Bookmarks
 echo "file://$HOME/Documents
@@ -127,7 +136,7 @@ npm install -g neovim
 
 echo -e "\n=== Installing rust ==="
 curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path --default-host x86_64-unknown-linux-gnu --default-toolchain nightly
-rustup component add rust-src rustfmt-preview rust-analysis rls-preview
+rustup component add rust-src rustfmt-preview clippy-preview rust-analysis rls-preview
 cargo install cargo-audit cargo-fix cargo-outdated cargo-update ripgrep tokei
 
 chown -hR $SUDO_USER:$SUDO_USER ~/
