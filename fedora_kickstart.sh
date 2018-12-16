@@ -18,19 +18,19 @@ fi
 echo -e "\n=== Updating system and installing essential packages ==="
 dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
 https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-dnf copr enable -y heliocastro/hack-fonts
 
 dnf update -y
 
-# Crystal repository
-curl https://dist.crystal-lang.org/rpm/setup.sh | bash
+# Crystal (disabled for now; having issues verifying GPG signature)
+# curl https://dist.crystal-lang.org/rpm/setup.sh | bash
+# dnf install -y crystal
 
 # Basic goodies
-dnf install -y numix-icon-theme-circle arc-theme hack-fonts \
+dnf install -y numix-icon-theme-circle arc-theme \
     mongodb mongodb-server mariadb mariadb-server \
-    ffmpeg ffmpeg-devel ffmpegthumbnailer gstreamer-ffmpeg vlc \
-    neovim crystal gcc-c++ cmake automake kernel-devel python-devel python3-devel postfix \
-    dconf-editor gnome-terminal-nautilus transmission-gtk deja-dup
+    ffmpeg ffmpeg-devel ffmpegthumbnailer vlc \
+    neovim gcc-c++ cmake make automake kernel-devel postfix \
+    dconf-editor gnome-tweaks transmission-gtk deja-dup htop
 
 # gstreamer plugins galore
 dnf install -y gstreamer gstreamer-ffmpeg gstreamer-plugins-bad gstreamer-plugins-bad-free \
