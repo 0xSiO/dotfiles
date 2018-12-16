@@ -91,7 +91,7 @@ usermod -aG docker $SUDO_USER
 
 echo -e "\n=== Downloading dotfiles ==="
 rm -rf ~/.dotfiles_old
-git clone --recursive git@github.com:lucis-fluxum/dotfiles.git ~/.dotfiles
+git clone --recursive https://github.com/lucis-fluxum/dotfiles ~/.dotfiles
 ~/.dotfiles/setup.sh
 mkdir ~/.config/nvim
 ln -sf $HOME/.vimrc $HOME/.config/nvim/init.vim
