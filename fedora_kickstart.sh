@@ -21,13 +21,13 @@ https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -
 
 dnf update -y
 
-# Crystal (disabled for now; having issues verifying GPG signature)
-# curl https://dist.crystal-lang.org/rpm/setup.sh | bash
-# dnf install -y crystal
+# Crystal
+curl https://dist.crystal-lang.org/rpm/setup.sh | bash
+dnf install -y crystal
 
 # Basic goodies
 dnf install -y numix-icon-theme-circle arc-theme \
-    mongodb mongodb-server mariadb mariadb-server \
+    mariadb mariadb-server postgresql postgresql-server \
     ffmpeg ffmpeg-devel ffmpegthumbnailer vlc \
     neovim gcc-c++ cmake make automake kernel-devel postfix \
     dconf-editor gnome-tweaks transmission-gtk deja-dup htop
@@ -135,8 +135,8 @@ gem install neovim
 npm install -g neovim
 
 echo -e "\n=== Installing rust ==="
-curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path --default-host x86_64-unknown-linux-gnu --default-toolchain nightly
-rustup component add rust-src rustfmt-preview clippy-preview rust-analysis rls-preview
+curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path --default-host x86_64-unknown-linux-gnu --default-toolchain stable
+rustup component add rust-src rustfmt clippy
 cargo install cargo-audit cargo-fix cargo-outdated cargo-update ripgrep tokei
 
 chown -hR $SUDO_USER:$SUDO_USER ~/
