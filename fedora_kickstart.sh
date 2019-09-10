@@ -135,6 +135,7 @@ echo -e "\n=== Extra setup for neovim ==="
 pip install --user neovim && pip3 install --user neovim
 gem install neovim
 npm install -g neovim
+nvim --headless +PlugClean +PlugUpdate +qa!
 
 echo -e "\n=== Installing rust ==="
 curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path --default-host x86_64-unknown-linux-gnu --default-toolchain stable
