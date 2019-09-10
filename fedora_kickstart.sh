@@ -29,14 +29,13 @@ dnf install -y numix-icon-theme-circle arc-theme \
     java-latest-openjdk-devel java-latest-openjdk-src \
     dconf-editor gnome-tweaks transmission-gtk deja-dup htop
 
-# gstreamer plugins galore
-# dnf install -y gstreamer gstreamer-ffmpeg gstreamer-plugins-bad gstreamer-plugins-bad-free \
-#     gstreamer-plugins-bad-free-extras gstreamer-plugins-bad-nonfree gstreamer-plugins-base \
-#     gstreamer-plugins-good gstreamer-plugins-good-extras gstreamer-plugins-ugly gstreamer-tools \
-#     gstreamer1-libav gstreamer1-plugins-bad-free-extras gstreamer1-plugins-bad-freeworld \
-#     gstreamer1-plugins-good-extras gstreamer1-plugins-ugly gstreamer1-plugins-bad-free-fluidsynth \
-#     gstreamer1-plugins-bad-free-wildmidi gstreamer1-plugins-bad-nonfree gstreamer1-plugins-base-tools \
-#     gstreamer1-plugins-entrans gstreamer1-plugins-fc gstreamer1-rtsp-server gstreamer1-vaapi
+# gstreamer plugin for video playback
+dnf install -y gstreamer1 gstreamer1-libav
+
+echo -e "\n=== Removing unnecessary packages ==="
+dnf remove -y gnome-boxes gnome-calendar gnome-clocks gnome-contacts gnome-maps gnome-photos gnome-weather cheese
+
+echo -e "\n=== Miscellaneous configuration ==="
 
 # Change default thumbnailer
 cd /usr/share/thumbnailers
