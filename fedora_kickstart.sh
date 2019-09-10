@@ -21,25 +21,22 @@ https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -
 
 dnf update -y
 
-# Crystal
-curl https://dist.crystal-lang.org/rpm/setup.sh | bash
-dnf install -y crystal
-
 # Basic goodies
 dnf install -y numix-icon-theme-circle arc-theme \
     mariadb mariadb-server postgresql postgresql-server \
     ffmpeg ffmpeg-devel ffmpegthumbnailer vlc \
     neovim gcc-c++ cmake make automake kernel-devel postfix \
+    java-latest-openjdk-devel java-latest-openjdk-src \
     dconf-editor gnome-tweaks transmission-gtk deja-dup htop
 
 # gstreamer plugins galore
-dnf install -y gstreamer gstreamer-ffmpeg gstreamer-plugins-bad gstreamer-plugins-bad-free \
-    gstreamer-plugins-bad-free-extras gstreamer-plugins-bad-nonfree gstreamer-plugins-base \
-    gstreamer-plugins-good gstreamer-plugins-good-extras gstreamer-plugins-ugly gstreamer-tools \
-    gstreamer1-libav gstreamer1-plugins-bad-free-extras gstreamer1-plugins-bad-freeworld \
-    gstreamer1-plugins-good-extras gstreamer1-plugins-ugly gstreamer1-plugins-bad-free-fluidsynth \
-    gstreamer1-plugins-bad-free-wildmidi gstreamer1-plugins-bad-nonfree gstreamer1-plugins-base-tools \
-    gstreamer1-plugins-entrans gstreamer1-plugins-fc gstreamer1-rtsp-server gstreamer1-vaapi
+# dnf install -y gstreamer gstreamer-ffmpeg gstreamer-plugins-bad gstreamer-plugins-bad-free \
+#     gstreamer-plugins-bad-free-extras gstreamer-plugins-bad-nonfree gstreamer-plugins-base \
+#     gstreamer-plugins-good gstreamer-plugins-good-extras gstreamer-plugins-ugly gstreamer-tools \
+#     gstreamer1-libav gstreamer1-plugins-bad-free-extras gstreamer1-plugins-bad-freeworld \
+#     gstreamer1-plugins-good-extras gstreamer1-plugins-ugly gstreamer1-plugins-bad-free-fluidsynth \
+#     gstreamer1-plugins-bad-free-wildmidi gstreamer1-plugins-bad-nonfree gstreamer1-plugins-base-tools \
+#     gstreamer1-plugins-entrans gstreamer1-plugins-fc gstreamer1-rtsp-server gstreamer1-vaapi
 
 # Change default thumbnailer
 cd /usr/share/thumbnailers
@@ -83,7 +80,6 @@ git config --global core.editor "vi"
 
 echo -e "\n=== Installing and configuring docker ==="
 dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-dnf config-manager --set-enabled docker-ce-edge
 dnf makecache
 dnf install -y docker-ce docker-compose
 systemctl start docker && systemctl enable docker
@@ -107,7 +103,7 @@ curl -o /usr/share/korora-extras/dircolors.ansi-universal \
 cp ~/.dotfiles/update_tools.sh /etc/cron.daily/update-tools
 
 echo -e "\n=== Installing rbenv/ruby-build ==="
-dnf install -y openssl-devel libyaml-devel libffi-devel readline-devel gdbm-devel ncurses-devel
+dnf install -y openssl-devel libyaml-devel libffi-devel readline-devel gdbm-devel ncurses-devel zlib-devel
 cd ~/.rbenv && src/configure && make -C src
 git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
 
