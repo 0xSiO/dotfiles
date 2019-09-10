@@ -25,7 +25,7 @@ dnf update -y
 dnf install -y numix-icon-theme-circle arc-theme \
     mariadb mariadb-server postgresql postgresql-server \
     ffmpeg ffmpeg-devel ffmpegthumbnailer vlc \
-    neovim gcc-c++ cmake make automake kernel-devel postfix \
+    neovim gcc-c++ cmake make automake kernel-devel mailx postfix \
     java-latest-openjdk-devel java-latest-openjdk-src \
     dconf-editor gnome-tweaks transmission-gtk deja-dup htop
 
@@ -69,6 +69,13 @@ file://$HOME/MEGA/Books Textbooks" > ~/.config/gtk-3.0/bookmarks
 # Reload fonts
 fc-cache -r
 
+# Mail redirection
+echo "root:		$SUDO_USER" >> /etc/aliases
+newaliases
+systemctl enable postfix
+systemctl start postfix
+
+# vim-plug
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
