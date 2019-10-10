@@ -10,7 +10,7 @@ dnf upgrade -y
 # Update rust, rbenv, nvm, and vim plugins
 sudo -i -u luc << END
 
-rustup update
+rustup update stable
 
 cd ~/.rbenv && $GIT_PULL && cd plugins/ruby-build && $GIT_PULL
 cd ~/.nvm && $GIT_PULL
