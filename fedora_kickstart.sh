@@ -27,7 +27,7 @@ dnf install -y numix-icon-theme-circle arc-theme \
     ffmpeg ffmpeg-devel ffmpegthumbnailer vlc \
     neovim gcc-c++ cmake make automake kernel-devel mailx postfix \
     java-latest-openjdk-devel java-latest-openjdk-src \
-    dconf-editor gnome-tweaks transmission-gtk deja-dup htop
+    dconf-editor gnome-tweaks transmission-gtk htop
 
 # gstreamer plugin for video playback
 dnf install -y gstreamer1 gstreamer1-libav
@@ -100,12 +100,12 @@ ln -sf $HOME/.vimrc $HOME/.config/nvim/init.vim
 
 echo -e "\n=== Grabbing a couple scripts ==="
 curl -o /etc/profile.d/korora_profile.sh \
-    https://raw.githubusercontent.com/kororaproject/kp-korora-extras/master/upstream/korora.sh
+    https://raw.githubusercontent.com/lucis-fluxum/kp-korora-extras/master/upstream/korora.sh
 chmod 644 /etc/profile.d/korora_profile.sh
 
 mkdir /usr/share/korora-extras
 curl -o /usr/share/korora-extras/dircolors.ansi-universal \
-    https://raw.githubusercontent.com/kororaproject/kp-korora-extras/master/upstream/dircolors.ansi-universal
+    https://raw.githubusercontent.com/lucis-fluxum/kp-korora-extras/master/upstream/dircolors.ansi-universal
 cp ~/.dotfiles/update_tools.sh /etc/cron.daily/update-tools
 
 echo -e "\n=== Installing rbenv/ruby-build ==="
