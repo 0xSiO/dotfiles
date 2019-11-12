@@ -119,22 +119,15 @@ chown -hR $SUDO_USER:$SUDO_USER ~/.rbenv/
 LATEST_RUBY_STABLE=$(rbenv install -l | grep -oP '\s+\K\d\.\d+\.\d+(?!-dev|-pre|-rc).*' | tail -n 1)
 rbenv install $LATEST_RUBY_STABLE && rbenv global $LATEST_RUBY_STABLE
 
-echo -e "\n=== Installing latest node.js ==="
-chown -hR $SUDO_USER:$SUDO_USER ~/.nvm/
-chmod +x ~/.nvm/nvm.sh
-NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-LATEST_NODE=$(nvm ls-remote | tail -n1 | grep -oP 'v\d+\.\d+\.\d+')
-nvm install $LATEST_NODE
-nvm alias default $LATEST_NODE
-nvm use --delete-prefix default
-ln -sf $NVM_DIR/versions/node/$(nvm current)/bin/node /usr/local/bin/node
-npm install -g typescript
+echo -e "\n=== Installing yarn, node.js, typescript ==="
+curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
+sudo dnf install -y yarn
+yarn global add typescript
 
 echo -e "\n=== Extra setup for neovim ==="
-pip install --user neovim && pip3 install --user neovim
+pip install --user neovim
 gem install neovim
-npm install -g neovim
+yarn global add neovim
 nvim --headless +PlugClean +PlugUpdate +qa!
 
 echo -e "\n=== Installing rust ==="

@@ -7,15 +7,14 @@ echo $(date)
 
 dnf upgrade -y
 
-# Update rust, rbenv, nvm, and vim plugins
+# Update rust, rbenv, yarn, and vim plugins
 sudo -i -u luc << END
 
 rustup update stable
 
 cd ~/.rbenv && $GIT_PULL && cd plugins/ruby-build && $GIT_PULL
-cd ~/.nvm && $GIT_PULL
 
-npm update -g
+yarn global upgrade
 
 nvim --headless +PlugUpgrade +PlugUpdate +qa!
 
