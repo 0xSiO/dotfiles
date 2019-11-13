@@ -13,6 +13,7 @@ sudo -i -u luc << END
 rustup update stable
 
 cd ~/.rbenv && $GIT_PULL && cd plugins/ruby-build && $GIT_PULL
+cd ~/.pyenv && $GIT_PULL
 
 yarn global upgrade
 

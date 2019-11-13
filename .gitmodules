@@ -62,3 +62,7 @@
 	path = rbenv
 	url = https://github.com/rbenv/rbenv
 
+[submodule "pyenv"]
+	path = pyenv
+	url = https://github.com/pyenv/pyenv
+

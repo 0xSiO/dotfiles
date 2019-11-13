@@ -16,4 +16,10 @@ echo -e "[submodule \"rbenv\"]
 \tpath = rbenv
 \turl = https://github.com/rbenv/rbenv\n" >> .gitmodules
 
+# pyenv
+echo -e "[submodule \"pyenv\"]
+\tpath = pyenv
+\turl = https://github.com/pyenv/pyenv\n" >> .gitmodules
+
+
 git add .gitmodules
