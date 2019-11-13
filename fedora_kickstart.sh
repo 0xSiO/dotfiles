@@ -106,7 +106,7 @@ chmod 644 /etc/profile.d/korora_profile.sh
 mkdir /usr/share/korora-extras
 curl -o /usr/share/korora-extras/dircolors.ansi-universal \
     https://raw.githubusercontent.com/lucis-fluxum/kp-korora-extras/master/upstream/dircolors.ansi-universal
-cp ~/.dotfiles/update_tools.sh /etc/cron.daily/update-tools
+ln -sf ~/.dotfiles/update_tools.sh /etc/cron.daily/update-tools
 
 echo -e "\n=== Installing rbenv/ruby-build ==="
 dnf install -y openssl-devel libyaml-devel libffi-devel readline-devel gdbm-devel ncurses-devel zlib-devel
