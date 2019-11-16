@@ -119,11 +119,13 @@ chown -hR $SUDO_USER:$SUDO_USER ~/.rbenv/
 LATEST_RUBY_STABLE=$(rbenv install -l | grep -oP '\s+\K\d\.\d+\.\d+(?!-dev|-pre|-rc).*' | tail -n 1)
 rbenv install $LATEST_RUBY_STABLE && rbenv global $LATEST_RUBY_STABLE
 
-echo -e "\n=== Installing latest stable python ==="
+echo -e "\n=== Installing latest stable python / poetry ==="
 dnf install -y bzip2-devel sqlite sqlite-devel tk-devel
 chown -hR $SUDO_USER:$SUDO_USER ~/.pyenv/
 LATEST_PYTHON_STABLE=$(pyenv install -l | grep -oP '\s+\K\d\.\d+\.\d+(?!-dev|-pre|-rc).*' | tail -n 1)
 pyenv install $LATEST_PYTHON_STABLE && pyenv global $LATEST_PYTHON_STABLE
+pip install poetry
+poetry config settings.virtualenvs.path $HOME/.venvs
 
 echo -e "\n=== Installing yarn, node.js, typescript ==="
 curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
