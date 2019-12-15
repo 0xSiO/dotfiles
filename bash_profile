@@ -21,7 +21,7 @@ PATH="$HOME/.yarn/bin:$PATH"
 
 # rust config
 PATH="$HOME/.cargo/bin:$PATH"
-RUST_SRC_PATH="$HOME/.multirust/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
+RUST_SRC_PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
 
 # pyenv config
 PYENV_ROOT="$HOME/.pyenv"
