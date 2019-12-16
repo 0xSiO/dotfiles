@@ -1,10 +1,5 @@
 # Fedora Kickstart
 
-if [ "$SUDO_COMMAND" != "/usr/bin/bash" ]; then
-    echo "Run under sudo -E bash."
-    exit
-fi
-
 if [ ! -d "$HOME/.ssh" ]; then
     echo "Set up your ssh keypair."
     exit
@@ -16,36 +11,32 @@ fi
 # chmod 100 ~/.tpoint_fix
 
 echo -e "\n=== Updating system and installing essential packages ==="
-dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+sudo dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
 https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
-dnf update -y
+sudo dnf update -y
 
 # Basic goodies
-dnf install -y numix-icon-theme-circle arc-theme \
-    mariadb mariadb-server postgresql postgresql-server \
+sudo dnf install -y numix-icon-theme-circle arc-theme \
+    mariadb-server postgresql-server \
     ffmpeg ffmpeg-devel ffmpegthumbnailer vlc \
-    neovim gcc-c++ cmake make automake kernel-devel mailx postfix \
+    git neovim gcc-c++ cmake make automake kernel-devel mailx postfix \
     java-latest-openjdk-devel java-latest-openjdk-src \
-    dconf-editor gnome-tweaks transmission-gtk htop
+    dconf-editor gnome-tweaks transmission-gtk htop ncdu pv
 
 # gstreamer plugin for video playback
-dnf install -y gstreamer1 gstreamer1-libav
+sudo dnf install -y gstreamer1 gstreamer1-libav
 
 echo -e "\n=== Removing unnecessary packages ==="
-dnf remove -y gnome-boxes gnome-calendar gnome-clocks gnome-contacts gnome-maps gnome-photos gnome-weather cheese
+sudo dnf remove -y gnome-boxes gnome-calendar gnome-clocks gnome-contacts gnome-maps gnome-photos gnome-weather cheese
 
 echo -e "\n=== Miscellaneous configuration ==="
 
 # Change default thumbnailer
 cd /usr/share/thumbnailers
-mv -n totem.thumbnailer totem.thumbnailer.old
-ln -sf ffmpegthumbnailer.thumbnailer totem.thumbnailer
+sudo mv -n totem.thumbnailer totem.thumbnailer.old
+sudo ln -sf ffmpegthumbnailer.thumbnailer totem.thumbnailer
 cd ~
-
-# Glorious global dark theme
-echo "[Settings]
-gtk-application-prefer-dark-theme=1" > ~/.config/gtk-3.0/settings.ini
 
 # Randomize MAC address every time you connect to WiFi
 echo "[device]
@@ -54,7 +45,7 @@ wifi.scan-rand-mac-address=yes
 [connection]
 wifi.cloned-mac-address=random
 ethernet.cloned-mac-address=random
-connection.stable-id=\${CONNECTION}/\${BOOT}" > /etc/NetworkManager/conf.d/00-macrandomize.conf
+connection.stable-id=\${CONNECTION}/\${BOOT}" | sudo tee /etc/NetworkManager/conf.d/00-macrandomize.conf
 
 # Bookmarks
 echo "file://$HOME/Documents
@@ -70,10 +61,10 @@ file://$HOME/MEGA/Books Textbooks" > ~/.config/gtk-3.0/bookmarks
 fc-cache -r
 
 # Mail redirection
-echo "root:		$SUDO_USER" >> /etc/aliases
-newaliases
-systemctl enable postfix
-systemctl start postfix
+echo "root:		$USER" | sudo tee -a /etc/aliases
+sudo newaliases
+sudo systemctl enable postfix
+sudo systemctl start postfix
 
 # vim-plug
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
@@ -84,48 +75,45 @@ git config --global user.name "Luc Street"
 git config --global user.email "lucis-fluxum@users.noreply.github.com"
 git config --global core.editor "vi"
 
-echo -e "\n=== Installing and configuring docker ==="
-dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-dnf makecache
-dnf install -y docker-ce docker-compose
-systemctl start docker && systemctl enable docker
-usermod -aG docker $SUDO_USER
+echo -e "\n=== Installing and configuring podman ==="
+sudo dnf install -y podman podman-compose
 
 echo -e "\n=== Downloading dotfiles ==="
 rm -rf ~/.dotfiles_old
-git clone --recursive https://github.com/lucis-fluxum/dotfiles ~/.dotfiles
+git clone --single-branch --branch master --recursive https://github.com/lucis-fluxum/dotfiles ~/.dotfiles
 ~/.dotfiles/setup.sh
-mkdir ~/.config/nvim
-ln -sf $HOME/.vimrc $HOME/.config/nvim/init.vim
+mkdir -p ~/.config/nvim
+ln -sf ~/.vimrc ~/.config/nvim/init.vim
 
 echo -e "\n=== Grabbing a couple scripts ==="
-curl -o /etc/profile.d/korora_profile.sh \
+sudo curl -o /etc/profile.d/korora_profile.sh \
     https://raw.githubusercontent.com/lucis-fluxum/kp-korora-extras/master/upstream/korora.sh
-chmod 644 /etc/profile.d/korora_profile.sh
+sudo chmod 644 /etc/profile.d/korora_profile.sh
 
-mkdir /usr/share/korora-extras
-curl -o /usr/share/korora-extras/dircolors.ansi-universal \
+sudo mkdir -p /usr/share/korora-extras
+sudo curl -o /usr/share/korora-extras/dircolors.ansi-universal \
     https://raw.githubusercontent.com/lucis-fluxum/kp-korora-extras/master/upstream/dircolors.ansi-universal
-ln -sf ~/.dotfiles/update_tools.sh /etc/cron.daily/update-tools
+
+sudo ln -sf ~/.dotfiles/update_tools.sh /etc/cron.daily/update-tools
 
 echo -e "\n=== Installing rbenv/ruby-build ==="
-dnf install -y openssl-devel libyaml-devel libffi-devel readline-devel gdbm-devel ncurses-devel zlib-devel
+sudo dnf install -y openssl-devel libyaml-devel libffi-devel readline-devel gdbm-devel ncurses-devel zlib-devel
 cd ~/.rbenv && src/configure && make -C src
 git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
 
 echo -e "\n=== Installing latest stable ruby ==="
 source ~/.bash_profile
-chown -hR $SUDO_USER:$SUDO_USER ~/.rbenv/
-LATEST_RUBY_STABLE=$(rbenv install -l | grep -oP '\s+\K\d\.\d+\.\d+(?!-dev|-pre|-rc).*' | tail -n 1)
+sudo chown -hR $USER:$USER ~/.rbenv/
+LATEST_RUBY_STABLE=$(rbenv install -l | grep -oP '^\s*\K\d\.\d+\.\d+(?!-dev|-pre|-rc).*' | tail -n 1)
 rbenv install $LATEST_RUBY_STABLE && rbenv global $LATEST_RUBY_STABLE
 
 echo -e "\n=== Installing latest stable python / poetry ==="
-dnf install -y bzip2-devel sqlite sqlite-devel tk-devel
-chown -hR $SUDO_USER:$SUDO_USER ~/.pyenv/
-LATEST_PYTHON_STABLE=$(pyenv install -l | grep -oP '\s+\K\d\.\d+\.\d+(?!-dev|-pre|-rc).*' | tail -n 1)
+sudo dnf install -y bzip2-devel xz-devel sqlite sqlite-devel tk-devel python3-devel
+sudo chown -hR $USER:$USER ~/.pyenv/
+LATEST_PYTHON_STABLE=$(pyenv install -l | grep -oP '^\s*\K\d\.\d+\.\d+(?!-dev|-pre|-rc).*' | tail -n 1)
 pyenv install $LATEST_PYTHON_STABLE && pyenv global $LATEST_PYTHON_STABLE
 pip install poetry
-poetry config settings.virtualenvs.path $HOME/.venvs
+poetry config settings.virtualenvs.path ~/.venvs
 
 echo -e "\n=== Installing yarn, node.js, typescript ==="
 curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
@@ -143,7 +131,7 @@ curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path --default-host x
 rustup component add rust-src rustfmt clippy
 cargo install cargo-audit cargo-fix cargo-outdated cargo-update ripgrep tokei
 
-chown -hR $SUDO_USER:$SUDO_USER ~/
-rm -rf /tmp/*
+sudo chown -hR $USER:$USER ~/
+sudo rm -rf /tmp/*
 
 echo -e "\n=== All set up! ==="
