@@ -113,7 +113,7 @@ sudo chown -hR $USER:$USER ~/.pyenv/
 LATEST_PYTHON_STABLE=$(pyenv install -l | grep -oP '^\s*\K\d\.\d+\.\d+(?!-dev|-pre|-rc).*' | tail -n 1)
 pyenv install $LATEST_PYTHON_STABLE && pyenv global $LATEST_PYTHON_STABLE
 pip install poetry
-poetry config settings.virtualenvs.path ~/.venvs
+poetry config virtualenvs.path ~/.venvs
 
 echo -e "\n=== Installing yarn, node.js, typescript ==="
 curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
