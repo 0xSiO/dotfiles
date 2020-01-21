@@ -2,9 +2,9 @@
 	path = vim/bundle/lightline.vim
 	url = https://github.com/itchyny/lightline.vim
 
-[submodule "vim/bundle/vim-colors-solarized"]
-	path = vim/bundle/vim-colors-solarized
-	url = https://github.com/altercation/vim-colors-solarized
+[submodule "vim/bundle/edge"]
+	path = vim/bundle/edge
+	url = https://github.com/sainnhe/edge
 
 [submodule "vim/bundle/nerdtree"]
 	path = vim/bundle/nerdtree
@@ -14,9 +14,9 @@
 	path = vim/bundle/vim-commentary
 	url = https://github.com/tpope/vim-commentary
 
-[submodule "vim/bundle/vim-gitgutter"]
-	path = vim/bundle/vim-gitgutter
-	url = https://github.com/airblade/vim-gitgutter
+[submodule "vim/bundle/vim-signify"]
+	path = vim/bundle/vim-signify
+	url = https://github.com/mhinz/vim-signify
 
 [submodule "vim/bundle/coc.nvim"]
 	path = vim/bundle/coc.nvim

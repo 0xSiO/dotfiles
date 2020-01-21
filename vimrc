@@ -1,10 +1,10 @@
 call plug#begin('~/.vim/bundle')
 
 Plug 'itchyny/lightline.vim'
-Plug 'altercation/vim-colors-solarized'
+Plug 'sainnhe/edge'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-commentary'
-Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-signify'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-bundler'
@@ -16,7 +16,7 @@ call plug#end()
 
 " lightline
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
+      \ 'colorscheme': 'edge',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
 	  \             [ 'cocstatus', 'readonly', 'absolutepath', 'modified' ] ]
@@ -33,21 +33,23 @@ let g:lightline = {
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 set noshowmode
 
-" vim-colors-solarized
+" edge
 set background=dark
-colorscheme solarized
-let g:solarized_termcolors = 256
+colorscheme edge
 highlight EndOfBuffer ctermfg=black ctermbg=none
 
 " nerdtree
 map <C-n> :NERDTreeToggle<CR>
+
+" vim-signify
+nmap <leader>d :SignifyHunkDiff<CR>
 
 " coc.nvim
 source ~/.dotfiles/coc.vim
 
 " Other config options
 set number
-set mouse=a mousemodel=popup
+set mouse=a
 command W w !sudo tee % > /dev/null
 noremap <Space> za
 map <M-t> :below new<CR>:terminal<CR>
