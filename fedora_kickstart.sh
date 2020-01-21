@@ -18,7 +18,7 @@ sudo dnf update -y
 
 # Basic goodies
 sudo dnf install -y numix-icon-theme-circle arc-theme \
-    mariadb-server postgresql-server \
+    mariadb-server postgresql-server libpq-devel \
     ffmpeg ffmpeg-devel ffmpegthumbnailer vlc \
     git neovim gcc-c++ cmake make automake kernel-devel mailx postfix \
     java-latest-openjdk-devel java-latest-openjdk-src \

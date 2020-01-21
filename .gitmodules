@@ -10,33 +10,17 @@
 	path = vim/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree
 
-[submodule "vim/bundle/vim-nerdtree-tabs"]
-	path = vim/bundle/vim-nerdtree-tabs
-	url = https://github.com/jistr/vim-nerdtree-tabs
-
 [submodule "vim/bundle/vim-commentary"]
 	path = vim/bundle/vim-commentary
 	url = https://github.com/tpope/vim-commentary
 
-[submodule "vim/bundle/neomake"]
-	path = vim/bundle/neomake
-	url = https://github.com/neomake/neomake
+[submodule "vim/bundle/vim-gitgutter"]
+	path = vim/bundle/vim-gitgutter
+	url = https://github.com/airblade/vim-gitgutter
 
-[submodule "vim/bundle/vim-polyglot"]
-	path = vim/bundle/vim-polyglot
-	url = https://github.com/sheerun/vim-polyglot
-
-[submodule "vim/bundle/supertab"]
-	path = vim/bundle/supertab
-	url = https://github.com/ervandew/supertab
-
-[submodule "vim/bundle/YouCompleteMe"]
-	path = vim/bundle/YouCompleteMe
-	url = https://github.com/Valloric/YouCompleteMe
-
-[submodule "vim/bundle/ultisnips"]
-	path = vim/bundle/ultisnips
-	url = https://github.com/SirVer/ultisnips
+[submodule "vim/bundle/coc.nvim"]
+	path = vim/bundle/coc.nvim
+	url = https://github.com/neoclide/coc.nvim
 
 [submodule "vim/bundle/vim-snippets"]
 	path = vim/bundle/vim-snippets

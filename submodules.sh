@@ -4,7 +4,7 @@
 > .gitmodules
 
 # Vim plugins
-grep -oP "^Plug '\K.+(?=')" vimrc | while read -r line ; do
+grep -oP "^Plug '\K.+?(?=')" vimrc | while read -r line ; do
     plugin=$(grep -oP "\/\K.+" <<< $line)
     echo -e "[submodule \"vim/bundle/$plugin\"]
 \tpath = vim/bundle/$plugin
