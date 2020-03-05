@@ -20,3 +20,5 @@ cht() {
     curl https://cht.sh/$1
 }
 
+# Travis
+[ -f /home/luc/.travis/travis.sh ] && source /home/luc/.travis/travis.sh

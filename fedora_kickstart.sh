@@ -22,7 +22,8 @@ sudo dnf install -y numix-icon-theme-circle arc-theme \
     ffmpeg ffmpeg-devel ffmpegthumbnailer vlc \
     git neovim gcc-c++ cmake make automake kernel-devel mailx postfix \
     java-latest-openjdk-devel java-latest-openjdk-src \
-    dconf-editor gnome-tweaks transmission-gtk htop ncdu pv
+    dconf-editor gnome-tweaks transmission-gtk htop ncdu pv \
+    dnscrypt-proxy
 
 # gstreamer plugin for video playback
 sudo dnf install -y gstreamer1 gstreamer1-libav
@@ -115,10 +116,10 @@ pyenv install $LATEST_PYTHON_STABLE && pyenv global $LATEST_PYTHON_STABLE
 pip install poetry
 poetry config virtualenvs.path ~/.venvs
 
-echo -e "\n=== Installing yarn, node.js, typescript ==="
-curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
-sudo dnf install -y yarn
-yarn global add typescript
+# echo -e "\n=== Installing yarn, node.js, typescript ==="
+# curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
+# sudo dnf install -y yarn
+# yarn global add typescript
 
 echo -e "\n=== Extra setup for neovim ==="
 pip install neovim

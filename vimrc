@@ -17,7 +17,7 @@ call plug#end()
 
 " lightline
 let g:lightline = {
-      \ 'colorscheme': 'edge',
+      \ 'colorscheme': 'jellybeans',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
 	  \             [ 'cocstatus', 'readonly', 'absolutepath', 'modified' ] ]

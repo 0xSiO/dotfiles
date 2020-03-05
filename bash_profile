@@ -16,9 +16,6 @@ PATH="$PATH:$HOME/.local/bin:$HOME/bin"
 PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
-# yarn config
-PATH="$HOME/.yarn/bin:$PATH"
-
 # rust config
 PATH="$HOME/.cargo/bin:$PATH"
 RUST_SRC_PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
