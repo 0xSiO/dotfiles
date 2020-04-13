@@ -2,7 +2,7 @@ call plug#begin('~/.vim/bundle')
 
 Plug 'itchyny/lightline.vim'
 Plug 'sainnhe/edge'
-Plug 'scrooloose/nerdtree'
+Plug 'preservim/nerdtree'
 Plug 'tpope/vim-commentary'
 Plug 'mhinz/vim-signify'
 " coc extensions: snippets, rust-analyzer, json
@@ -41,6 +41,7 @@ highlight EndOfBuffer ctermfg=black ctermbg=none
 
 " nerdtree
 map <C-n> :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " vim-signify
 nmap <leader>d :SignifyHunkDiff<CR>
@@ -54,7 +55,7 @@ set mouse=a
 command W w !sudo tee % > /dev/null
 noremap <Space> za
 map <M-t> :below new<CR>:terminal<CR>
-let g:python3_host_prog = '~/.pyenv/versions/3.8.0/bin/python'
+let g:python3_host_prog = '~/.pyenv/versions/3.8.2/bin/python'
 
 set foldmethod=syntax
 " set foldnestmax=2

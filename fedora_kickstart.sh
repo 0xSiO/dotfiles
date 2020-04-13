@@ -23,7 +23,7 @@ sudo dnf install -y numix-icon-theme-circle arc-theme \
     git neovim gcc-c++ cmake make automake kernel-devel mailx postfix \
     java-latest-openjdk-devel java-latest-openjdk-src \
     dconf-editor gnome-tweaks transmission-gtk htop ncdu pv \
-    dnscrypt-proxy
+    dnscrypt-proxy nodejs
 
 # gstreamer plugin for video playback
 sudo dnf install -y gstreamer1 gstreamer1-libav
@@ -55,7 +55,6 @@ file://$HOME/Pictures
 file://$HOME/Videos
 file://$HOME/Downloads
 file://$HOME/Development Development
-file://$HOME/Development/Ruby/webvanta webvanta
 file://$HOME/MEGA/Books Textbooks" > ~/.config/gtk-3.0/bookmarks
 
 # Reload fonts
@@ -113,22 +112,20 @@ sudo dnf install -y bzip2-devel xz-devel sqlite sqlite-devel tk-devel python3-de
 sudo chown -hR $USER:$USER ~/.pyenv/
 LATEST_PYTHON_STABLE=$(pyenv install -l | grep -oP '^\s*\K\d\.\d+\.\d+(?!-dev|-pre|-rc).*' | tail -n 1)
 pyenv install $LATEST_PYTHON_STABLE && pyenv global $LATEST_PYTHON_STABLE
+pip install --upgrade pip
 pip install poetry
 poetry config virtualenvs.path ~/.venvs
 
-# echo -e "\n=== Installing yarn, node.js, typescript ==="
-# curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
-# sudo dnf install -y yarn
-# yarn global add typescript
+echo -e "\n=== Installing yarn ==="
+curl -o- -L https://yarnpkg.com/install.sh | bash
 
 echo -e "\n=== Extra setup for neovim ==="
 pip install neovim
 gem install neovim
-yarn global add neovim
-nvim --headless +PlugClean +PlugUpdate +qa!
 
 echo -e "\n=== Installing rust ==="
 curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path --default-host x86_64-unknown-linux-gnu --default-toolchain stable
+source ~/.cargo/env
 rustup component add rust-src rustfmt clippy
 cargo install cargo-audit cargo-fix cargo-outdated cargo-update ripgrep tokei
 

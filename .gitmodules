@@ -8,7 +8,7 @@
 
 [submodule "vim/bundle/nerdtree"]
 	path = vim/bundle/nerdtree
-	url = https://github.com/scrooloose/nerdtree
+	url = https://github.com/preservim/nerdtree
 
 [submodule "vim/bundle/vim-commentary"]
 	path = vim/bundle/vim-commentary
