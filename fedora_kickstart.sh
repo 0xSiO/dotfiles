@@ -22,7 +22,7 @@ sudo dnf install -y numix-icon-theme-circle arc-theme \
     ffmpeg ffmpeg-devel ffmpegthumbnailer vlc \
     git neovim gcc-c++ cmake make automake kernel-devel mailx postfix \
     java-latest-openjdk-devel java-latest-openjdk-src \
-    dconf-editor gnome-tweaks transmission-gtk htop ncdu pv \
+    dconf-editor gnome-tweaks transmission-gtk htop ncdu pv exa autojump \
     dnscrypt-proxy nodejs
 
 # gstreamer plugin for video playback
