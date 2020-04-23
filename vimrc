@@ -8,10 +8,10 @@ Plug 'mhinz/vim-signify'
 " coc extensions: snippets, rust-analyzer, json
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'honza/vim-snippets'
-Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
-Plug 'jiangmiao/auto-pairs'
+Plug 'raimondi/delimitmate'
+Plug 'airblade/vim-rooter'
 
 call plug#end()
 
@@ -53,7 +53,6 @@ source ~/.dotfiles/coc.vim
 set number
 set mouse=a
 command W w !sudo tee % > /dev/null
-noremap <Space> za
 map <M-t> :below new<CR>:terminal<CR>
 let g:python3_host_prog = '~/.pyenv/versions/3.8.2/bin/python'
 
@@ -63,3 +62,18 @@ set foldlevel=1
 set expandtab shiftwidth=4 tabstop=4
 autocmd FileType ruby setlocal shiftwidth=2 tabstop=2
 autocmd FileType crystal setlocal shiftwidth=2 tabstop=2
+
+" Enhancements from Jon Gjengset's vimrc
+if executable('rg')
+    set grepprg=rg\ --no-heading\ --vimgrep
+endif
+
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+
+set undodir=~/.dotfiles/vimdid
+set undofile

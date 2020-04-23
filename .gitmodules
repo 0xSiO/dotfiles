@@ -26,10 +26,6 @@
 	path = vim/bundle/vim-snippets
 	url = https://github.com/honza/vim-snippets
 
-[submodule "vim/bundle/vim-bundler"]
-	path = vim/bundle/vim-bundler
-	url = https://github.com/tpope/vim-bundler
-
 [submodule "vim/bundle/vim-endwise"]
 	path = vim/bundle/vim-endwise
 	url = https://github.com/tpope/vim-endwise
@@ -38,9 +34,13 @@
 	path = vim/bundle/vim-surround
 	url = https://github.com/tpope/vim-surround
 
-[submodule "vim/bundle/auto-pairs"]
-	path = vim/bundle/auto-pairs
-	url = https://github.com/jiangmiao/auto-pairs
+[submodule "vim/bundle/delimitmate"]
+	path = vim/bundle/delimitmate
+	url = https://github.com/raimondi/delimitmate
+
+[submodule "vim/bundle/vim-rooter"]
+	path = vim/bundle/vim-rooter
+	url = https://github.com/airblade/vim-rooter
 
 [submodule "rbenv"]
 	path = rbenv
