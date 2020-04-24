@@ -31,6 +31,9 @@ fi
 NVM_DIR="$HOME/.nvm"
 PATH="$NVM_DIR/versions/node/v14.0.0/bin:$PATH"
 
+# yarn config
+PATH="$HOME/.yarn/bin:$PATH"
+
 export PATH PYENV_ROOT NVM_DIR RUST_SRC_PATH
 
 # TTY solarized color scheme
