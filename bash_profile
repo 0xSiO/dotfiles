@@ -27,10 +27,12 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
 
-# yarn config
-PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+# nvm config
+NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" 2> /dev/null
+nvm use --delete-prefix default --silent
 
-export PATH PYENV_ROOT RUST_SRC_PATH
+export PATH PYENV_ROOT NVM_DIR RUST_SRC_PATH
 
 # TTY solarized color scheme
 if [ "$TERM" = "linux" ]; then

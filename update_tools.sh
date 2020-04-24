@@ -12,11 +12,8 @@ rustup update stable
 
 cd ~/.rbenv && $GIT_PULL && cd plugins/ruby-build && $GIT_PULL
 cd ~/.pyenv && $GIT_PULL
+yarn global upgrade
 
 nvim --headless +PlugUpgrade +PlugUpdate +qa!
-
-# This is very resource-intensive, only run when needed
-# cd ~/.dotfiles/vim/bundle/YouCompleteMe
-# ./install.py --clang-completer --rust-completer --js-completer --java-completer
 
 END

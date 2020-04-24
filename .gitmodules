@@ -50,3 +50,7 @@
 	path = pyenv
 	url = https://github.com/pyenv/pyenv
 
+[submodule "nvm"]
+	path = nvm
+	url = https://github.com/nvm-sh/nvm
+

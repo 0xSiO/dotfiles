@@ -116,15 +116,26 @@ pip install --upgrade pip
 pip install poetry
 poetry config virtualenvs.path ~/.venvs
 
+echo -e "\n=== Installing latest nvm / node ==="
+chown -hR $SUDO_USER:$SUDO_USER ~/.nvm/
+chmod +x ~/.nvm/nvm.sh
+NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+LATEST_NODE=$(nvm ls-remote | tail -n1 | grep -oP 'v\d+\.\d+\.\d+')
+nvm install $LATEST_NODE
+nvm alias default $LATEST_NODE
+nvm use --delete-prefix default
+
 echo -e "\n=== Installing yarn ==="
-curl -o- -L https://yarnpkg.com/install.sh | bash
+npm install -g yarn
 
 echo -e "\n=== Extra setup for neovim ==="
 pip install neovim
 gem install neovim
+yarn global add neovim
 
 echo -e "\n=== Installing rust ==="
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --no-modify-path --default-host x86_64-unknown-linux-gnu --default-toolchain stable
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --no-modify-path --default-host $(arch)-unknown-linux-gnu --default-toolchain stable
 source ~/.cargo/env
 rustup component add rust-src
 cargo install cargo-audit cargo-fix cargo-outdated cargo-update ripgrep tokei
