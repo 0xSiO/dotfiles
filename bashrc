@@ -14,7 +14,7 @@ alias vim=nvim
 alias tp="sudo $HOME/.tpoint_fix"
 alias tether="sudo create_ap --config .tether_conf"
 alias gits="git submodule"
-alias ls="exa --git --group-directories-first -gh"
+alias ls="exa --git --group-directories-first -lgh"
 
 # Neat cheatsheets for developers
 cht() {

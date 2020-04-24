@@ -18,7 +18,7 @@ sudo dnf update -y
 
 # Basic goodies
 sudo dnf install -y numix-icon-theme-circle arc-theme \
-    mariadb-server postgresql-server libpq-devel \
+    mariadb-server postgresql-server libpq-devel bzip2 \
     ffmpeg ffmpeg-devel ffmpegthumbnailer vlc \
     git neovim gcc-c++ cmake make automake kernel-devel mailx postfix \
     java-latest-openjdk-devel java-latest-openjdk-src \
@@ -124,9 +124,9 @@ pip install neovim
 gem install neovim
 
 echo -e "\n=== Installing rust ==="
-curl https://sh.rustup.rs -sSf | bash -s -- -y --no-modify-path --default-host x86_64-unknown-linux-gnu --default-toolchain stable
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --no-modify-path --default-host x86_64-unknown-linux-gnu --default-toolchain stable
 source ~/.cargo/env
-rustup component add rust-src rustfmt clippy
+rustup component add rust-src
 cargo install cargo-audit cargo-fix cargo-outdated cargo-update ripgrep tokei
 
 sudo chown -hR $USER:$USER ~/
