@@ -26,10 +26,6 @@
 	path = vim/bundle/vim-snippets
 	url = https://github.com/honza/vim-snippets
 
-[submodule "vim/bundle/vim-endwise"]
-	path = vim/bundle/vim-endwise
-	url = https://github.com/tpope/vim-endwise
-
 [submodule "vim/bundle/vim-surround"]
 	path = vim/bundle/vim-surround
 	url = https://github.com/tpope/vim-surround

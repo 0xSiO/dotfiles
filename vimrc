@@ -8,7 +8,6 @@ Plug 'mhinz/vim-signify'
 " coc extensions: snippets, rust-analyzer, json
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'honza/vim-snippets'
-Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
 Plug 'raimondi/delimitmate'
 Plug 'airblade/vim-rooter'
@@ -48,6 +47,11 @@ nmap <leader>d :SignifyHunkDiff<CR>
 
 " coc.nvim
 source ~/.dotfiles/coc.vim
+
+" delimitmate
+let delimitMate_expand_cr = 1
+let delimitMate_expand_space = 1
+let delimitMate_jump_expansion = 1
 
 " Other config options
 set number

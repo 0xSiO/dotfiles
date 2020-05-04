@@ -10,8 +10,9 @@ sudo -i -u luc << END
 
 rustup update stable
 
-cd ~/.rbenv && $GIT_PULL && cd plugins/ruby-build && $GIT_PULL
+cd ~/.rbenv && $GIT_PULL && cd plugins/ruby-build && $GIT_PULL && cd plugins/rbenv-gemset
 cd ~/.pyenv && $GIT_PULL
+cd ~/.nvm && $GIT_PULL
 yarn global upgrade
 
 nvim --headless +PlugUpgrade +PlugUpdate +qa!

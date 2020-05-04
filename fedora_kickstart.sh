@@ -98,6 +98,7 @@ ln -sf ~/.dotfiles/update_tools.sh /etc/cron.daily/update-tools
 echo -e "\n=== Installing rbenv/ruby-build ==="
 cd ~/.rbenv && src/configure && make -C src
 git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+git clone https://github.com/jf/rbenv-gemset.git ~/.rbenv/plugins/rbenv-gemset
 
 echo -e "\n=== Installing latest stable ruby ==="
 dnf install -y bzip2 openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel
@@ -122,8 +123,8 @@ NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 LATEST_NODE=$(nvm ls-remote | tail -n1 | grep -oP 'v\d+\.\d+\.\d+')
 nvm install $LATEST_NODE
-nvm alias default $LATEST_NODE
-nvm use --delete-prefix default
+nvm alias node $LATEST_NODE
+nvm use --delete-prefix node
 
 echo -e "\n=== Installing yarn ==="
 npm install -g yarn

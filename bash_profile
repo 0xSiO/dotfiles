@@ -29,7 +29,7 @@ fi
 
 # nvm config
 NVM_DIR="$HOME/.nvm"
-PATH="$NVM_DIR/versions/node/v14.0.0/bin:$PATH"
+PATH="$NVM_DIR/versions/node/v14.1.0/bin:$PATH"
 
 # yarn config
 PATH="$HOME/.yarn/bin:$PATH"
