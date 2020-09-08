@@ -57,7 +57,7 @@ file://$HOME/Pictures
 file://$HOME/Videos
 file://$HOME/Downloads
 file://$HOME/Development Development
-file://$HOME/MEGA/Books Textbooks" > ~/.config/gtk-3.0/bookmarks
+file://$HOME/MEGA/Books Books" > ~/.config/gtk-3.0/bookmarks
 
 # Reload fonts
 fc-cache -r
@@ -79,7 +79,7 @@ git config --global core.editor "vi"
 
 echo -e "\n=== Downloading dotfiles ==="
 rm -rf ~/.dotfiles_old
-git clone --single-branch --branch master --recursive https://github.com/lucis-fluxum/dotfiles ~/.dotfiles
+git clone --single-branch --branch master --recursive git@github.com:lucis-fluxum/dotfiles.git ~/.dotfiles
 ~/.dotfiles/setup.sh
 mkdir -p ~/.config/nvim
 ln -sf ~/.vimrc ~/.config/nvim/init.vim
@@ -98,7 +98,6 @@ ln -sf ~/.dotfiles/update_tools.sh /etc/cron.daily/update-tools
 echo -e "\n=== Installing rbenv/ruby-build ==="
 cd ~/.rbenv && src/configure && make -C src
 git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-git clone https://github.com/jf/rbenv-gemset.git ~/.rbenv/plugins/rbenv-gemset
 
 echo -e "\n=== Installing latest stable ruby ==="
 dnf install -y bzip2 openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel
@@ -117,21 +116,18 @@ pip install --upgrade pip
 pip install poetry
 poetry config virtualenvs.path ~/.venvs
 
-echo -e "\n=== Installing latest nvm / node ==="
-chown -hR $SUDO_USER:$SUDO_USER ~/.nvm/
-NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-LATEST_NODE=$(nvm ls-remote | tail -n1 | grep -oP 'v\d+\.\d+\.\d+')
-nvm install $LATEST_NODE
-nvm alias node $LATEST_NODE
-nvm use --delete-prefix node
-
-echo -e "\n=== Installing yarn ==="
+echo -e "\n=== Installing latest nodejs / yarn ==="
+cd ~/.nodenv && src/configure && make -C src
+git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build
+chown -hR $SUDO_USER:$SUDO_USER ~/.nodenv/
+LATEST_NODE=$(nodenv install -l | grep -oP '^\s*\K\d+\.\d+\.\d+(?!-dev|-pre|-rc).*' | tail -n 1)
+nodenv install $LATEST_NODE && nodenv global $LATEST_NODE
 npm install -g yarn
 
 echo -e "\n=== Extra setup for neovim ==="
 pip install neovim
 gem install neovim
+yarn global add neovim
 
 echo -e "\n=== Installing rust ==="
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --no-modify-path --default-host $(arch)-unknown-linux-gnu --default-toolchain stable

@@ -58,7 +58,7 @@ set number
 set mouse=a
 command W w !sudo tee % > /dev/null
 map <M-t> :below new<CR>:terminal<CR>
-let g:python3_host_prog = '~/.pyenv/versions/3.8.2/bin/python'
+let g:python3_host_prog = '~/.pyenv/versions/3.9.0rc1/bin/python'
 
 set foldmethod=syntax
 " set foldnestmax=2

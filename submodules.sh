@@ -21,9 +21,9 @@ echo -e "[submodule \"pyenv\"]
 \tpath = pyenv
 \turl = https://github.com/pyenv/pyenv\n" >> .gitmodules
 
-# nvm
-echo -e "[submodule \"nvm\"]
-\tpath = nvm
-\turl = https://github.com/nvm-sh/nvm\n" >> .gitmodules
+# nodenv
+echo -e "[submodule \"nodenv\"]
+\tpath = nodenv
+\turl = https://github.com/nodenv/nodenv\n" >> .gitmodules
 
 git add .gitmodules

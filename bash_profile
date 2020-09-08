@@ -21,20 +21,17 @@ PATH="$HOME/.cargo/bin:$PATH"
 RUST_SRC_PATH="$HOME/.rustup/toolchains/stable-$(arch)-unknown-linux-gnu/lib/rustlib/src/rust/src"
 
 # pyenv config
-PYENV_ROOT="$HOME/.pyenv"
-PATH="$PYENV_ROOT/bin:$PATH"
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
+PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
 
-# nvm config
-NVM_DIR="$HOME/.nvm"
-PATH="$NVM_DIR/versions/node/v14.1.0/bin:$PATH"
+# nodenv config
+PATH="$HOME/.nodenv/bin:$PATH"
+eval "$(nodenv init -)"
 
 # yarn config
 PATH="$HOME/.yarn/bin:$PATH"
 
-export PATH PYENV_ROOT NVM_DIR RUST_SRC_PATH
+export PATH RUST_SRC_PATH
 
 # TTY solarized color scheme
 if [ "$TERM" = "linux" ]; then
