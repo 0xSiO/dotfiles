@@ -18,7 +18,7 @@ eval "$(rbenv init -)"
 
 # rust config
 PATH="$HOME/.cargo/bin:$PATH"
-RUST_SRC_PATH="$HOME/.rustup/toolchains/stable-$(arch)-unknown-linux-gnu/lib/rustlib/src/rust/src"
+RUST_SRC_PATH="$HOME/.rustup/toolchains/stable-$(arch)-unknown-linux-gnu/lib/rustlib/src/rust/library"
 
 # pyenv config
 PATH="$HOME/.pyenv/bin:$PATH"

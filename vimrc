@@ -56,9 +56,8 @@ let delimitMate_jump_expansion = 1
 " Other config options
 set number
 set mouse=a
-command W w !sudo tee % > /dev/null
 map <M-t> :below new<CR>:terminal<CR>
-let g:python3_host_prog = '~/.pyenv/versions/3.9.0rc1/bin/python'
+let g:python3_host_prog = '~/.pyenv/versions/3.9.0/bin/python'
 
 set foldmethod=syntax
 " set foldnestmax=2
