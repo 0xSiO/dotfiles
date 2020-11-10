@@ -5,7 +5,7 @@ Plug 'sainnhe/edge'
 Plug 'preservim/nerdtree'
 Plug 'tpope/vim-commentary'
 Plug 'mhinz/vim-signify'
-" coc extensions: snippets, rust-analyzer, json
+" coc extensions: snippets, solargraph, rust-analyzer, json
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-surround'

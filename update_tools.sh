@@ -12,7 +12,6 @@ rustup update stable
 
 cd ~/.rbenv && $GIT_PULL
 cd ~/.rbenv/plugins/ruby-build && $GIT_PULL
-cd ~/.rbenv/plugins/rbenv-gemset && $GIT_PULL
 cd ~/.pyenv && $GIT_PULL
 cd ~/.pyenv/plugins/python-build && $GIT_PULL
 cd ~/.nodenv && $GIT_PULL
