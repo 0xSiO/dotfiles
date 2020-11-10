@@ -7,11 +7,6 @@ fi
 
 export HOME="/home/$SUDO_USER"
 
-if [ ! -d "$HOME/.ssh" ]; then
-    echo "Set up your ssh keypair."
-    exit 2
-fi
-
 echo -e "\n=== Updating system and installing essential packages ==="
 dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
     https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
@@ -80,7 +75,7 @@ git config --global core.editor "vi"
 
 echo -e "\n=== Downloading dotfiles ==="
 rm -rf ~/.dotfiles_old
-git clone --single-branch --branch master --recursive https://github.com/lucis-fluxum/dotfiles.git ~/.dotfiles
+git clone --single-branch --branch master --recursive https://github.com/lucis-fluxum/dotfiles ~/.dotfiles
 ~/.dotfiles/setup.sh
 mkdir -p ~/.config/nvim
 ln -sf ~/.vimrc ~/.config/nvim/init.vim
@@ -119,7 +114,7 @@ LATEST_PYTHON_STABLE=$(pyenv install -l | grep -oP '^\s*\K\d\.\d+\.\d+(?!-dev|-p
 rm -rf /tmp/*
 pyenv install $LATEST_PYTHON_STABLE && pyenv global $LATEST_PYTHON_STABLE
 if [ $? -eq 0 ]; then
-    pip install --upgrade pip
+    pip install --upgrade pip wheel
     pip install poetry neovim
     poetry config virtualenvs.path ~/.venvs
 else
@@ -133,7 +128,9 @@ chown -hR $SUDO_USER:$SUDO_USER ~/.nodenv/
 LATEST_NODE=$(nodenv install -l | grep -oP '^\s*\K\d+\.\d+\.\d+(?!-dev|-pre|-rc).*' | tail -n 1)
 nodenv install $LATEST_NODE && nodenv global $LATEST_NODE
 if [ $? -eq 0 ]; then
+    source ~/.bash_profile
     npm install -g yarn
+    source ~/.bash_profile
     yarn global add neovim
 else
     exit 5
