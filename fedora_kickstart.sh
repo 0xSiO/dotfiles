@@ -20,16 +20,11 @@ dnf update -y
 systemctl daemon-reload
 
 # Basic goodies
-dnf install -y \
-    # Aesthetics and UI
-    arc-theme numix-icon-theme-circle \
-    # System tools and services
-    avahi anacron ffmpegthumbnailer postfix \
-    # Development packages / tools
-    cmake ffmpeg-devel gcc-c++ git kernel-devel libpq-devel make neovim postgresql-server \
-    # Other applications
-    autojump chromium-browser-privacy exa ffmpeg gnome-tweaks htop mailx ncdu podman \
-        podman-compose pv transmission-gtk vlc
+dnf install -y arc-theme numix-icon-theme-circle \
+      avahi anacron ffmpegthumbnailer postfix \
+      cmake ffmpeg-devel gcc-c++ git kernel-devel libpq-devel make neovim postgresql-server \
+      autojump chromium-browser-privacy exa ffmpeg gnome-tweaks htop mailx ncdu podman \
+      podman-compose pv transmission-gtk vlc
 
 systemctl enable avahi-daemon
 
@@ -69,7 +64,7 @@ file://$HOME/MEGA/Books Books" > ~/.config/gtk-3.0/bookmarks
 fc-cache -r
 
 # Mail redirection
-echo "root:		$SUDO_USER" | tee -a /etc/aliases
+echo "root:		$SUDO_USER" >> /etc/aliases
 newaliases
 systemctl enable postfix
 systemctl start postfix
@@ -85,7 +80,7 @@ git config --global core.editor "vi"
 
 echo -e "\n=== Downloading dotfiles ==="
 rm -rf ~/.dotfiles_old
-git clone --single-branch --branch master --recursive git@github.com:lucis-fluxum/dotfiles.git ~/.dotfiles
+git clone --single-branch --branch master --recursive https://github.com/lucis-fluxum/dotfiles.git ~/.dotfiles
 ~/.dotfiles/setup.sh
 mkdir -p ~/.config/nvim
 ln -sf ~/.vimrc ~/.config/nvim/init.vim
