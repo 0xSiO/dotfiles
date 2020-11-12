@@ -19,7 +19,7 @@ dnf install -y arc-theme numix-icon-theme-circle \
       avahi anacron ffmpegthumbnailer postfix \
       cmake ffmpeg-devel gcc-c++ git kernel-devel libpq-devel make neovim postgresql-server \
       autojump chromium-browser-privacy exa ffmpeg gnome-tweaks htop mailx ncdu podman \
-      podman-compose pv transmission-gtk vlc
+      podman-compose pv ripgrep transmission-gtk vlc
 
 systemctl enable avahi-daemon
 
@@ -72,6 +72,7 @@ echo -e "\n=== Configuring git ==="
 git config --global user.name "Luc Street"
 git config --global user.email "lucis-fluxum@users.noreply.github.com"
 git config --global core.editor "vi"
+git config --global pull.rebase "false"
 
 echo -e "\n=== Downloading dotfiles ==="
 rm -rf ~/.dotfiles_old
@@ -140,7 +141,7 @@ echo -e "\n=== Installing rust ==="
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --no-modify-path --default-host $(arch)-unknown-linux-gnu --default-toolchain stable
 source ~/.cargo/env
 rustup component add rust-src
-cargo install cargo-audit cargo-outdated cargo-update ripgrep tokei
+cargo install cargo-audit cargo-outdated cargo-update tokei
 
 chown -hR $SUDO_USER:$SUDO_USER ~/
 rm -rf /tmp/*
