@@ -22,3 +22,6 @@ cht() {
 
 # Travis
 [ -f /home/luc/.travis/travis.sh ] && source /home/luc/.travis/travis.sh
+
+# direnv
+eval "$(direnv hook bash)"

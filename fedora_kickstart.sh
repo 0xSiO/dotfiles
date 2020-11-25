@@ -18,8 +18,8 @@ systemctl daemon-reload
 dnf install -y arc-theme numix-icon-theme-circle \
       avahi anacron ffmpegthumbnailer postfix \
       cmake ffmpeg-devel gcc-c++ git kernel-devel libpq-devel make neovim postgresql-server \
-      autojump chromium-browser-privacy exa ffmpeg gnome-tweaks htop mailx ncdu podman \
-      podman-compose pv ripgrep transmission-gtk vlc
+      autojump chromium-browser-privacy direnv exa fd-find ffmpeg firewall-config gnome-tweaks \
+      htop mailx ncdu podman podman-compose pv restic ripgrep transmission-gtk vlc
 
 systemctl enable avahi-daemon
 
