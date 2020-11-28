@@ -5,7 +5,7 @@ Plug 'sainnhe/edge'
 Plug 'preservim/nerdtree'
 Plug 'tpope/vim-commentary'
 Plug 'mhinz/vim-signify'
-" coc extensions: snippets, solargraph, rust-analyzer, json
+" coc extensions: snippets, solargraph, rust-analyzer, json, prettier, tsserver
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'honza/vim-snippets'
 Plug 'tpope/vim-surround'
@@ -65,7 +65,6 @@ set foldlevel=1
 set expandtab shiftwidth=4 tabstop=4
 autocmd FileType ruby setlocal shiftwidth=2 tabstop=2
 autocmd FileType crystal setlocal shiftwidth=2 tabstop=2
-autocmd FileType typescript setlocal shiftwidth=2 tabstop=2
 
 " Enhancements from Jon Gjengset's vimrc
 if executable('rg')
