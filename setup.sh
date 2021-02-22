@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Create symlinks from the home directory to any desired dotfiles in ~/.dotfiles
 # and setup a pre-commit hook for updating submodules
 

@@ -28,9 +28,6 @@ eval "$(pyenv init -)"
 PATH="$HOME/.nodenv/bin:$PATH"
 eval "$(nodenv init -)"
 
-# yarn config
-PATH="$HOME/.yarn/bin:$PATH"
-
 export PATH RUST_SRC_PATH
 
 # TTY solarized color scheme
