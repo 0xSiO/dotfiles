@@ -14,6 +14,8 @@ alias vim=nvim
 alias tether="sudo create_ap --config .tether_conf"
 alias gits="git submodule"
 alias ls="exa --git --group-directories-first -lgh"
+alias update="sudo ~/.dotfiles/update_tools.sh"
+alias backup="~/.dotfiles/backup.sh"
 
 # Neat cheatsheets for developers
 cht() {

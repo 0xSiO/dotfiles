@@ -22,4 +22,4 @@ fi
 
 echo "Starting backup."
 restic -r "$BACKUP_LOCATION/$REPO_NAME" backup --verbose \
-    ~/Development ~/Music ~/Pictures ~/docker-compose.yml
+    ~/Crypto ~/Development ~/Music ~/Pictures ~/docker-compose.yml

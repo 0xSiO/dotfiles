@@ -28,6 +28,9 @@ eval "$(pyenv init -)"
 PATH="$HOME/.nodenv/bin:$PATH"
 eval "$(nodenv init -)"
 
+# monero
+PATH="$HOME/Crypto/monero-cli:$PATH"
+
 export PATH RUST_SRC_PATH
 
 # TTY solarized color scheme

@@ -6,7 +6,7 @@ if has('nvim')
     Plug 'preservim/nerdtree'
     Plug 'tpope/vim-commentary'
     Plug 'mhinz/vim-signify'
-    " coc extensions: snippets, solargraph, rust-analyzer, json, prettier, tsserver
+    " coc extensions: snippets, solargraph, rust-analyzer, json, prettier, tsserver, pyright
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'honza/vim-snippets'
     Plug 'tpope/vim-surround'
@@ -55,7 +55,7 @@ if has('nvim')
     let delimitMate_expand_space = 1
     let delimitMate_jump_expansion = 1
 
-    let g:python3_host_prog = '~/.pyenv/versions/3.9.2/bin/python'
+    let g:python3_host_prog = '~/.pyenv/versions/3.9.4/bin/python'
 endif
 
 " Other config options
