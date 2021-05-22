@@ -42,6 +42,10 @@
 	path = vim/bundle/vim-javascript
 	url = https://github.com/pangloss/vim-javascript
 
+[submodule "vim/bundle/vim-fugitive"]
+	path = vim/bundle/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive
+
 [submodule "rbenv"]
 	path = rbenv
 	url = https://github.com/rbenv/rbenv

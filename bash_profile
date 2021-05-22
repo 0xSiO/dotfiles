@@ -14,7 +14,7 @@ PATH="$PATH:$HOME/.local/bin:$HOME/bin"
 
 # rbenv config
 PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
+eval "$(rbenv init - --path)"
 
 # rust config
 PATH="$HOME/.cargo/bin:$PATH"
@@ -22,6 +22,7 @@ RUST_SRC_PATH="$HOME/.rustup/toolchains/stable-$(arch)-unknown-linux-gnu/lib/rus
 
 # pyenv config
 PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 
 # nodenv config

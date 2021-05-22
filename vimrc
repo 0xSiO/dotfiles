@@ -13,6 +13,7 @@ if has('nvim')
     Plug 'raimondi/delimitmate'
     Plug 'airblade/vim-rooter'
     Plug 'pangloss/vim-javascript'
+    Plug 'tpope/vim-fugitive'
 
     call plug#end()
 
@@ -46,6 +47,7 @@ if has('nvim')
 
     " vim-signify
     nmap <leader>d :SignifyHunkDiff<CR>
+    nmap <leader>b :Git blame<CR>
 
     " coc.nvim
     source ~/.dotfiles/coc.vim
