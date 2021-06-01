@@ -57,7 +57,7 @@ if has('nvim')
     let delimitMate_expand_space = 1
     let delimitMate_jump_expansion = 1
 
-    let g:python3_host_prog = '~/.pyenv/versions/3.9.4/bin/python'
+    let g:python3_host_prog = system("asdf which python | tr -d '\n'")
 endif
 
 " Other config options

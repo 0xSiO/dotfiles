@@ -16,10 +16,10 @@ systemctl daemon-reload
 
 # Basic goodies
 dnf install -y arc-theme numix-icon-theme-circle \
-      avahi anacron ffmpegthumbnailer postfix \
-      cmake ffmpeg-devel gcc-c++ git kernel-devel libpq-devel make neovim postgresql-server \
-      autojump chromium-browser-privacy direnv exa fd-find ffmpeg firewall-config gnome-tweaks \
-      htop mailx ncdu podman podman-compose pv restic ripgrep transmission-gtk vlc
+      anacron ffmpegthumbnailer postfix \
+      cmake ffmpeg-devel gcc-c++ kernel-devel libpq-devel neovim postgresql-server \
+      autojump chromium-browser-privacy exa fd-find ffmpeg firewall-config gnome-tweaks \
+      htop mailx ncdu pv restic ripgrep tokei transmission-gtk vlc
 
 systemctl enable avahi-daemon
 
@@ -95,13 +95,10 @@ ln -sf ~/.dotfiles/update_tools.sh /etc/cron.daily/update-tools
 source ~/.bash_profile
 
 echo -e "\n=== Installing latest stable ruby ==="
-cd ~/.rbenv && src/configure && make -C src
-git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
 dnf install -y bzip2 openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel
-chown -hR $SUDO_USER:$SUDO_USER ~/.rbenv/
-LATEST_RUBY_STABLE=$(rbenv install -l | grep -oP '^\s*\K\d\.\d+\.\d+(?!-dev|-pre|-rc).*' | tail -n 1)
-rm -rf /tmp/*
-rbenv install $LATEST_RUBY_STABLE && rbenv global $LATEST_RUBY_STABLE
+asdf plugin add ruby
+asdf install ruby latest
+
 if [ $? -eq 0 ]; then
     gem install neovim solargraph
 else
@@ -110,10 +107,9 @@ fi
 
 echo -e "\n=== Installing latest stable python / poetry ==="
 dnf install -y zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl-devel tk-devel xz xz-devel libffi-devel
-chown -hR $SUDO_USER:$SUDO_USER ~/.pyenv/
-LATEST_PYTHON_STABLE=$(pyenv install -l | grep -oP '^\s*\K\d\.\d+\.\d+(?!-dev|-pre|-rc|a).*' | tail -n 1)
-rm -rf /tmp/*
-pyenv install $LATEST_PYTHON_STABLE && pyenv global $LATEST_PYTHON_STABLE
+asdf plugin add python
+asdf install python latest
+
 if [ $? -eq 0 ]; then
     pip install --upgrade pip wheel
     pip install poetry neovim
@@ -122,26 +118,20 @@ else
     exit 4
 fi
 
-echo -e "\n=== Installing latest nodejs / yarn ==="
-cd ~/.nodenv && src/configure && make -C src
-git clone https://github.com/nodenv/node-build.git ~/.nodenv/plugins/node-build
-chown -hR $SUDO_USER:$SUDO_USER ~/.nodenv/
-LATEST_NODE=$(nodenv install -l | grep -oP '^\s*\K\d+\.\d+\.\d+(?!-dev|-pre|-rc).*' | tail -n 1)
-nodenv install $LATEST_NODE && nodenv global $LATEST_NODE
+echo -e "\n=== Installing latest nodejs ==="
+asdf plugin add nodejs
+asdf install nodejs latest
+
 if [ $? -eq 0 ]; then
-    source ~/.bash_profile
-    npm install -g yarn
-    source ~/.bash_profile
-    yarn global add neovim
+    npm install -g npm neovim
 else
     exit 5
 fi
 
 echo -e "\n=== Installing rust ==="
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --no-modify-path --default-host $(arch)-unknown-linux-gnu --default-toolchain stable
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --no-modify-path --default-host $(arch)-unknown-linux-gnu --default-toolchain stable -c rust-src
 source ~/.cargo/env
-rustup component add rust-src
-cargo install cargo-audit cargo-outdated cargo-update tokei
+cargo install cargo-audit cargo-outdated cargo-update
 
 chown -hR $SUDO_USER:$SUDO_USER ~/
 rm -rf /tmp/*

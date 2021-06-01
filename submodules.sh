@@ -11,19 +11,9 @@ rg -oP "^\s*Plug '\K.+?(?=')" vimrc | while read -r line ; do
 \turl = https://github.com/$line\n" >> .gitmodules
 done
 
-# rbenv
-echo -e "[submodule \"rbenv\"]
-\tpath = rbenv
-\turl = https://github.com/rbenv/rbenv\n" >> .gitmodules
-
-# pyenv
-echo -e "[submodule \"pyenv\"]
-\tpath = pyenv
-\turl = https://github.com/pyenv/pyenv\n" >> .gitmodules
-
-# nodenv
-echo -e "[submodule \"nodenv\"]
-\tpath = nodenv
-\turl = https://github.com/nodenv/nodenv\n" >> .gitmodules
+# asdf
+echo -e "[submodule \"asdf\"]
+\tpath = asdf
+\turl = https://github.com/asdf-vm/asdf\n" >> .gitmodules
 
 git add .gitmodules
