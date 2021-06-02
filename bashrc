@@ -37,4 +37,3 @@ alias backup="~/.dotfiles/backup.sh"
 cht() {
     curl https://cht.sh/$1
 }
-
