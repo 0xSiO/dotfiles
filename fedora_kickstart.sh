@@ -55,6 +55,15 @@ file://$HOME/Downloads
 file://$HOME/Development Development
 file://$HOME/MEGA/Books Books" > ~/.config/gtk-3.0/bookmarks
 
+# Install starship
+sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -y
+
+# Install Sauce Code Pro Nerd Font
+SCP_FONT_PATH=~/.local/share/fonts/SauceCodePro.zip
+curl --create-dirs -Lo $SCP_FONT_PATH https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/SourceCodePro.zip
+unzip $SCP_FONT_PATH -d ~/.local/share/fonts/SauceCodePro
+rm $SCP_FONT_PATH
+
 # Reload fonts
 fc-cache -r
 

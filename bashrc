@@ -37,3 +37,7 @@ alias backup="~/.dotfiles/backup.sh"
 cht() {
     curl https://cht.sh/$1
 }
+
+# load starship
+export STARSHIP_CONFIG=~/.dotfiles/starship.toml
+eval "$(starship init bash)"
