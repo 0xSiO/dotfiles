@@ -89,6 +89,7 @@ git clone --single-branch --branch master --recursive https://github.com/lucis-f
 ~/.dotfiles/setup.sh
 mkdir -p ~/.config/nvim
 ln -sf ~/.vimrc ~/.config/nvim/init.vim
+ln -sf ~/.dotfiles/coc-settings.json ~/.config/nvim/coc-settings.json
 
 echo -e "\n=== Grabbing a couple scripts ==="
 curl -o /etc/profile.d/korora_profile.sh \

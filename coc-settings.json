@@ -1,0 +1,13 @@
+{
+  "coc.preferences.formatOnSaveFiletypes": [
+    "graphql",
+    "javascript",
+    "json",
+    "python",
+    "rust",
+    "typescript"
+  ],
+  "prettier.statusItemText": "",
+  "prettier.disableSuccessMessage": true,
+  "python.formatting.provider": "black"
+}
