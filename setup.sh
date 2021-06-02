@@ -4,7 +4,7 @@
 
 dir=~/.dotfiles
 olddir=~/.dotfiles_old
-files="asdf bash_profile bashrc irbrc tool-versions venvs vimrc vim"
+files="asdf bash_profile bashrc gitconfig irbrc tool-versions venvs vimrc vim"
 
 echo -e "\n== Creating $olddir for backup of existing dotfiles =="
 mkdir -p $olddir

@@ -1,0 +1,10 @@
+[user]
+	name = Luc Street
+	email = lucis-fluxum@users.noreply.github.com
+    signingkey = B50141371B40B526
+[core]
+	editor = vi
+[commit]
+	gpgsign = true
+[pull]
+	rebase = false
