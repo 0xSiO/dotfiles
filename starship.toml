@@ -76,5 +76,6 @@ threshold = 75
 
 [time]
 disabled = false
-time_format = "%l:%M %P"
+format = "[$time]($style)"
+time_format = "%l:%M %p"
 use_12hr = true
