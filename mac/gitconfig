@@ -24,3 +24,4 @@
 
 [delta]
     features = side-by-side
+    plus-style = syntax "#003800"

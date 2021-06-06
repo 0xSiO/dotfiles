@@ -8,6 +8,7 @@ fi
 # User specific environment and startup programs
 export EDITOR=/bin/nvim
 export PAGER=/bin/less
+export HISTCONTROL=ignoreboth
 
 # rust config
 . $HOME/.cargo/env
