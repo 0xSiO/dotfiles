@@ -12,7 +12,7 @@ for plugin in $plugins; do
 	    path = vim/bundle/$name
 	    url = https://github.com/$plugin
         
-		END
+	END
 done
 
 # asdf
