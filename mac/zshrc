@@ -13,6 +13,9 @@ fi
 
 setopt histignoredups
 setopt histignorespace
+setopt correct
+setopt correct_all
+
 export HISTSIZE=10000
 export SAVEHIST=$HISTSIZE
 export EDITOR=nvim
@@ -39,7 +42,7 @@ fi
 # asdf config
 . /usr/local/opt/asdf/asdf.sh
 
-source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
+source ~/.dotfiles/powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
