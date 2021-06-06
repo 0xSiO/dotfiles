@@ -12,6 +12,7 @@ fi
 . ~/.dotfiles/mac/aliases.zsh
 
 setopt histignoredups
+setopt histignorespace
 export HISTSIZE=10000
 export SAVEHIST=$HISTSIZE
 export EDITOR=nvim

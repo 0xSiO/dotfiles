@@ -1,0 +1,30 @@
+# User specific aliases and functions
+. ~/.dotfiles/linux/aliases.zsh
+
+setopt histignoredups
+setopt histignorespace
+setopt correct
+setopt correct_all
+
+export HISTFILE="$HOME/.zsh_history"
+export HISTSIZE=10000
+export SAVEHIST=$HISTSIZE
+export EDITOR=nvim
+export PAGER=/bin/less
+export PATH="$HOME/.local/bin:$PATH"
+
+autoload -Uz compinit
+compinit
+
+# rust config
+. $HOME/.cargo/env
+export RUST_SRC_PATH="$HOME/.rustup/toolchains/stable-$(arch)-unknown-linux-gnu/lib/rustlib/src/rust/library"
+
+# monero
+export PATH="$HOME/Crypto/monero-cli:$PATH"
+
+# autojump config
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+
+# asdf config
+. $HOME/.asdf/asdf.sh
