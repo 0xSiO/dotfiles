@@ -1,0 +1,15 @@
+[[battery.display]]
+threshold = 30
+
+[character]
+error_symbol = "[❯](bold green)"
+
+[directory]
+truncation_length = 5
+truncation_symbol = "../"
+
+[time]
+disabled = false
+format = "[$time]($style) "
+time_format = "%I:%M %p"
+use_12hr = true
