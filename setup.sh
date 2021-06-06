@@ -3,27 +3,61 @@
 # and setup a pre-commit hook for updating submodules
 
 dir=~/.dotfiles
-olddir=~/.dotfiles_old
-# TODO: Add ability to make platform-specific links
-files="asdf bash_profile bashrc gitconfig irbrc tool-versions venvs vimrc vim"
+old_dir=~/.dotfiles.old
+platform=$1
 
-echo -e "\n== Creating $olddir for backup of existing dotfiles =="
-mkdir -p $olddir
+[ -z "$platform" ] && echo "Usage: $0 [platform]" && exit 1
+[ -d "$old_dir" ]  && echo "Setup has already ran. Delete $old_dir and try again." && exit 2
 
-cd $dir
+section() {
+    echo
+    echo "== $1 =="
+}
 
-for file in $files; do
-    echo -e "\nMoving existing .$file from ~ to $olddir"
-    mv -vn ~/.$file $olddir
-    echo -e "\nCreating symlink: .$file -> $dir/$file"
-    ln -s $dir/$file ~/.$file
+# Usage: link target link_name
+# Result:
+#   move link_name -> $old_dir/link_name (if exists)
+#   add  link_name -> target 
+link() {
+    [ -e "$2" ] && mv -n $2 $old_dir && echo "backed up old $2 to $old_dir"
+    ln -s $1 $2
+}
+
+section "Setting up $platform-specific files"
+case $platform in
+    linux)
+        platform_files="bash_profile bashrc gitconfig tool-versions"
+        ;;
+    mac)
+        platform_files="gitconfig p10k.zsh tool-versions zshrc"
+        ;;
+    *)
+        echo "Unsupported platform: $platform"
+        exit 3
+        ;;
+esac
+
+mkdir -pv $old_dir
+
+for file in $platform_files; do
+    echo "linking ~/.$file to $dir/$platform/$file"
+    link $dir/$platform/$file ~/.$file
 done
 
-echo -e "\n== Linking coc settings =="
+section "Setting up common files"
+common_files="asdf irbrc venvs vimrc vim"
+
+for file in $common_files; do
+    echo "linking ~/.$file to $dir/$file"
+    link $dir/$file ~/.$file
+done
+
+coc_settings_path=~/.config/nvim/coc-settings.json
+echo "linking $coc_settings_path to $dir/coc-settings.json"
 mkdir -p ~/.config/nvim
-ln -s $dir/coc-settings.json ~/.config/nvim/coc-settings.json
+link $dir/coc-settings.json $coc_settings_path
 
-echo -e "\n== Setting up pre-commit hook =="
-ln -s $dir/submodules.sh .git/hooks/pre-commit
+section "Setting up pre-commit hook"
+ln -sf $dir/submodules.sh $dir/.git/hooks/pre-commit
 
-echo -e "\n== Done! =="
+section "Done!"
