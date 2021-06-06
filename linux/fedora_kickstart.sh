@@ -19,7 +19,8 @@ dnf install -y arc-theme numix-icon-theme-circle \
       anacron ffmpegthumbnailer postfix \
       cmake ffmpeg-devel gcc-c++ kernel-devel libpq-devel neovim postgresql-server \
       autojump chromium-browser-privacy exa fd-find ffmpeg file-roller file-roller-nautilus \
-      firewall-config git-delta gnome-tweaks htop mailx ncdu pv restic ripgrep tokei transmission-gtk vlc
+      firewall-config git-delta gnome-tweaks htop mailx ncdu pv restic ripgrep tokei \
+      transmission-gtk vlc zsh
 
 systemctl enable avahi-daemon
 
@@ -30,6 +31,9 @@ echo -e "\n=== Removing unnecessary packages ==="
 dnf remove -y gnome-boxes gnome-calendar gnome-clocks gnome-contacts gnome-maps gnome-photos gnome-weather cheese
 
 echo -e "\n=== Miscellaneous configuration ==="
+
+# Change default shell to zsh
+lchsh $SUDO_USER <<< /bin/zsh
 
 # Change default thumbnailer
 cd /usr/share/thumbnailers
