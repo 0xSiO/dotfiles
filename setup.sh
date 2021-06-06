@@ -26,7 +26,7 @@ link() {
 section "Setting up $platform-specific files"
 case $platform in
     linux)
-        platform_files="bash_profile bashrc gitconfig tool-versions"
+        platform_files="gitconfig p10k.zsh tool-versions zshrc"
         ;;
     mac)
         platform_files="gitconfig p10k.zsh tool-versions zshrc"
