@@ -13,6 +13,9 @@ setopt histignorespace
 setopt correct
 setopt correct_all
 
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+
 export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=10000
 export SAVEHIST=$HISTSIZE
@@ -20,8 +23,6 @@ export EDITOR=nvim
 export PAGER=/bin/less
 export PATH="$HOME/.local/bin:$PATH"
 
-autoload -Uz compinit
-compinit
 
 # rust config
 . $HOME/.cargo/env
@@ -35,8 +36,12 @@ export PATH="$HOME/Crypto/monero-cli:$PATH"
 
 # asdf config
 . $HOME/.asdf/asdf.sh
+fpath=(${ASDF_DIR}/completions $fpath)
 
 source ~/.dotfiles/powerlevel10k/powerlevel10k.zsh-theme
+
+autoload -Uz compinit
+compinit
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
