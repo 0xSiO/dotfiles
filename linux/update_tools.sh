@@ -7,7 +7,7 @@ sudo -i -u luc << END
 
 asdf plugin update --all
 rustup update stable
-npm upgrade -g
+npm upgrade -g npm neovim
 nvim --headless +PlugUpgrade +PlugUpdate +qa!
 
 END
