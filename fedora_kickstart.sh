@@ -99,6 +99,7 @@ asdf install ruby latest
 
 if [ $? -eq 0 ]; then
     gem install neovim solargraph
+    asdf reshim
 else
     exit 3
 fi
@@ -111,6 +112,7 @@ asdf install python latest
 if [ $? -eq 0 ]; then
     pip install --upgrade pip wheel
     pip install poetry neovim
+    asdf reshim
     poetry config virtualenvs.path ~/.venvs
 else
     exit 4
@@ -122,6 +124,7 @@ asdf install nodejs latest
 
 if [ $? -eq 0 ]; then
     npm install -g npm neovim
+    asdf reshim
 else
     exit 5
 fi
