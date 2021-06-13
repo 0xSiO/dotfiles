@@ -44,10 +44,6 @@ for file in $platform_files; do
     link $dir/$platform/$file ~/.$file
 done
 
-starship_config=~/.config/starship.toml
-echo "linking $starship_config to $dir/$platform/starship.toml"
-link $dir/$platform/starship.toml $starship_config
-
 section "Setting up common files"
 common_files="asdf irbrc venvs vimrc vim"
 
@@ -57,9 +53,12 @@ for file in $common_files; do
 done
 
 coc_config=~/.config/nvim/coc-settings.json
-echo "linking $coc_config to $dir/coc-settings.json"
+vim_config=~/.config/nvim/init.vim
 mkdir -p ~/.config/nvim
+echo "linking $coc_config to $dir/coc-settings.json"
 link $dir/coc-settings.json $coc_config
+echo "linking $vim_config to $dir/vimrc"
+link $dir/vimrc $vim_config
 
 section "Setting up pre-commit hook"
 ln -sf $dir/submodules.sh $dir/.git/hooks/pre-commit

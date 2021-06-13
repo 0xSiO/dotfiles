@@ -88,22 +88,9 @@ echo -e "\n=== Downloading dotfiles ==="
 rm -rf ~/.dotfiles_old
 git clone --single-branch --branch master --recursive https://github.com/lucis-fluxum/dotfiles ~/.dotfiles
 ~/.dotfiles/setup.sh
-mkdir -p ~/.config/nvim
-ln -sf ~/.vimrc ~/.config/nvim/init.vim
-ln -sf ~/.dotfiles/coc-settings.json ~/.config/nvim/coc-settings.json
+ln -sf ~/.dotfiles/linux/update_tools.sh /etc/cron.daily/update-tools
 
-echo -e "\n=== Grabbing a couple scripts ==="
-curl -o /etc/profile.d/korora_profile.sh \
-    https://raw.githubusercontent.com/lucis-fluxum/kp-korora-extras/master/upstream/korora.sh
-chmod 644 /etc/profile.d/korora_profile.sh
-
-mkdir -p /usr/share/korora-extras
-curl -o /usr/share/korora-extras/dircolors.ansi-universal \
-    https://raw.githubusercontent.com/lucis-fluxum/kp-korora-extras/master/upstream/dircolors.ansi-universal
-
-ln -sf ~/.dotfiles/update_tools.sh /etc/cron.daily/update-tools
-
-source ~/.bash_profile
+source ~/.zshrc
 
 echo -e "\n=== Installing latest stable ruby ==="
 dnf install -y bzip2 openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel
@@ -140,7 +127,7 @@ else
 fi
 
 echo -e "\n=== Installing rust ==="
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --no-modify-path --default-host $(arch)-unknown-linux-gnu --default-toolchain stable -c rust-src
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path --default-host $(arch)-unknown-linux-gnu --default-toolchain stable -c rust-src
 source ~/.cargo/env
 cargo install cargo-audit cargo-outdated cargo-update
 
