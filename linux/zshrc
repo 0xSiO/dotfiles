@@ -10,8 +10,6 @@ fi
 
 setopt histignoredups
 setopt histignorespace
-setopt correct
-setopt correct_all
 
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
@@ -22,7 +20,6 @@ export SAVEHIST=$HISTSIZE
 export EDITOR=nvim
 export PAGER=/bin/less
 export PATH="$HOME/.local/bin:$PATH"
-
 
 # rust config
 . $HOME/.cargo/env

@@ -13,8 +13,6 @@ fi
 
 setopt histignoredups
 setopt histignorespace
-setopt correct
-setopt correct_all
 
 export HISTSIZE=10000
 export SAVEHIST=$HISTSIZE
