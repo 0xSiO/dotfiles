@@ -1,0 +1,117 @@
+[
+  {
+    "type": "exitTouchbar",
+    "align": "left",
+    "bordered": false,
+    "title": "",
+    "width": 32,
+    "image": {
+      "filePath": "~/Library/Application Support/MTMR/cancel.png"
+    }
+  },
+  {
+    "type": "shellScriptTitledButton",
+    "source": {
+      "inline": "top -l 2 | grep -E '^CPU' | tail -1 | awk '{ print $3 + $5 \"%\" }'"
+    },
+    "refreshInterval": 3,
+    "align": "left",
+    "width": 80,
+    "bordered": false,
+    "image": {
+      "filePath": "~/Library/Application Support/MTMR/cpu.png"
+    }
+  },
+  {
+    "type": "shellScriptTitledButton",
+    "source": {
+      "inline": "/usr/local/bin/osx-cpu-temp",
+      "github_link": "https://github.com/BourgonLaurent/osx-cpu-temp"
+    },
+    "refreshInterval": 3,
+    "align": "left",
+    "width": 80,
+    "bordered": false,
+    "image": {
+      "filePath": "~/Library/Application Support/MTMR/thermometer.png"
+    }
+  },
+  {
+    "type": "shellScriptTitledButton",
+    "source": {
+      "inline": "ps -A -o %mem | awk '{s+=$1}END{print s \"%\" }'"
+    },
+    "refreshInterval": 3,
+    "align": "left",
+    "width": 80,
+    "bordered": false,
+    "image": {
+      "filePath": "~/Library/Application Support/MTMR/memory.png"
+    }
+  },
+  {
+    "type": "network",
+    "align": "left",
+    "flip": true,
+    "bordered": false
+  },
+  {
+    "type": "staticButton",
+    "title": "",
+    "align": "right",
+    "width": 48,
+    "image": {
+      "filePath": "~/Library/Application Support/MTMR/camera.png"
+    },
+    "actions": [
+      {
+        "trigger": "singleTap",
+        "action": "shellScript",
+        "executablePath": "/System/Applications/Utilities/Screenshot.app/Contents/MacOS/Screenshot"
+      }
+    ]
+  },
+  {
+    "type": "illuminationDown",
+    "bordered": true,
+    "align": "right",
+    "width": 48
+  },
+  {
+    "type": "illuminationUp",
+    "bordered": true,
+    "align": "right",
+    "width": 48
+  },
+  { "type": "brightnessDown", "width": 48, "bordered": true, "align": "right" },
+  { "type": "brightnessUp", "width": 48, "bordered": true, "align": "right" },
+  {
+    "type": "volumeDown",
+    "bordered": true,
+    "align": "right",
+    "width": 48
+  },
+  {
+    "type": "volumeUp",
+    "bordered": true,
+    "align": "right",
+    "width": 48
+  },
+  {
+    "type": "battery",
+    "align": "right",
+    "bordered": false
+  },
+  {
+    "type": "timeButton",
+    "formatTemplate": "hh:mm a",
+    "align": "right",
+    "bordered": false
+  },
+  {
+    "type": "displaySleep",
+    "width": 24,
+    "bordered": false,
+    "align": "right"
+  }
+]
