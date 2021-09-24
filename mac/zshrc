@@ -1,6 +1,11 @@
 # Silly Mac, see https://stackoverflow.com/a/41054093
 export GPG_TTY=$(tty)
 
+# For some reason my terminals default to opening in Desktop now.
+if [[ "$PWD" == "$HOME/Desktop" ]]; then
+    clear; cd
+fi
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -24,7 +29,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export RUST_SRC_PATH="$HOME/.rustup/toolchains/stable-$(uname -m)-apple-darwin/lib/rustlib/src/rust/library"
 
 # postgres
-export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
+export PATH="/usr/local/opt/postgresql@12/bin:$PATH"
 
 # load homebrew completions
 if type brew &>/dev/null; then

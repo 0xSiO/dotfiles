@@ -10,5 +10,6 @@
   ],
   "prettier.statusItemText": "",
   "prettier.disableSuccessMessage": true,
-  "python.formatting.provider": "black"
+  "python.formatting.provider": "black",
+  "rust-analyzer.cargo.allFeatures": true
 }

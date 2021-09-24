@@ -3,6 +3,9 @@
     email = lucis-fluxum@users.noreply.github.com
     signingkey = B50141371B40B526
 
+[commit]
+    gpgsign = false
+
 [core]
     editor = vi --clean
 
