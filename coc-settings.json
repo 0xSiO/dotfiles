@@ -9,6 +9,7 @@
     "yaml"
   ],
   "prettier.statusItemText": "",
+  "prettier.eslintIntegration": true,
   "prettier.disableSuccessMessage": true,
   "python.formatting.provider": "black",
   "rust-analyzer.cargo.allFeatures": true
