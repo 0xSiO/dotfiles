@@ -78,15 +78,9 @@ systemctl start postfix
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-echo -e "\n=== Configuring git ==="
-git config --global user.name "Luc Street"
-git config --global user.email "lucis-fluxum@users.noreply.github.com"
-git config --global core.editor "vi"
-git config --global pull.rebase "false"
-
 echo -e "\n=== Downloading dotfiles ==="
 rm -rf ~/.dotfiles_old
-git clone --single-branch --branch master --recursive https://github.com/lucis-fluxum/dotfiles ~/.dotfiles
+git clone --single-branch --branch master --recursive https://github.com/0xSiO/dotfiles ~/.dotfiles
 ~/.dotfiles/setup.sh
 ln -sf ~/.dotfiles/linux/update_tools.sh /etc/cron.daily/update-tools
 

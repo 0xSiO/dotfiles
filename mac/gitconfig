@@ -1,13 +1,16 @@
 [user]
     name = Luc Street
-    email = lucis-fluxum@users.noreply.github.com
+    email = 6709262+0xSiO@users.noreply.github.com
     signingkey = B50141371B40B526
-
-[commit]
-    gpgsign = false
 
 [core]
     editor = vi --clean
+
+[init]
+    defaultBranch = master
+
+[commit]
+    gpgsign = false
 
 [diff]
     algorithm = histogram
