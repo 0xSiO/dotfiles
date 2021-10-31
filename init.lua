@@ -13,6 +13,7 @@ require('packer').startup({
     use { 'nvim-telescope/telescope.nvim', requires = {'nvim-lua/plenary.nvim'} }
     use 'tpope/vim-fugitive'
     use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' }, tag = 'release' }
+    use 'tpope/vim-commentary'
 
     if PACKER_BOOTSTRAP then
       require('packer').sync()
