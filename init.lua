@@ -11,6 +11,8 @@ require('packer').startup({
     use 'sainnhe/edge'
     use 'kyazdani42/nvim-tree.lua'
     use { 'nvim-telescope/telescope.nvim', requires = {'nvim-lua/plenary.nvim'} }
+    use 'tpope/vim-fugitive'
+    use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' }, tag = 'release' }
 
     if PACKER_BOOTSTRAP then
       require('packer').sync()
@@ -63,6 +65,14 @@ require('telescope').setup({
 vim.api.nvim_set_keymap('n', 'ff', ':Telescope find_files<CR>', {})
 vim.api.nvim_set_keymap('n', 'fg', ':Telescope live_grep<CR>', {})
 vim.api.nvim_set_keymap('n', 'fh', ':Telescope help_tags<CR>', {})
+
+-- Configure vim-fugitive
+vim.api.nvim_set_keymap('n', '<leader>gd', ':Gvdiffsplit<CR>', {})
+vim.api.nvim_set_keymap('n', '<leader>b', ':Git blame<CR>', {})
+
+-- Configure gitsigns
+require('gitsigns').setup()
+vim.api.nvim_set_keymap('n', '<leader>d', ':lua require("gitsigns").blame_line(true)<CR>', {})
 
 -- Color scheme
 vim.o.termguicolors = true
