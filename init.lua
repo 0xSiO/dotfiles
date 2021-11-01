@@ -20,6 +20,7 @@ require('packer').startup({
     use 'williamboman/nvim-lsp-installer'
     use 'hrsh7th/nvim-cmp'
     use 'hrsh7th/cmp-nvim-lsp'
+    use 'onsails/lspkind-nvim'
     use 'saadparwaiz1/cmp_luasnip'
     use 'L3MON4D3/LuaSnip'
     use 'tpope/vim-commentary'
@@ -46,8 +47,10 @@ vim.wo.foldlevel = 1
 
 -- Configure nvim-cmp
 local luasnip = require('luasnip')
+local lspkind = require('lspkind')
 local cmp = require('cmp')
 cmp.setup({
+  formatting = { format = lspkind.cmp_format({ with_text = false, maxwidth = 50 }) },
   snippet = {
     expand = function(args)
       require('luasnip').lsp_expand(args.body)
