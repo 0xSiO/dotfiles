@@ -9,10 +9,10 @@ require('packer').startup({
   function(use)
     use 'wbthomason/packer.nvim'
     use 'sainnhe/edge'
-    use 'kyazdani42/nvim-tree.lua'
+    use 'preservim/nerdtree'
     use { 'nvim-telescope/telescope.nvim', requires = {'nvim-lua/plenary.nvim'} }
     use 'tpope/vim-fugitive'
-    use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' }, tag = 'release' }
+    use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
     use 'tpope/vim-commentary'
 
     if PACKER_BOOTSTRAP then
@@ -27,28 +27,10 @@ vim.cmd('command Update :PackerSync')
 -- Configure LSP servers
 -- local servers = { 'rust_analyzer', 'tsserver', 'pyright', 'solargraph' }
 
--- Configure nvim-tree
-local tree_cb = require('nvim-tree.config').nvim_tree_callback
-require('nvim-tree').setup({
-  auto_close = true,
-  filters = { dotfiles = true },
-  view = {
-    mappings = {
-      list = {
-        { key = "C", cb = tree_cb("cd") },
-        { key = "i", cb = tree_cb("split") },
-        { key = "s", cb = tree_cb("vsplit") },
-        { key = "R", cb = tree_cb("rename") },
-        { key = "r", cb = tree_cb("refresh") },
-        { key = "o", cb = tree_cb("system_open") },
-        { key = "I", cb = tree_cb("toggle_dotfiles") },
-        { key = "?", cb = tree_cb("toggle_help") },
-      }
-    }
-  }
-})
-
-vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', {})
+-- Configure NERDTree
+vim.api.nvim_set_keymap('n', '<C-n>', ':NERDTreeToggle<CR>', {})
+vim.g['NERDTreeMinimalUI'] = true
+vim.cmd("autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif")
 
 -- Configure telescope
 require('telescope').setup({
@@ -73,7 +55,7 @@ vim.api.nvim_set_keymap('n', '<leader>b', ':Git blame<CR>', {})
 
 -- Configure gitsigns
 require('gitsigns').setup()
-vim.api.nvim_set_keymap('n', '<leader>d', ':lua require("gitsigns").blame_line(true)<CR>', {})
+vim.api.nvim_set_keymap('n', '<leader>d', ':lua require("gitsigns").preview_hunk()<CR>', {})
 
 -- Color scheme
 vim.o.termguicolors = true
