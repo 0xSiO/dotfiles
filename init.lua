@@ -16,6 +16,12 @@ require('packer').startup({
     use 'tpope/vim-fugitive'
     use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
     use 'tpope/vim-commentary'
+    use 'neovim/nvim-lspconfig'
+    use 'williamboman/nvim-lsp-installer'
+    use 'hrsh7th/nvim-cmp'
+    use 'hrsh7th/cmp-nvim-lsp'
+    use 'saadparwaiz1/cmp_luasnip'
+    use 'L3MON4D3/LuaSnip'
 
     if PACKER_BOOTSTRAP then
       require('packer').sync()
@@ -26,8 +32,59 @@ require('packer').startup({
 
 vim.cmd('command Update :PackerSync')
 
+-- Configure nvim-cmp
+local luasnip = require('luasnip')
+local cmp = require('cmp')
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body)
+    end,
+  },
+  mapping = {
+    ['<C-k>'] = cmp.mapping.select_prev_item(),
+    ['<C-j>'] = cmp.mapping.select_next_item(),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<Tab>'] = function(fallback)
+      if cmp.visible() then
+        cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end,
+    ['<S-Tab>'] = function(fallback)
+      if luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end,
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  },
+})
+
 -- Configure LSP servers
--- local servers = { 'rust_analyzer', 'tsserver', 'pyright', 'solargraph' }
+local servers = { 'rust_analyzer', 'tsserver', 'pyright', 'solargraph', 'sumneko_lua' }
+
+local lsp_installer_servers = require('nvim-lsp-installer.servers')
+for _, server_name in ipairs(servers) do
+  local ok, server = lsp_installer_servers.get_server(server_name)
+  if ok then
+      if not server:is_installed() then
+          server:install()
+      end
+  end
+end
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+require('nvim-lsp-installer').on_server_ready(function (server) server:setup { capabilities = capabilities } end)
 
 -- Configure NERDTree
 vim.api.nvim_set_keymap('n', '<C-n>', ':NERDTreeToggle<CR>', map_opts)
