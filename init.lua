@@ -1,3 +1,5 @@
+local map_opts = { noremap = true, silent = true }
+
 -- Install packer
 local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
@@ -28,7 +30,7 @@ vim.cmd('command Update :PackerSync')
 -- local servers = { 'rust_analyzer', 'tsserver', 'pyright', 'solargraph' }
 
 -- Configure NERDTree
-vim.api.nvim_set_keymap('n', '<C-n>', ':NERDTreeToggle<CR>', {})
+vim.api.nvim_set_keymap('n', '<C-n>', ':NERDTreeToggle<CR>', map_opts)
 vim.g['NERDTreeMinimalUI'] = true
 vim.cmd("autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif")
 
@@ -45,17 +47,17 @@ require('telescope').setup({
   }
 })
 
-vim.api.nvim_set_keymap('n', 'ff', ':Telescope find_files<CR>', {})
-vim.api.nvim_set_keymap('n', 'fg', ':Telescope live_grep<CR>', {})
-vim.api.nvim_set_keymap('n', 'fh', ':Telescope help_tags<CR>', {})
+vim.api.nvim_set_keymap('n', 'ff', ':Telescope find_files<CR>', map_opts)
+vim.api.nvim_set_keymap('n', 'fg', ':Telescope live_grep<CR>', map_opts)
+vim.api.nvim_set_keymap('n', 'fh', ':Telescope help_tags<CR>', map_opts)
 
 -- Configure vim-fugitive
-vim.api.nvim_set_keymap('n', '<leader>gd', ':Gvdiffsplit<CR>', {})
-vim.api.nvim_set_keymap('n', '<leader>b', ':Git blame<CR>', {})
+vim.api.nvim_set_keymap('n', '<leader>gd', ':Gvdiffsplit<CR>', map_opts)
+vim.api.nvim_set_keymap('n', '<leader>b', ':Git blame<CR>', map_opts)
 
 -- Configure gitsigns
 require('gitsigns').setup()
-vim.api.nvim_set_keymap('n', '<leader>d', ':lua require("gitsigns").preview_hunk()<CR>', {})
+vim.api.nvim_set_keymap('n', '<leader>d', ':lua require("gitsigns").preview_hunk()<CR>', map_opts)
 
 -- Color scheme
 vim.o.termguicolors = true
@@ -81,7 +83,7 @@ vim.bo.tabstop = 4
 vim.bo.shiftwidth = 4
 
 -- Keybindings
-vim.api.nvim_set_keymap('n', '<M-t>', ':vnew<CR>:terminal<CR>i', {})
+vim.api.nvim_set_keymap('n', '<M-t>', ':vnew<CR>:terminal<CR>i', map_opts)
 
 -- Commands
 vim.cmd('command W :w')
