@@ -15,13 +15,14 @@ require('packer').startup({
     use { 'nvim-telescope/telescope.nvim', requires = {'nvim-lua/plenary.nvim'} }
     use 'tpope/vim-fugitive'
     use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
-    use 'tpope/vim-commentary'
+    use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
     use 'neovim/nvim-lspconfig'
     use 'williamboman/nvim-lsp-installer'
     use 'hrsh7th/nvim-cmp'
     use 'hrsh7th/cmp-nvim-lsp'
     use 'saadparwaiz1/cmp_luasnip'
     use 'L3MON4D3/LuaSnip'
+    use 'tpope/vim-commentary'
 
     if PACKER_BOOTSTRAP then
       require('packer').sync()
@@ -31,6 +32,17 @@ require('packer').startup({
 })
 
 vim.cmd('command Update :PackerSync')
+
+-- Configure nvim-treesitter
+require('nvim-treesitter.configs').setup({
+  ensure_installed = 'maintained',
+  highlight = { enable = true },
+  indent = { enable = true },
+})
+
+vim.wo.foldmethod = 'expr'
+vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.wo.foldlevel = 1
 
 -- Configure nvim-cmp
 local luasnip = require('luasnip')
