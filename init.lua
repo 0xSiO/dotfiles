@@ -101,6 +101,9 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 require('nvim-lsp-installer').on_server_ready(function (server) server:setup { capabilities = capabilities } end)
 
+vim.api.nvim_set_keymap('n', '<C-Space>', ':lua vim.lsp.buf.hover()<CR>', map_opts)
+vim.api.nvim_set_keymap('n', 'gd', ':lua vim.lsp.buf.definition()<CR>', map_opts)
+
 -- Configure NERDTree
 vim.api.nvim_set_keymap('n', '<C-n>', ':NERDTreeToggle<CR>', map_opts)
 vim.g['NERDTreeMinimalUI'] = true
