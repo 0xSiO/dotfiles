@@ -36,6 +36,8 @@ vim.cmd('command Update :PackerSync')
 vim.api.nvim_set_keymap('n', '<C-n>', ':NERDTreeToggle<CR>', map_opts)
 vim.g['NERDTreeMinimalUI'] = true
 vim.cmd("autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif")
+-- This skips vim-sandwich in NERDTree
+vim.cmd("autocmd FileType nerdtree nnoremap <buffer><nowait> s :call nerdtree#ui_glue#invokeKeyMap('s')<CR>")
 
 -- Configure telescope
 require('telescope').setup({
