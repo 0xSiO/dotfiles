@@ -2,8 +2,6 @@
 
 `setup.sh [platform]` creates the necessary symlinks. Existing dotfiles are backed up to `~/.dotfiles.old`.
 
-Added a new Vim plugin? Make sure it gets registered using `git submodule add [url] vim/bundle/[name]`.
-
 ## Linux
 Run `setup.sh linux`.
 

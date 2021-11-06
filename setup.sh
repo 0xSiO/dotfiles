@@ -45,7 +45,7 @@ for file in $platform_files; do
 done
 
 section "Setting up common files"
-common_files="asdf irbrc venvs vimrc vim"
+common_files="asdf irbrc venvs"
 
 for file in $common_files; do
     echo "linking ~/.$file to $dir/$file"
@@ -57,8 +57,8 @@ vim_config=~/.config/nvim/init.vim
 mkdir -p ~/.config/nvim
 echo "linking $coc_config to $dir/coc-settings.json"
 link $dir/coc-settings.json $coc_config
-echo "linking $vim_config to $dir/vimrc"
-link $dir/vimrc $vim_config
+echo "linking $vim_config to $dir/init.vim"
+link $dir/init.vim $vim_config
 
 section "Setting up pre-commit hook"
 ln -sf $dir/submodules.sh $dir/.git/hooks/pre-commit
