@@ -6,6 +6,9 @@ set nowritebackup
 " diagnostics appear/become resolved.
 set signcolumn=number
 
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
 " Use tab to trigger completion
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? coc#_select_confirm() :
@@ -17,6 +20,9 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+
+let g:coc_snippet_next = '<TAB>'
+let g:coc_snippet_prev = '<S-TAB>'
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()

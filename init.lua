@@ -12,14 +12,16 @@ require('packer').startup({
     use 'wbthomason/packer.nvim'
     use 'sainnhe/edge'
     use 'preservim/nerdtree'
-    use { 'nvim-telescope/telescope.nvim', requires = {'nvim-lua/plenary.nvim'} }
+    use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } }
     use 'tpope/vim-fugitive'
     use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
-    use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
-    use 'tpope/vim-commentary'
     use { 'nvim-lualine/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }
+    use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
     use { 'neoclide/coc.nvim', branch = 'release' }
-    -- TODO: Snippets
+    use 'honza/vim-snippets'
+    use 'tpope/vim-commentary'
+    use 'jiangmiao/auto-pairs'
+    use 'machakann/vim-sandwich'
 
     if PACKER_BOOTSTRAP then
       require('packer').sync()
@@ -60,6 +62,17 @@ vim.api.nvim_set_keymap('n', '<leader>b', ':Git blame<CR>', map_opts)
 require('gitsigns').setup()
 vim.api.nvim_set_keymap('n', '<leader>d', ':lua require("gitsigns").preview_hunk()<CR>', map_opts)
 
+-- Configure lualine
+require('lualine').setup({
+  options = { theme = 'jellybeans' },
+  sections = {
+    lualine_b = {
+      'branch', 'diff', 'g:coc_status', { 'diagnostics', sources = { 'coc' } },
+    },
+    lualine_c = { { 'filename', path = 1 } }
+  }
+})
+
 -- Configure nvim-treesitter
 require('nvim-treesitter.configs').setup({
   ensure_installed = 'maintained',
@@ -70,18 +83,6 @@ require('nvim-treesitter.configs').setup({
 vim.wo.foldmethod = 'expr'
 vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.wo.foldlevel = 1
-
--- Configure lualine
-require('lualine').setup({
-  options = {
-    theme = 'onedark'
-  },
-  sections = {
-    lualine_b = {
-      'branch', 'diff', 'g:coc_status', {'diagnostics', sources={ 'coc' } } 
-    }
-  }
-})
 
 -- Configure coc.nvim
 vim.g['coc_global_extensions'] = {
@@ -101,7 +102,7 @@ vim.o.splitbelow = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.undofile = true
-vim.o.updatetime = 300
+vim.o.updatetime = 200
 vim.o.hidden = true
 vim.o.showmode = false
 
