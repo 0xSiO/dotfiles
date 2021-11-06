@@ -8,6 +8,7 @@ sudo -i -u luc << END
 asdf plugin update --all
 rustup update stable
 npm upgrade -g npm
+nvim --headless +CocUpdateSync
 nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 END
