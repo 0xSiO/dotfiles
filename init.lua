@@ -69,9 +69,17 @@ require('lualine').setup({
   options = { theme = 'jellybeans' },
   sections = {
     lualine_b = {
-      'branch', 'diff', 'g:coc_status', { 'diagnostics', sources = { 'coc' } },
+      'branch', 'diff', 
+      {
+        'diagnostics', sources = { 'coc' },
+        diagnostics_color = {
+          warn = { fg = '#ECBE7B' },
+          info = { fg = '#FFFFFF' },
+          hint = { fg = '#98be65' }
+        }
+      },
     },
-    lualine_c = { { 'filename', path = 1 } }
+    lualine_c = { { 'filename', path = 1 }, 'g:coc_status' }
   }
 })
 
