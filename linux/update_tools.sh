@@ -3,12 +3,12 @@
 
 dnf upgrade -y
 
-sudo -i -u luc << END
+su --login luc -c '
+source .zshrc
 
 asdf plugin update --all
 rustup update stable
 npm upgrade -g npm
-nvim --headless +CocUpdateSync
-nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
-
-END
+nvim --headless +CocUpdateSync +qa
+nvim --headless -c "autocmd User PackerComplete quitall" -c PackerSync
+'
