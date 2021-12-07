@@ -45,7 +45,7 @@ for file in $platform_files; do
 done
 
 section "Setting up common files"
-common_files="asdf irbrc venvs"
+common_files="irbrc venvs"
 
 for file in $common_files; do
     echo "linking ~/.$file to $dir/$file"
