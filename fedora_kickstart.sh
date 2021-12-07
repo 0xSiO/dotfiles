@@ -78,6 +78,9 @@ systemctl start postfix
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
+echo -e "\n=== Installing asdf ==="
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+
 echo -e "\n=== Downloading dotfiles ==="
 rm -rf ~/.dotfiles_old
 git clone --single-branch --branch master --recursive https://github.com/0xSiO/dotfiles ~/.dotfiles
