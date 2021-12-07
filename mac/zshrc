@@ -43,7 +43,7 @@ fi
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
 # asdf config
-. /usr/local/opt/asdf/asdf.sh
+. /usr/local/opt/asdf/libexec/asdf.sh
 
 source ~/.dotfiles/powerlevel10k/powerlevel10k.zsh-theme
 

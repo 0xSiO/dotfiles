@@ -13,6 +13,8 @@ Plug 'raimondi/delimitmate'
 Plug 'airblade/vim-rooter'
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-fugitive'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
 call plug#end()
 
@@ -54,6 +56,24 @@ source ~/.dotfiles/coc.vim
 let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 let delimitMate_jump_expansion = 1
+
+" telescope
+lua << EOF
+require('telescope').setup{
+  defaults = {
+    mappings = {
+      i = {
+        ["<C-j>"] = "move_selection_next",
+        ["<C-k>"] = "move_selection_previous",
+        ["<Esc>"] = "close"
+      }
+    }
+  }
+}
+EOF
+nnoremap ff :Telescope find_files<CR>
+nnoremap fg :Telescope live_grep<CR>
+nnoremap fh :Telescope help_tags<CR>
 
 let g:python3_host_prog = system("asdf which python | tr -d '\n'")
 
