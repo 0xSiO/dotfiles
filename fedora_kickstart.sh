@@ -102,7 +102,7 @@ else
 fi
 
 echo -e "\n=== Installing latest stable python / poetry ==="
-dnf install -y zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl-devel tk-devel xz xz-devel libffi-devel
+dnf install -y zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl-devel tk-devel xz xz-devel libffi-devel patch
 asdf plugin add python
 asdf install python latest
 

@@ -22,6 +22,6 @@ fi
 
 echo "Starting backup."
 restic -r "$BACKUP_LOCATION/$REPO_NAME" backup --verbose \
-    -e ~/Downloads -e ~/MEGA -e ~/.local/share/Trash -e ~/.local/share/containers \
-    -e ~/.pcloud -e ~/.cache -e ~/.rustup -e ~/.cargo \
+    -e ~/Downloads -e ~/MEGA -e ~/.local/share/Trash -e ~/.local/share/containers -e ~/.local/share/JetBrains \
+    -e ~/.pcloud -e ~/.cache -e ~/.asdf -e ~/.gradle -e ~/.npm -e ~/.rustup -e ~/.cargo \
     ~/
