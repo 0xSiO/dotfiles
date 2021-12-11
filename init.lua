@@ -101,8 +101,8 @@ vim.g['coc_global_extensions'] = {
 vim.cmd('source ~/.dotfiles/coc.vim')
 
 -- Color scheme
-vim.o.termguicolors = true
-vim.o.background = 'dark'
+-- macOS Terminal only supports 256 colors
+vim.o.termguicolors = vim.fn.has('mac') == 0
 vim.cmd('colorscheme edge')
 
 -- Global options
@@ -115,14 +115,12 @@ vim.o.undofile = true
 vim.o.updatetime = 200
 vim.o.hidden = true
 vim.o.showmode = false
+vim.o.expandtab = true
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
 
 -- Window options
 vim.wo.number = true
-
--- Buffer options
-vim.bo.expandtab = true
-vim.bo.tabstop = 4
-vim.bo.shiftwidth = 4
 
 -- Keybindings
 vim.api.nvim_set_keymap('n', '<M-t>', ':vnew<CR>:terminal<CR>i', map_opts)

@@ -9,8 +9,7 @@
   ],
   "coc.preferences.semanticTokensHighlights": false,
   "prettier.statusItemText": "",
-  "prettier.eslintIntegration": true,
-  "prettier.disableSuccessMessage": true,
+  "prettier.eslintIntegration": false,
   "python.formatting.provider": "black",
   "rust-analyzer.cargo.allFeatures": true,
   "rust-analyzer.checkOnSave.command": "clippy"
