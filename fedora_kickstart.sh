@@ -74,10 +74,6 @@ newaliases
 systemctl enable postfix
 systemctl start postfix
 
-# vim-plug
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
 echo -e "\n=== Installing asdf ==="
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf
 
