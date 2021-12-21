@@ -7,9 +7,14 @@ fi
 
 export HOME="/home/$SUDO_USER"
 
+echo -e "\n=== Removing unnecessary packages ==="
+dnf remove -y gnome-boxes gnome-calendar gnome-clocks gnome-contacts gnome-maps gnome-photos gnome-weather cheese
+
 echo -e "\n=== Updating system and installing essential packages ==="
 dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
     https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+dnf config-manager --add-repo https://download.opensuse.org/repositories/home:/ungoogled_chromium/Fedora_$(rpm -E %fedora)/home:ungoogled_chromium.repo
 
 dnf update -y
 systemctl daemon-reload
@@ -18,17 +23,9 @@ systemctl daemon-reload
 dnf install -y arc-theme numix-icon-theme-circle \
       anacron ffmpegthumbnailer postfix \
       bat cmake ffmpeg-devel gcc-c++ kernel-devel libpq-devel neovim postgresql-server \
-      autojump-zsh chromium-browser-privacy exa fd-find ffmpeg file-roller file-roller-nautilus \
+      autojump-zsh exa fd-find ffmpeg file-roller file-roller-nautilus ungoogled-chromium \
       firewall-config git-delta gnome-tweaks htop mailx ncdu pv restic ripgrep tokei \
       transmission-gtk vlc zsh
-
-systemctl enable avahi-daemon
-
-# gstreamer plugin for video playback
-dnf install -y gstreamer1 gstreamer1-libav
-
-echo -e "\n=== Removing unnecessary packages ==="
-dnf remove -y gnome-boxes gnome-calendar gnome-clocks gnome-contacts gnome-maps gnome-photos gnome-weather cheese
 
 echo -e "\n=== Miscellaneous configuration ==="
 
@@ -56,8 +53,7 @@ file://$HOME/Music
 file://$HOME/Pictures
 file://$HOME/Videos
 file://$HOME/Downloads
-file://$HOME/Development Development
-file://$HOME/MEGA/Books Books" > ~/.config/gtk-3.0/bookmarks
+file://$HOME/Development Development" > ~/.config/gtk-3.0/bookmarks
 
 # Install Sauce Code Pro Nerd Font
 SCP_FONT_PATH=~/.local/share/fonts/SauceCodePro.zip
@@ -80,18 +76,19 @@ git clone https://github.com/asdf-vm/asdf.git ~/.asdf
 echo -e "\n=== Downloading dotfiles ==="
 rm -rf ~/.dotfiles_old
 git clone --single-branch --branch master --recursive https://github.com/0xSiO/dotfiles ~/.dotfiles
-~/.dotfiles/setup.sh
+~/.dotfiles/setup.sh linux
 ln -sf ~/.dotfiles/linux/update_tools.sh /etc/cron.daily/update-tools
 
-source ~/.zshrc
+source ~/.asdf/asdf.sh
 
 echo -e "\n=== Installing latest stable ruby ==="
 dnf install -y bzip2 openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel
 asdf plugin add ruby
 asdf install ruby latest
+asdf global ruby latest
 
 if [ $? -eq 0 ]; then
-    gem install neovim solargraph
+    gem install solargraph
     asdf reshim
 else
     exit 3
@@ -101,10 +98,11 @@ echo -e "\n=== Installing latest stable python / poetry ==="
 dnf install -y zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl-devel tk-devel xz xz-devel libffi-devel patch
 asdf plugin add python
 asdf install python latest
+asdf global python latest
 
 if [ $? -eq 0 ]; then
     pip install --upgrade pip wheel
-    pip install poetry neovim
+    pip install poetry pynvim
     asdf reshim
     poetry config virtualenvs.path ~/.venvs
 else
@@ -114,9 +112,10 @@ fi
 echo -e "\n=== Installing latest nodejs ==="
 asdf plugin add nodejs
 asdf install nodejs latest
+asdf global nodejs latest
 
 if [ $? -eq 0 ]; then
-    npm install -g npm neovim
+    npm install -g npm
     asdf reshim
 else
     exit 5

@@ -53,12 +53,12 @@ for file in $common_files; do
 done
 
 coc_config=~/.config/nvim/coc-settings.json
-vim_config=~/.config/nvim/init.vim
+vim_config=~/.config/nvim/init.lua
 mkdir -p ~/.config/nvim
 echo "linking $coc_config to $dir/coc-settings.json"
 link $dir/coc-settings.json $coc_config
-echo "linking $vim_config to $dir/init.vim"
-link $dir/init.vim $vim_config
+echo "linking $vim_config to $dir/init.lua"
+link $dir/init.lua $vim_config
 
 section "Setting up pre-commit hook"
 ln -sf $dir/submodules.sh $dir/.git/hooks/pre-commit

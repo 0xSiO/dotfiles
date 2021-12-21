@@ -119,6 +119,17 @@ vim.o.expandtab = true
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 
+-- Disable unneeded dynamic providers
+vim.g['loaded_python_provider'] = 0
+vim.g['loaded_ruby_provider'] = 0
+vim.g['loaded_perl_provider'] = 0
+vim.g['loaded_node_provider'] = 0
+
+-- Neovim has trouble finding python3 on Linux
+if vim.fn.has('mac') == 0 then
+  vim.g['python3_host_prog'] = vim.fn.system('asdf which python | tr -d "\n"')
+end
+
 -- Window options
 vim.wo.number = true
 
