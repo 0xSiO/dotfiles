@@ -4,4 +4,4 @@
 brew upgrade --greedy
 asdf plugin update --all
 rustup update stable
-nvim --headless +PlugUpgrade +PlugUpdate +qa!
+nvim --headless -c CocUpdateSync -c "autocmd User PackerComplete quitall" -c PackerSync
