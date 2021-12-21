@@ -9,6 +9,5 @@ source .zshrc
 asdf plugin update --all
 rustup update stable
 npm upgrade -g npm
-nvim --headless +CocUpdateSync +qa
-nvim --headless -c "autocmd User PackerComplete quitall" -c PackerSync
+nvim --headless -c CocUpdateSync -c "autocmd User PackerComplete quitall" -c PackerSync
 '
