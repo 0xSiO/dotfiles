@@ -4,7 +4,7 @@ set nowritebackup
 
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
-set signcolumn=number
+set signcolumn=yes
 
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
@@ -53,8 +53,9 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 
-" Remap keys for applying codeAction to the current buffer.
-nmap <silent><leader>a <Plug>(coc-codeaction-selected)
+" Applying codeAction to the selected region.
+xmap <leader>a <Plug>(coc-codeaction-selected)
+nmap <leader>a <Plug>(coc-codeaction-selected)
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
