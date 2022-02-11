@@ -66,7 +66,7 @@ vim.api.nvim_set_keymap('n', '<leader>d', ':lua require("gitsigns").preview_hunk
 
 -- Configure lualine
 require('lualine').setup({
-  options = { theme = 'jellybeans' },
+  options = { theme = 'auto' },
   sections = {
     lualine_b = {
       'branch', 'diff', 
