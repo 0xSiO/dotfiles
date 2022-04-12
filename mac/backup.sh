@@ -20,8 +20,19 @@ if [ ! $? -eq 0 ]; then
 fi
 
 echo "Starting backup."
-restic -r "$BACKUP_LOCATION/$REPO_NAME" backup --verbose \
-    ~/ --exclude "Library/Caches" --exclude "Library/Application Support/Google" \
-    --exclude "Library/Application Support/Firefox/Profiles/yrs8jrej.default-release/storage/default" \
+restic -r "$BACKUP_LOCATION/$REPO_NAME" backup --verbose ~/ \
+    --exclude ".Trash" \
+    --exclude '.asdf' \
+    --exclude '.cache' \
+    --exclude '.cargo' \
+    --exclude ".npm" \
+    --exclude '.rustup' \
+    --exclude '.zsh_sessions' \
     --exclude "Library/Containers/com.docker.docker" \
-    --exclude ".Trash" --exclude ".npm" --exclude '.asdf' --exclude '.cargo' --exclude '.rustup' --exclude "node_modules"
+    --exclude "Library/Application Support/Google" \
+    --exclude "Library/Application Support/Slack" \
+    --exclude "Library/Application Support/Firefox/Profiles/yrs8jrej.default-release/storage/default" \
+    --exclude "Library/Caches" \
+    --exclude "Library/News" \
+    --exclude "node_modules" \
+    --exclude ".terragrunt-cache"
