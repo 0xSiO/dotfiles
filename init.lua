@@ -115,7 +115,7 @@ vim.wo.foldlevel = 1
 
 -- Configure coc.nvim
 vim.g['coc_global_extensions'] = {
-  'coc-snippets', 'coc-prettier', 'coc-tsserver', 'coc-solargraph', 'coc-rust-analyzer', 'coc-pyright', 'coc-json'
+  'coc-snippets', 'coc-prettier', 'coc-eslint', 'coc-tsserver', 'coc-solargraph', 'coc-rust-analyzer', 'coc-pyright', 'coc-json'
 }
 vim.cmd('source ~/.dotfiles/coc.vim')
 
