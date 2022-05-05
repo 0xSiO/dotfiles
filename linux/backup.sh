@@ -21,7 +21,20 @@ if [ ! $? -eq 0 ]; then
 fi
 
 echo "Starting backup."
-restic -r "$BACKUP_LOCATION/$REPO_NAME" backup --verbose \
-    -e ~/Downloads -e ~/MEGA -e ~/.local/share/Trash -e ~/.local/share/containers -e ~/.local/share/JetBrains \
-    -e ~/.pcloud -e ~/.cache -e ~/.asdf -e ~/.gradle -e ~/.npm -e ~/.rustup -e ~/.cargo \
-    ~/
+restic -r "$BACKUP_LOCATION/$REPO_NAME" backup --verbose ~/ \
+    -e ~/Downloads \
+    -e ~/MEGA \
+    -e ~/pCloudDrive \
+    -e ~/.local/share/Trash \
+    -e ~/.local/share/containers \
+    -e ~/.local/share/JetBrains \
+    -e ~/.asdf \
+    -e ~/.cache \
+    -e ~/.cargo \
+    -e ~/.gradle \
+    -e ~/.npm \
+    -e ~/.pcloud \
+    -e ~/.rustup \
+    -e "node_modules" \
+    -e "target/debug" \
+    -e "target/release"
