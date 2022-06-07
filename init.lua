@@ -12,11 +12,11 @@ require('packer').startup({
     use 'wbthomason/packer.nvim'
     use 'sainnhe/edge'
     use 'preservim/nerdtree'
-    use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } }
+    use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' }, tag = "nvim-0.6" }
     use 'tpope/vim-fugitive'
     use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
     use { 'nvim-lualine/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons' } }
-    use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+    use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', commit = '0fc170120a5ca69164f6bd4da3b26fd01aa41592' }
     use { 'neoclide/coc.nvim', branch = 'release' }
     use 'honza/vim-snippets'
     use 'tpope/vim-commentary'
@@ -79,7 +79,7 @@ require('lualine').setup({
         }
       },
     },
-    lualine_c = { { 'filename', path = 1 }, 'g:coc_status' }
+    lualine_c = { { 'filename', path = 1 } }
   }
 })
 
