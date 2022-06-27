@@ -24,7 +24,7 @@ dnf install -y arc-theme numix-icon-theme-circle \
       anacron ffmpegthumbnailer postfix \
       bat cmake ffmpeg-devel gcc-c++ kernel-devel libpq-devel neovim postgresql-server \
       autojump-zsh exa fd-find ffmpeg file-roller file-roller-nautilus ungoogled-chromium \
-      firewall-config git-delta gnome-tweaks htop mailx ncdu pv restic ripgrep tokei \
+      firewall-config git-delta gnome-tweaks htop mailx mpv ncdu pv restic ripgrep tokei \
       transmission-gtk vlc zsh
 
 echo -e "\n=== Miscellaneous configuration ==="

@@ -53,10 +53,13 @@ for file in $common_files; do
 done
 
 coc_config=~/.config/nvim/coc-settings.json
+mpv_config=~/.config/mpv
 vim_config=~/.config/nvim/init.lua
 mkdir -p ~/.config/nvim
 echo "linking $coc_config to $dir/coc-settings.json"
 link $dir/coc-settings.json $coc_config
+echo "linking $mpv_config to $dir/mpv"
+link $dir/mpv $mpv_config
 echo "linking $vim_config to $dir/init.lua"
 link $dir/init.lua $vim_config
 
