@@ -154,10 +154,6 @@ vim.wo.number = true
 
 -- Keybindings
 vim.api.nvim_set_keymap('n', '<M-t>', ':vnew<CR>:terminal<CR>i', map_opts)
-vim.api.nvim_set_keymap('!', '<C-j>', '<C-n>', map_opts)
-vim.api.nvim_set_keymap('!', '<C-k>', '<C-p>', map_opts)
-vim.api.nvim_set_keymap('', '<C-j>', '<C-n>', map_opts)
-vim.api.nvim_set_keymap('', '<C-k>', '<C-p>', map_opts)
 
 -- Commands
 vim.cmd('command W :w')
