@@ -37,4 +37,5 @@ restic -r "$BACKUP_LOCATION/$REPO_NAME" backup --verbose ~/ \
     -e ~/.rustup \
     -e "node_modules" \
     -e "target/debug" \
+    -e "target/doc" \
     -e "target/release"
