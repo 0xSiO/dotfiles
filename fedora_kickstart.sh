@@ -14,8 +14,6 @@ echo -e "\n=== Updating system and installing essential packages ==="
 dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
     https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
-dnf config-manager --add-repo https://download.opensuse.org/repositories/home:/ungoogled_chromium/Fedora_$(rpm -E %fedora)/home:ungoogled_chromium.repo
-
 dnf update -y
 systemctl daemon-reload
 
@@ -23,9 +21,9 @@ systemctl daemon-reload
 dnf install -y arc-theme numix-icon-theme-circle \
       anacron ffmpegthumbnailer postfix \
       bat cmake ffmpeg-devel gcc-c++ kernel-devel libpq-devel neovim postgresql-server \
-      autojump-zsh exa fd-find ffmpeg file-roller file-roller-nautilus ungoogled-chromium \
-      firewall-config git-delta gnome-tweaks htop mailx mpv ncdu pv restic ripgrep tokei \
-      transmission-gtk vlc zsh
+      autojump-zsh exa fd-find ffmpeg file-roller file-roller-nautilus \
+      firewall-config git-delta gnome-tweaks htop mailx mpv ncdu puddletag pv restic ripgrep \
+      tokei transmission-gtk zsh
 
 echo -e "\n=== Miscellaneous configuration ==="
 
@@ -57,7 +55,7 @@ file://$HOME/Development Development" > ~/.config/gtk-3.0/bookmarks
 
 # Install Sauce Code Pro Nerd Font
 SCP_FONT_PATH=~/.local/share/fonts/SauceCodePro.zip
-curl --create-dirs -Lo $SCP_FONT_PATH https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/SourceCodePro.zip
+curl --create-dirs -Lo $SCP_FONT_PATH https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.0-RC/SourceCodePro.zip
 unzip $SCP_FONT_PATH -d ~/.local/share/fonts/SauceCodePro
 rm $SCP_FONT_PATH
 
