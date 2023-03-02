@@ -16,19 +16,9 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   {
     'folke/tokyonight.nvim',
-    lazy = false, 
-    priority = 1000, 
+    lazy = false,
+    priority = 1000,
     config = function() vim.cmd.colorscheme('tokyonight-moon') end,
-  },
-  {
-    'nvim-tree/nvim-tree.lua',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    keys = {
-      { '<C-n>', '<cmd>NvimTreeToggle<cr>' },
-    },
-    config = function()
-      require("nvim-tree").setup({})
-    end,
   },
   {
     'nvim-treesitter/nvim-treesitter',
@@ -43,6 +33,45 @@ require('lazy').setup({
       vim.o.foldmethod = 'expr'
       vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
       vim.o.foldlevel = 1
+    end,
+  },
+  {
+    'williamboman/mason.nvim',
+    config = true,
+  },
+  {
+    'williamboman/mason-lspconfig.nvim',
+    dependencies = { 'williamboman/mason.nvim', 'neovim/nvim-lspconfig' },
+    config = function()
+      require('mason-lspconfig').setup({
+        ensure_installed = { 'lua_ls', 'tsserver', 'rust_analyzer' },
+      })
+      require('mason-lspconfig').setup_handlers({
+        function(server) require('lspconfig')[server].setup({}) end,
+
+        ['lua_ls'] = function()
+          require('lspconfig').lua_ls.setup({
+            settings = {
+              Lua = {
+                runtime = { version = 'LuaJIT' },
+                diagnostics = { globals = {'vim'} },
+                workspace = { library = vim.api.nvim_get_runtime_file('', true) },
+                telemetry = { enable = false },
+              },
+            },
+          })
+        end,
+      })
+    end
+  },
+  {
+    'nvim-tree/nvim-tree.lua',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    keys = {
+      { '<C-n>', '<cmd>NvimTreeToggle<cr>' },
+    },
+    config = function()
+      require("nvim-tree").setup({})
     end,
   },
 })
