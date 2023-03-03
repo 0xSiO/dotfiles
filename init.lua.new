@@ -179,6 +179,8 @@ require('lazy').setup({
             i = {
               ['<C-j>'] = 'move_selection_next',
               ['<C-k>'] = 'move_selection_previous',
+              ['<C-f>'] = 'preview_scrolling_down',
+              ['<C-b>'] = 'preview_scrolling_up',
               ['<Esc>'] = 'close',
             }
           }
