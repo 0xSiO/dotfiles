@@ -37,7 +37,7 @@ require('lazy').setup({
   },
   {
     'williamboman/mason-lspconfig.nvim',
-    dependencies = { 'williamboman/mason.nvim', 'neovim/nvim-lspconfig' },
+    dependencies = { 'williamboman/mason.nvim', 'neovim/nvim-lspconfig', 'nvim-lua/lsp-status.nvim' },
     config = function()
       require('mason').setup({})
 
@@ -45,11 +45,21 @@ require('lazy').setup({
         ensure_installed = { 'lua_ls', 'pyright', 'rust_analyzer', 'solargraph', 'tsserver' },
       })
 
+      local lsp_status = require('lsp-status')
+      lsp_status.register_progress()
+
       require('mason-lspconfig').setup_handlers({
-        function(server) require('lspconfig')[server].setup({}) end,
+        function(server)
+          require('lspconfig')[server].setup({
+            on_attach = lsp_status.on_attach,
+            capabilities = lsp_status.capabilities
+          })
+        end,
 
         ['lua_ls'] = function()
           require('lspconfig').lua_ls.setup({
+            on_attach = lsp_status.on_attach,
+            capabilities = lsp_status.capabilities,
             settings = {
               Lua = {
                 runtime = { version = 'LuaJIT' },
@@ -86,9 +96,19 @@ require('lazy').setup({
       { '<C-n>', '<cmd>NvimTreeToggle<cr>' },
     },
     config = function()
-      require("nvim-tree").setup({})
+      require('nvim-tree').setup({})
     end,
   },
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons', 'nvim-lua/lsp-status.nvim' },
+    opts = {
+      options = { globalstatus = true },
+      sections = {
+        lualine_c = { { 'filename', path = 1 }, "require('lsp-status').status()" }
+      }
+    },
+  }
 })
 
 -- Other options
@@ -98,7 +118,6 @@ vim.o.splitbelow = true
 vim.o.undofile = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
-vim.o.laststatus = 3
 vim.o.showmode = false
 vim.o.expandtab = true
 vim.o.tabstop = 4
