@@ -36,8 +36,53 @@ require('lazy').setup({
     end,
   },
   {
+    'hrsh7th/nvim-cmp',
+    dependencies = { 'L3MON4D3/LuaSnip', 'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-nvim-lua', 'saadparwaiz1/cmp_luasnip' },
+    config = function()
+      local cmp = require('cmp')
+      local luasnip = require('luasnip')
+
+      local function confirm_or_jump(fallback)
+        if cmp.visible() then
+          cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
+        elseif luasnip.expand_or_jumpable() then
+          luasnip.expand_or_jump()
+        else
+          fallback()
+        end
+      end
+
+      local function jump_back(fallback)
+        if luasnip.jumpable(-1) then
+          luasnip.jump(-1)
+        else
+          fallback()
+        end
+      end
+
+      cmp.setup({
+        snippet = { expand = function(args) require('luasnip').lsp_expand(args.body) end },
+        mapping = {
+          ['<C-Space>'] = { i = cmp.mapping.complete() },
+          ['<C-e>'] = { i = cmp.mapping.abort() },
+          ['<C-j>'] = { i = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }) },
+          ['<C-k>'] = { i = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }) },
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          ['<Tab>'] = cmp.mapping(confirm_or_jump, { 'i', 's' }),
+          ['<S-Tab>'] = cmp.mapping(jump_back, { 'i', 's' }),
+        },
+        sources = cmp.config.sources({
+          { name = 'nvim_lsp' },
+          { name = 'nvim_lua' },
+          { name = 'luasnip' },
+        })
+      })
+    end,
+  },
+  {
     'williamboman/mason-lspconfig.nvim',
-    dependencies = { 'williamboman/mason.nvim', 'neovim/nvim-lspconfig', 'nvim-lua/lsp-status.nvim' },
+    dependencies = { 'williamboman/mason.nvim', 'neovim/nvim-lspconfig', 'nvim-lua/lsp-status.nvim', 'hrsh7th/cmp-nvim-lsp' },
     config = function()
       require('mason').setup({})
 
@@ -48,18 +93,22 @@ require('lazy').setup({
       local lsp_status = require('lsp-status')
       lsp_status.register_progress()
 
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities = vim.tbl_deep_extend('force', capabilities, lsp_status.capabilities)
+      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+
       require('mason-lspconfig').setup_handlers({
         function(server)
           require('lspconfig')[server].setup({
             on_attach = lsp_status.on_attach,
-            capabilities = lsp_status.capabilities
+            capabilities = capabilities
           })
         end,
 
         ['lua_ls'] = function()
           require('lspconfig').lua_ls.setup({
             on_attach = lsp_status.on_attach,
-            capabilities = lsp_status.capabilities,
+            capabilities = capabilities,
             settings = {
               Lua = {
                 runtime = { version = 'LuaJIT' },
