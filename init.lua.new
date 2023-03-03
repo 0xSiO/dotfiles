@@ -60,17 +60,17 @@ require('lazy').setup({
       local luasnip = require('luasnip')
 
       local function confirm_or_jump(fallback)
-        if luasnip.expand_or_jumpable() then
-          luasnip.expand_or_jump()
-        elseif cmp.visible() then
+        if cmp.visible() then
           cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
+        elseif luasnip.in_snippet() and luasnip.expand_or_jumpable() then
+          luasnip.expand_or_jump()
         else
           fallback()
         end
       end
 
       local function jump_back(fallback)
-        if luasnip.jumpable(-1) then
+        if luasnip.in_snippet() and luasnip.jumpable(-1) then
           luasnip.jump(-1)
         else
           fallback()
@@ -81,8 +81,7 @@ require('lazy').setup({
         formatting = { format = require('lspkind').cmp_format() },
         snippet = { expand = function(args) require('luasnip').lsp_expand(args.body) end },
         mapping = {
-          ['<C-Space>'] = cmp.mapping.complete(),
-          ['<Esc>'] = cmp.mapping.abort(),
+          ['<C-Space>'] = function() if cmp.visible() then cmp.abort() else cmp.complete() end end,
           ['<C-j>'] = cmp.mapping.select_next_item(),
           ['<C-k>'] = cmp.mapping.select_prev_item(),
           ['<C-l>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
@@ -168,6 +167,27 @@ require('lazy').setup({
     },
     config = function()
       require('nvim-tree').setup({})
+    end,
+  },
+  {
+    'nvim-telescope/telescope.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require('telescope').setup({
+        defaults = {
+          mappings = {
+            i = {
+              ['<C-j>'] = 'move_selection_next',
+              ['<C-k>'] = 'move_selection_previous',
+              ['<Esc>'] = 'close',
+            }
+          }
+        }
+      })
+
+      vim.keymap.set('n', 'ff', require('telescope.builtin').find_files)
+      vim.keymap.set('n', 'fg', require('telescope.builtin').live_grep)
+      vim.keymap.set('n', 'fh', require('telescope.builtin').help_tags)
     end,
   },
   {
