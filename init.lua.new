@@ -201,7 +201,11 @@ require('lazy').setup({
         lualine_c = { { 'filename', path = 1 }, "require('lsp-status').status()" }
       }
     },
-  }
+  },
+  {
+    'anuvyklack/help-vsplit.nvim',
+    opts = { always = true },
+  },
 })
 
 -- Other options
