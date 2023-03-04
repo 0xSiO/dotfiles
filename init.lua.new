@@ -206,9 +206,51 @@ require('lazy').setup({
     'anuvyklack/help-vsplit.nvim',
     opts = { always = true },
   },
+  {
+    'lewis6991/gitsigns.nvim',
+    config = function()
+      local gitsigns = require('gitsigns')
+
+      local function git_diff()
+        gitsigns.diffthis()
+        vim.cmd.wincmd('h')
+      end
+
+      local function git_show()
+        local commit = vim.b.gitsigns_blame_line_dict.sha
+        -- Do nothing if changes haven't been committed
+        if commit == '0000000000000000000000000000000000000000' then return end
+
+        vim.cmd.tabnew()
+        vim.cmd.terminal('git show ' .. commit)
+        vim.cmd.startinsert()
+      end
+
+      local function git_blame()
+        local abs_path = vim.api.nvim_buf_get_name(0)
+
+        vim.cmd.tabnew()
+        vim.cmd.terminal('git blame ' .. abs_path)
+        vim.cmd.startinsert()
+      end
+
+      gitsigns.setup({
+        current_line_blame = true,
+        current_line_blame_opts = { virt_text = false, delay = 250 },
+        on_attach = function(bufnr)
+          vim.keymap.set('n', '<leader>gd', git_diff, { buffer = bufnr })
+          vim.keymap.set('n', '<leader>gs', git_show, { buffer = bufnr })
+          vim.keymap.set('n', '<leader>gb', git_blame, { buffer = bufnr })
+          vim.keymap.set('n', '<leader>d', gitsigns.preview_hunk, { buffer = bufnr })
+          vim.keymap.set('n', '<leader>b', function() gitsigns.blame_line({ full = true }) end, { buffer = bufnr })
+        end
+      })
+    end
+  },
 })
 
 -- Other options
+vim.o.signcolumn = 'yes'
 vim.o.number = true
 vim.o.splitright = true
 vim.o.splitbelow = true
