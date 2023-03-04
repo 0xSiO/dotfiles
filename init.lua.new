@@ -15,10 +15,14 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
   {
-    'folke/tokyonight.nvim',
-    lazy = false,
+    'sainnhe/edge',
     priority = 1000,
-    config = function() vim.cmd.colorscheme('tokyonight-moon') end,
+    config = function()
+      vim.o.termguicolors = vim.fn.has('termguicolors') == 1
+      vim.g.edge_show_eob = 0
+      vim.g.edge_better_performance = 1
+      vim.cmd.colorscheme('edge')
+    end,
   },
   {
     'nvim-treesitter/nvim-treesitter',
@@ -47,6 +51,7 @@ require('lazy').setup({
     'hrsh7th/nvim-cmp',
     dependencies = {
       'L3MON4D3/LuaSnip',
+      'windwp/nvim-autopairs',
       'onsails/lspkind.nvim',
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-nvim-lsp-signature-help',
@@ -77,6 +82,7 @@ require('lazy').setup({
         end
       end
 
+      cmp.event:on('confirm_done', require('nvim-autopairs.completion.cmp').on_confirm_done())
       cmp.setup({
         formatting = { format = require('lspkind').cmp_format() },
         snippet = { expand = function(args) require('luasnip').lsp_expand(args.body) end },
@@ -170,6 +176,16 @@ require('lazy').setup({
     end,
   },
   {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons', 'nvim-lua/lsp-status.nvim' },
+    opts = {
+      options = { globalstatus = true },
+      sections = {
+        lualine_c = { { 'filename', path = 1 }, "require('lsp-status').status()" }
+      }
+    },
+  },
+  {
     'nvim-telescope/telescope.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
@@ -191,20 +207,6 @@ require('lazy').setup({
       vim.keymap.set('n', 'fg', require('telescope.builtin').live_grep)
       vim.keymap.set('n', 'fh', require('telescope.builtin').help_tags)
     end,
-  },
-  {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons', 'nvim-lua/lsp-status.nvim' },
-    opts = {
-      options = { globalstatus = true },
-      sections = {
-        lualine_c = { { 'filename', path = 1 }, "require('lsp-status').status()" }
-      }
-    },
-  },
-  {
-    'anuvyklack/help-vsplit.nvim',
-    opts = { always = true },
   },
   {
     'lewis6991/gitsigns.nvim',
@@ -246,6 +248,21 @@ require('lazy').setup({
         end
       })
     end
+  },
+  {
+    'anuvyklack/help-vsplit.nvim',
+    opts = { always = true },
+  },
+  {
+    'numToStr/Comment.nvim',
+    config = true,
+  },
+  {
+    'windwp/nvim-autopairs',
+    config = true,
+  },
+  {
+    'machakann/vim-sandwich',
   },
 })
 
