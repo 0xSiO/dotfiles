@@ -299,3 +299,5 @@ vim.cmd.command('W :w')
 vim.cmd.command('Q :q')
 vim.cmd.command('Qa :qa')
 vim.cmd.command('QA :qa')
+
+-- vim: sw=2 ts=2
