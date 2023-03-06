@@ -85,6 +85,10 @@ require('lazy').setup({
       cmp.event:on('confirm_done', require('nvim-autopairs.completion.cmp').on_confirm_done())
       cmp.setup({
         formatting = { format = require('lspkind').cmp_format() },
+        window = {
+          completion = cmp.config.window.bordered(),
+          documentation = cmp.config.window.bordered()
+        },
         snippet = { expand = function(args) require('luasnip').lsp_expand(args.body) end },
         mapping = {
           ['<C-Space>'] = function() if cmp.visible() then cmp.abort() else cmp.complete() end end,
@@ -139,7 +143,7 @@ require('lazy').setup({
             settings = {
               Lua = {
                 runtime = { version = 'LuaJIT' },
-                diagnostics = { globals = {'vim'} },
+                diagnostics = { globals = { 'vim' } },
                 workspace = {
                   library = vim.api.nvim_get_runtime_file('', true),
                   checkThirdParty = false,
