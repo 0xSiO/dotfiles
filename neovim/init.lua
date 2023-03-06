@@ -118,11 +118,17 @@ require('lazy').setup({
       require('mason').setup({})
 
       require('mason-lspconfig').setup({
-        ensure_installed = { 'lua_ls', 'pyright', 'rust_analyzer', 'solargraph', 'tsserver' },
+        ensure_installed = { 'eslint', 'lua_ls', 'pyright', 'rust_analyzer', 'solargraph', 'tsserver' },
       })
 
       local lsp_status = require('lsp-status')
+      lsp_status.config({ current_function = false, diagnostics = false })
       lsp_status.register_progress()
+
+      vim.diagnostic.config({ virtual_text = false })
+      vim.api.nvim_create_autocmd('CursorHold', {
+        callback = function() vim.diagnostic.open_float({ source = true }) end
+      })
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, lsp_status.capabilities)
@@ -130,9 +136,15 @@ require('lazy').setup({
 
       require('mason-lspconfig').setup_handlers({
         function(server)
-          require('lspconfig')[server].setup({
-            on_attach = lsp_status.on_attach,
-            capabilities = capabilities
+          require('lspconfig')[server].setup({ on_attach = lsp_status.on_attach, capabilities = capabilities })
+        end,
+
+        ['eslint'] = function()
+          require('lspconfig').eslint.setup({
+            on_attach = function(client, bufnr)
+              lsp_status.on_attach(client)
+              vim.api.nvim_create_autocmd('BufWritePre', { buffer = bufnr, command = 'EslintFixAll' })
+            end
           })
         end,
 
@@ -144,10 +156,7 @@ require('lazy').setup({
               Lua = {
                 runtime = { version = 'LuaJIT' },
                 diagnostics = { globals = { 'vim' } },
-                workspace = {
-                  library = vim.api.nvim_get_runtime_file('', true),
-                  checkThirdParty = false,
-                },
+                workspace = { library = vim.api.nvim_get_runtime_file('', true), checkThirdParty = false },
                 telemetry = { enable = false },
               },
             },
@@ -288,6 +297,8 @@ vim.o.number = true
 vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.undofile = true
+vim.o.hidden = false
+vim.o.updatetime = 200
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.showmode = false
