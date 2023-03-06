@@ -29,7 +29,7 @@ require('lazy').setup({
     build = ':TSUpdate',
     config = function()
       require('nvim-treesitter.configs').setup({
-        ensure_installed = { 'bash', 'javascript', 'json', 'lua', 'regex', 'ruby', 'rust', 'toml', 'typescript' },
+        ensure_installed = {'bash', 'javascript', 'json', 'lua', 'regex', 'ruby', 'rust', 'toml', 'typescript'},
         highlight = { enable = true },
         indent = { enable = true },
       })
@@ -42,10 +42,14 @@ require('lazy').setup({
   {
     'L3MON4D3/LuaSnip',
     version = 'v1.*',
-    dependencies = { 'honza/vim-snippets' },
+    dependencies = {'honza/vim-snippets'},
     config = function()
       require('luasnip.loaders.from_snipmate').lazy_load()
     end,
+  },
+  {
+    'windwp/nvim-autopairs',
+    config = true,
   },
   {
     'hrsh7th/nvim-cmp',
@@ -97,8 +101,8 @@ require('lazy').setup({
           ['<C-l>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<Tab>'] = cmp.mapping(confirm_or_jump, { 'i', 's' }),
-          ['<S-Tab>'] = cmp.mapping(jump_back, { 'i', 's' }),
+          ['<Tab>'] = cmp.mapping(confirm_or_jump, {'i', 's'}),
+          ['<S-Tab>'] = cmp.mapping(jump_back, {'i', 's'}),
         },
         sources = cmp.config.sources({
           { name = 'nvim_lua' },
@@ -112,13 +116,42 @@ require('lazy').setup({
     end,
   },
   {
+    'nvim-telescope/telescope.nvim',
+    dependencies = {'nvim-lua/plenary.nvim'},
+    config = function()
+      require('telescope').setup({
+        defaults = {
+          mappings = {
+            i = {
+              ['<C-j>'] = 'move_selection_next',
+              ['<C-k>'] = 'move_selection_previous',
+              ['<C-f>'] = 'preview_scrolling_down',
+              ['<C-b>'] = 'preview_scrolling_up',
+              ['<Esc>'] = 'close',
+            }
+          }
+        }
+      })
+
+      vim.keymap.set('n', 'ff', require('telescope.builtin').find_files)
+      vim.keymap.set('n', 'fg', require('telescope.builtin').live_grep)
+      vim.keymap.set('n', 'fh', require('telescope.builtin').help_tags)
+    end,
+  },
+  {
     'williamboman/mason-lspconfig.nvim',
-    dependencies = { 'williamboman/mason.nvim', 'neovim/nvim-lspconfig', 'nvim-lua/lsp-status.nvim', 'hrsh7th/cmp-nvim-lsp' },
+    dependencies = {
+      'williamboman/mason.nvim',
+      'neovim/nvim-lspconfig',
+      'nvim-lua/lsp-status.nvim',
+      'hrsh7th/cmp-nvim-lsp',
+      'nvim-telescope/telescope.nvim'
+    },
     config = function()
       require('mason').setup({})
 
       require('mason-lspconfig').setup({
-        ensure_installed = { 'eslint', 'lua_ls', 'pyright', 'rust_analyzer', 'solargraph', 'tsserver' },
+        ensure_installed = {'eslint', 'lua_ls', 'pyright', 'rust_analyzer', 'solargraph', 'tsserver'},
       })
 
       local lsp_status = require('lsp-status')
@@ -155,7 +188,7 @@ require('lazy').setup({
             settings = {
               Lua = {
                 runtime = { version = 'LuaJIT' },
-                diagnostics = { globals = { 'vim' } },
+                diagnostics = { globals = {'vim'} },
                 workspace = { library = vim.api.nvim_get_runtime_file('', true), checkThirdParty = false },
                 telemetry = { enable = false },
               },
@@ -168,27 +201,28 @@ require('lazy').setup({
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(args)
           vim.keymap.set('n', '<C-Space>', vim.lsp.buf.hover, { buffer = args.buf })
-          vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = args.buf })
-          vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = args.buf })
-          vim.keymap.set('n', 'gs', function() vim.cmd.vsplit(); vim.lsp.buf.definition() end, { buffer = args.buf })
-          vim.keymap.set('n', 'gS', function() vim.cmd.split(); vim.lsp.buf.definition() end, { buffer = args.buf })
+          vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = args.buf })
+          vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, { buffer = args.buf })
+          vim.keymap.set('n', 'gs', function()
+            require('telescope.builtin').lsp_definitions({ jump_type = 'vsplit' })
+          end, { buffer = args.buf })
+          vim.keymap.set('n', 'gS', function()
+            require('telescope.builtin').lsp_definitions({ jump_type = 'split' })
+          end, { buffer = args.buf })
           vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, { buffer = args.buf })
-          vim.keymap.set('n', '<leader>f', vim.lsp.buf.format, { buffer = args.buf })
+          vim.keymap.set({'n', 'v'}, '<leader>f', vim.lsp.buf.format, { buffer = args.buf })
         end,
       })
     end
   },
   {
     'nvim-tree/nvim-tree.lua',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    dependencies = {'nvim-tree/nvim-web-devicons'},
     keys = {
-      { '<C-n>', '<cmd>NvimTreeToggle<cr>' },
+      {'<C-n>', '<cmd>NvimTreeToggle<cr>'},
     },
     config = function()
-      require('nvim-tree').setup({
-        filters = { dotfiles = true },
-        git = { ignore = false },
-      })
+      require('nvim-tree').setup({ filters = { dotfiles = true }, git = { ignore = false } })
 
       vim.api.nvim_create_autocmd('BufEnter', {
         nested = true,
@@ -202,36 +236,13 @@ require('lazy').setup({
   },
   {
     'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons', 'nvim-lua/lsp-status.nvim' },
+    dependencies = {'nvim-tree/nvim-web-devicons', 'nvim-lua/lsp-status.nvim'},
     opts = {
       options = { globalstatus = true },
       sections = {
         lualine_c = { { 'filename', path = 1 }, "require('lsp-status').status()" }
       }
     },
-  },
-  {
-    'nvim-telescope/telescope.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    config = function()
-      require('telescope').setup({
-        defaults = {
-          mappings = {
-            i = {
-              ['<C-j>'] = 'move_selection_next',
-              ['<C-k>'] = 'move_selection_previous',
-              ['<C-f>'] = 'preview_scrolling_down',
-              ['<C-b>'] = 'preview_scrolling_up',
-              ['<Esc>'] = 'close',
-            }
-          }
-        }
-      })
-
-      vim.keymap.set('n', 'ff', require('telescope.builtin').find_files)
-      vim.keymap.set('n', 'fg', require('telescope.builtin').live_grep)
-      vim.keymap.set('n', 'fh', require('telescope.builtin').help_tags)
-    end,
   },
   {
     'lewis6991/gitsigns.nvim',
@@ -280,10 +291,6 @@ require('lazy').setup({
   },
   {
     'numToStr/Comment.nvim',
-    config = true,
-  },
-  {
-    'windwp/nvim-autopairs',
     config = true,
   },
   {
