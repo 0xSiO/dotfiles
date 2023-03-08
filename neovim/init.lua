@@ -101,7 +101,6 @@ require('lazy').setup({
           ['<C-Space>'] = function() if cmp.visible() then cmp.abort() else cmp.complete() end end,
           ['<C-j>'] = cmp.mapping.select_next_item(),
           ['<C-k>'] = cmp.mapping.select_prev_item(),
-          ['<C-l>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace }),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<Tab>'] = cmp.mapping(confirm_or_jump, {'i', 's'}),
@@ -320,7 +319,7 @@ vim.o.shiftwidth = 4
 -- Other keybindings
 vim.keymap.set('n', '<M-t>', function() vim.cmd.vnew(); vim.cmd.terminal(); vim.cmd.startinsert() end)
 -- TODO: Other handy key combos, like C-BS?
-vim.keymap.set('i', '<S-Tab>', function() print('TODO') end)
+vim.keymap.set('i', '<S-Tab>', function() vim.cmd('<') end)
 
 -- Other commands
 vim.cmd.command('W :w')
