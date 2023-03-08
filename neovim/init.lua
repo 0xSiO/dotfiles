@@ -29,7 +29,9 @@ require('lazy').setup({
     build = ':TSUpdate',
     config = function()
       require('nvim-treesitter.configs').setup({
-        ensure_installed = {'bash', 'javascript', 'json', 'lua', 'regex', 'ruby', 'rust', 'toml', 'typescript'},
+        ensure_installed = {
+          'bash', 'javascript', 'json', 'lua', 'regex', 'ruby', 'rust', 'toml', 'typescript'
+        },
         highlight = { enable = true },
         indent = { enable = true },
       })
@@ -44,6 +46,7 @@ require('lazy').setup({
     version = 'v1.*',
     dependencies = {'honza/vim-snippets'},
     config = function()
+      require('luasnip').setup({ region_check_events = 'InsertEnter' })
       require('luasnip.loaders.from_snipmate').lazy_load()
     end,
   },
@@ -69,17 +72,21 @@ require('lazy').setup({
       local luasnip = require('luasnip')
 
       local function confirm_or_jump(fallback)
-        if cmp.visible() then
+        if luasnip.in_snippet() then
+          if cmp.get_selected_entry() then
+            cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace })
+          else
+            luasnip.jump(1)
+          end
+        elseif cmp.visible() then
           cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
-        elseif luasnip.in_snippet() and luasnip.expand_or_jumpable() then
-          luasnip.expand_or_jump()
         else
           fallback()
         end
       end
 
       local function jump_back(fallback)
-        if luasnip.in_snippet() and luasnip.jumpable(-1) then
+        if luasnip.in_snippet() then
           luasnip.jump(-1)
         else
           fallback()
@@ -89,16 +96,12 @@ require('lazy').setup({
       cmp.event:on('confirm_done', require('nvim-autopairs.completion.cmp').on_confirm_done())
       cmp.setup({
         formatting = { format = require('lspkind').cmp_format() },
-        window = {
-          completion = cmp.config.window.bordered(),
-          documentation = cmp.config.window.bordered()
-        },
         snippet = { expand = function(args) require('luasnip').lsp_expand(args.body) end },
         mapping = {
           ['<C-Space>'] = function() if cmp.visible() then cmp.abort() else cmp.complete() end end,
           ['<C-j>'] = cmp.mapping.select_next_item(),
           ['<C-k>'] = cmp.mapping.select_prev_item(),
-          ['<C-l>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+          ['<C-l>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace }),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<Tab>'] = cmp.mapping(confirm_or_jump, {'i', 's'}),
@@ -316,6 +319,8 @@ vim.o.shiftwidth = 4
 
 -- Other keybindings
 vim.keymap.set('n', '<M-t>', function() vim.cmd.vnew(); vim.cmd.terminal(); vim.cmd.startinsert() end)
+-- TODO: Other handy key combos, like C-BS?
+vim.keymap.set('i', '<S-Tab>', function() print('TODO') end)
 
 -- Other commands
 vim.cmd.command('W :w')
