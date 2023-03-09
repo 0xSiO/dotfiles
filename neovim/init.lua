@@ -250,7 +250,7 @@ require('lazy').setup({
     'nvim-tree/nvim-tree.lua',
     dependencies = {'nvim-tree/nvim-web-devicons'},
     keys = {
-      {'<C-n>', '<cmd>NvimTreeToggle<cr>'},
+      {'<C-n>', vim.cmd.NvimTreeToggle },
     },
     config = function()
       require('nvim-tree').setup({
