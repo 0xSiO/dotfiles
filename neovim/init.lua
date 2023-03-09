@@ -137,7 +137,8 @@ require('lazy').setup({
   },
   {
     'nvim-telescope/telescope.nvim',
-    dependencies = {'nvim-lua/plenary.nvim'},
+    version = '0.1.x',
+    dependencies = {'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons'},
     config = function()
       require('telescope').setup({
         defaults = {
