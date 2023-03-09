@@ -349,8 +349,9 @@ vim.o.shiftwidth = 4
 
 -- Other keybindings
 vim.keymap.set('n', '<M-t>', function() vim.cmd.vnew(); vim.cmd.terminal(); vim.cmd.startinsert() end)
--- TODO: Other handy key combos, like C-BS?
 vim.keymap.set('i', '<S-Tab>', function() vim.cmd('<') end)
+vim.keymap.set('i', '<C-h>', '<C-w>') -- <C-h> is <C-BS>
+vim.keymap.set('t', '<M-BS>', '<C-w>')
 
 -- Other commands
 vim.cmd.command('W :w')
