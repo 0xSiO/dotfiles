@@ -141,7 +141,8 @@ require('lazy').setup({
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
-      'nvim-tree/nvim-web-devicons'
+      'nvim-tree/nvim-web-devicons',
+      'nvim-telescope/telescope-ui-select.nvim'
     },
     config = function()
       require('telescope').setup({
@@ -155,8 +156,13 @@ require('lazy').setup({
               ['<Esc>'] = 'close',
             }
           }
-        }
+        },
+        extensions = {
+          ['ui-select'] = { require('telescope.themes').get_cursor({}) }
+        },
       })
+
+      require('telescope').load_extension('ui-select')
 
       vim.keymap.set('n', 'ff', require('telescope.builtin').find_files)
       vim.keymap.set('n', 'fg', require('telescope.builtin').live_grep)
