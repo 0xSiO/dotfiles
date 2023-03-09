@@ -66,6 +66,7 @@ require('lazy').setup({
       'saadparwaiz1/cmp_luasnip',
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline'
     },
     config = function()
       local cmp = require('cmp')
@@ -94,6 +95,7 @@ require('lazy').setup({
       end
 
       cmp.event:on('confirm_done', require('nvim-autopairs.completion.cmp').on_confirm_done())
+
       cmp.setup({
         formatting = { format = require('lspkind').cmp_format() },
         snippet = { expand = function(args) require('luasnip').lsp_expand(args.body) end },
@@ -114,6 +116,22 @@ require('lazy').setup({
           { name = 'buffer' },
           { name = 'path' },
         })
+      })
+
+      cmp.setup.cmdline({'/', '?'}, {
+        mapping = {
+          ['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item(), {'c'}),
+          ['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'c'}),
+        },
+        sources = cmp.config.sources({ { name = 'buffer' } })
+      })
+
+      cmp.setup.cmdline(':', {
+        mapping = {
+          ['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item(), {'c'}),
+          ['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'c'}),
+        },
+        sources = cmp.config.sources({ { name = 'cmdline' } })
       })
     end,
   },
