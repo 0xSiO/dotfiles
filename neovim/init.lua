@@ -187,7 +187,7 @@ require('lazy').setup({
       })
 
       local lsp_status = require('lsp-status')
-      lsp_status.config({ current_function = false, diagnostics = false })
+      lsp_status.config({ current_function = false, diagnostics = false, status_symbol = 'λ' })
       lsp_status.register_progress()
 
       vim.diagnostic.config({ virtual_text = false })
