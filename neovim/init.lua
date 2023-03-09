@@ -191,8 +191,7 @@ require('lazy').setup({
 
       vim.diagnostic.config({ virtual_text = false })
       vim.api.nvim_create_autocmd('CursorHold', {
-        -- TODO: Sometimes the cursor jumps into the floating window automatically and it's annoying
-        callback = function() vim.diagnostic.open_float({ source = true }) end
+        callback = function() vim.diagnostic.open_float({ focusable = false, source = true }) end
       })
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
