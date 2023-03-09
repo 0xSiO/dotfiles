@@ -181,7 +181,6 @@ require('lazy').setup({
     },
     config = function()
       require('mason').setup({})
-
       require('mason-lspconfig').setup({
         ensure_installed = {'eslint', 'lua_ls', 'pyright', 'rust_analyzer', 'solargraph', 'tsserver'},
       })
@@ -255,7 +254,11 @@ require('lazy').setup({
       {'<C-n>', '<cmd>NvimTreeToggle<cr>'},
     },
     config = function()
-      require('nvim-tree').setup({ filters = { dotfiles = true }, git = { ignore = false } })
+      require('nvim-tree').setup({
+        view = { width = 40 },
+        filters = { dotfiles = true },
+        git = { ignore = false },
+      })
 
       vim.api.nvim_create_autocmd('BufEnter', {
         nested = true,
