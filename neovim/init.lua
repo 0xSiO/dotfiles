@@ -138,7 +138,11 @@ require('lazy').setup({
   {
     'nvim-telescope/telescope.nvim',
     version = '0.1.x',
-    dependencies = {'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons'},
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-tree/nvim-web-devicons'
+    },
     config = function()
       require('telescope').setup({
         defaults = {
@@ -157,6 +161,7 @@ require('lazy').setup({
       vim.keymap.set('n', 'ff', require('telescope.builtin').find_files)
       vim.keymap.set('n', 'fg', require('telescope.builtin').live_grep)
       vim.keymap.set('n', 'fh', require('telescope.builtin').help_tags)
+      vim.keymap.set('n', 'fm', require('telescope.builtin').man_pages)
     end,
   },
   {
@@ -301,6 +306,7 @@ require('lazy').setup({
           vim.keymap.set('n', '<leader>gd', git_diff, { buffer = bufnr })
           vim.keymap.set('n', '<leader>gs', git_show, { buffer = bufnr })
           vim.keymap.set('n', '<leader>gb', git_blame, { buffer = bufnr })
+          vim.keymap.set('n', '<leader>gc', require('telescope.builtin').git_bcommits, { buffer = bufnr })
           vim.keymap.set('n', '<leader>d', gitsigns.preview_hunk, { buffer = bufnr })
           vim.keymap.set('n', '<leader>b', function() gitsigns.blame_line({ full = true }) end, { buffer = bufnr })
         end
