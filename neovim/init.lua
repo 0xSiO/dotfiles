@@ -290,23 +290,37 @@ require('lazy').setup({
     },
   },
   {
+    'sindrets/diffview.nvim',
+    dependencies = {'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons'},
+    config = function()
+      require('diffview').setup({
+        keymaps = {
+          view = { { 'n', 'q', vim.cmd.tabclose } },
+          file_history_panel = { { 'n', 'q', vim.cmd.tabclose } },
+          file_panel = { { 'n', 'q', vim.cmd.tabclose } }
+        }
+      })
+
+      local function file_history()
+        vim.cmd.DiffviewFileHistory('%', '--follow')
+      end
+
+      vim.keymap.set('n', '<leader>gd', vim.cmd.DiffviewOpen, { buffer = true })
+      vim.keymap.set('n', '<leader>gf', file_history, { buffer = true })
+    end,
+  },
+  {
     'lewis6991/gitsigns.nvim',
+    dependencies = {'sindrets/diffview.nvim'},
     config = function()
       local gitsigns = require('gitsigns')
-
-      local function git_diff()
-        gitsigns.diffthis()
-        vim.cmd.wincmd('h')
-      end
 
       local function git_show()
         local commit = vim.b.gitsigns_blame_line_dict.sha
         -- Do nothing if changes haven't been committed
         if commit == '0000000000000000000000000000000000000000' then return end
 
-        vim.cmd.tabnew()
-        vim.cmd.terminal('git show ' .. commit)
-        vim.cmd.startinsert()
+        vim.cmd.DiffviewOpen(commit .. '^..' .. commit)
       end
 
       local function git_blame()
@@ -321,10 +335,8 @@ require('lazy').setup({
         current_line_blame = true,
         current_line_blame_opts = { virt_text = false, delay = 250 },
         on_attach = function(bufnr)
-          vim.keymap.set('n', '<leader>gd', git_diff, { buffer = bufnr })
           vim.keymap.set('n', '<leader>gs', git_show, { buffer = bufnr })
           vim.keymap.set('n', '<leader>gb', git_blame, { buffer = bufnr })
-          vim.keymap.set('n', '<leader>gc', require('telescope.builtin').git_bcommits, { buffer = bufnr })
           vim.keymap.set('n', '<leader>d', gitsigns.preview_hunk, { buffer = bufnr })
           vim.keymap.set('n', '<leader>b', function() gitsigns.blame_line({ full = true }) end, { buffer = bufnr })
         end
@@ -358,6 +370,7 @@ vim.o.showmode = false
 vim.o.expandtab = true
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
+vim.opt.diffopt:append({ 'algorithm:histogram' })
 
 -- Other keybindings
 vim.keymap.set('n', '<M-t>', function() vim.cmd.vnew(); vim.cmd.terminal(); vim.cmd.startinsert() end)
