@@ -1,5 +1,5 @@
 #!/bin/sh
-# Update packages, dev tools, vim plugins, etc.
+# Update packages, dev tools, etc.
 
 dnf upgrade -y
 
@@ -8,6 +8,6 @@ source .zshrc
 
 asdf plugin update --all
 rustup update stable
+pip install -U poetry pynvim
 npm upgrade -g npm
-nvim --headless -c CocUpdateSync -c "autocmd User PackerComplete quitall" -c PackerSync
 '
