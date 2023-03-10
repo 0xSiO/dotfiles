@@ -55,7 +55,7 @@ file://$HOME/Development Development" > ~/.config/gtk-3.0/bookmarks
 
 # Install Sauce Code Pro Nerd Font
 SCP_FONT_PATH=~/.local/share/fonts/SauceCodePro.zip
-curl --create-dirs -Lo $SCP_FONT_PATH https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.0-RC/SourceCodePro.zip
+curl --create-dirs -Lo $SCP_FONT_PATH https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/SourceCodePro.zip
 unzip $SCP_FONT_PATH -d ~/.local/share/fonts/SauceCodePro
 rm $SCP_FONT_PATH
 
