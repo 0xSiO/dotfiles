@@ -375,6 +375,7 @@ vim.o.expandtab = true
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.opt.diffopt:append({ 'algorithm:histogram' })
+vim.opt.fillchars:append({ diff = ' ' })
 
 -- Other keybindings
 vim.keymap.set('n', '<M-t>', function() vim.cmd.vnew(); vim.cmd.terminal(); vim.cmd.startinsert() end)
