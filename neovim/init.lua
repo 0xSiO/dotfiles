@@ -142,7 +142,8 @@ require('lazy').setup({
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
       'nvim-tree/nvim-web-devicons',
-      'nvim-telescope/telescope-ui-select.nvim'
+      'nvim-telescope/telescope-ui-select.nvim',
+      'debugloop/telescope-undo.nvim',
     },
     config = function()
       require('telescope').setup({
@@ -158,16 +159,19 @@ require('lazy').setup({
           }
         },
         extensions = {
-          ['ui-select'] = { require('telescope.themes').get_cursor({}) }
+          ['ui-select'] = { require('telescope.themes').get_cursor({}) },
+          undo = { layout_strategy = 'vertical', layout_config = { preview_height = 0.7 } },
         },
       })
 
       require('telescope').load_extension('ui-select')
+      require('telescope').load_extension('undo')
 
       vim.keymap.set('n', 'ff', require('telescope.builtin').find_files)
       vim.keymap.set('n', 'fg', require('telescope.builtin').live_grep)
       vim.keymap.set('n', 'fh', require('telescope.builtin').help_tags)
       vim.keymap.set('n', 'fm', require('telescope.builtin').man_pages)
+      vim.keymap.set('n', 'fu', require('telescope').extensions.undo.undo)
     end,
   },
   {
@@ -305,8 +309,8 @@ require('lazy').setup({
         vim.cmd.DiffviewFileHistory('%', '--follow')
       end
 
-      vim.keymap.set('n', '<leader>gd', vim.cmd.DiffviewOpen, { buffer = true })
-      vim.keymap.set('n', '<leader>gf', file_history, { buffer = true })
+      vim.keymap.set('n', '<leader>gd', vim.cmd.DiffviewOpen)
+      vim.keymap.set('n', '<leader>gf', file_history)
     end,
   },
   {
