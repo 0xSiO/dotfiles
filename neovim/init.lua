@@ -72,6 +72,14 @@ require('lazy').setup({
       local cmp = require('cmp')
       local luasnip = require('luasnip')
 
+      local function toggle_menu()
+        if cmp.visible() then
+          cmp.abort()
+        else
+          cmp.complete()
+        end
+      end
+
       local function confirm_or_jump(fallback)
         if luasnip.in_snippet() then
           if cmp.get_selected_entry() then
@@ -100,7 +108,7 @@ require('lazy').setup({
         formatting = { format = require('lspkind').cmp_format() },
         snippet = { expand = function(args) require('luasnip').lsp_expand(args.body) end },
         mapping = {
-          ['<C-Space>'] = function() if cmp.visible() then cmp.abort() else cmp.complete() end end,
+          ['<C-Space>'] = toggle_menu,
           ['<C-j>'] = cmp.mapping.select_next_item(),
           ['<C-k>'] = cmp.mapping.select_prev_item(),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -127,7 +135,9 @@ require('lazy').setup({
       })
 
       cmp.setup.cmdline(':', {
+        completion = { autocomplete = false },
         mapping = {
+          ['<C-Space>'] = cmp.mapping(toggle_menu, {'c'}),
           ['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item(), {'c'}),
           ['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'c'}),
         },
