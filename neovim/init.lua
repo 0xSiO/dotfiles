@@ -228,10 +228,20 @@ require('lazy').setup({
         end,
       })
 
+      -- LSP hover that ignores cursor hold event
+      local function sticky_hover()
+        vim.o.eventignore = 'CursorHold'
+        vim.lsp.buf.hover()
+        vim.api.nvim_create_autocmd('CursorMoved', {
+          callback = function() vim.o.eventignore = '' end,
+          once = true
+        })
+      end
+
       -- LSP keybindings
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(args)
-          vim.keymap.set('n', '<C-Space>', vim.lsp.buf.hover, { buffer = args.buf })
+          vim.keymap.set('n', '<C-Space>', sticky_hover, { buffer = args.buf })
           vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = args.buf })
           vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, { buffer = args.buf })
           vim.keymap.set('n', 'gs', function()
@@ -262,7 +272,7 @@ require('lazy').setup({
       vim.api.nvim_create_autocmd('BufEnter', {
         nested = true,
         callback = function()
-          if #vim.api.nvim_list_wins() == 1 and require('nvim-tree.utils').is_nvim_tree_buf() then
+          if #vim.api.nvim_list_wins() == 1 and require('nvim-tree.utils').is_nvim_tree_buf(0) then
             vim.cmd.quit()
           end
         end
@@ -341,7 +351,7 @@ vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.undofile = true
 vim.o.hidden = false
-vim.o.updatetime = 200
+vim.o.updatetime = 400
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.showmode = false
