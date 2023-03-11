@@ -34,7 +34,8 @@ require('lazy').setup({
     config = function()
       require('nvim-treesitter.configs').setup({
         ensure_installed = {
-          'bash', 'javascript', 'json', 'lua', 'regex', 'ruby', 'rust', 'toml', 'typescript'
+          'bash', 'javascript', 'json', 'lua', 'regex', 'ruby', 'rust', 'sql', 'terraform', 'toml',
+          'typescript'
         },
         highlight = { enable = true },
         indent = { enable = true },
@@ -48,7 +49,7 @@ require('lazy').setup({
   {
     'L3MON4D3/LuaSnip',
     version = 'v1.*',
-    dependencies = {'honza/vim-snippets'},
+    dependencies = { 'honza/vim-snippets' },
     config = function()
       require('luasnip').setup({ region_check_events = 'InsertEnter' })
       require('luasnip.loaders.from_snipmate').lazy_load()
@@ -117,8 +118,8 @@ require('lazy').setup({
           ['<C-k>'] = cmp.mapping.select_prev_item(),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<Tab>'] = cmp.mapping(confirm_or_jump, {'i', 's'}),
-          ['<S-Tab>'] = cmp.mapping(jump_back, {'i', 's'}),
+          ['<Tab>'] = cmp.mapping(confirm_or_jump, { 'i', 's' }),
+          ['<S-Tab>'] = cmp.mapping(jump_back, { 'i', 's' }),
         },
         sources = cmp.config.sources({
           { name = 'nvim_lua' },
@@ -130,10 +131,10 @@ require('lazy').setup({
         })
       })
 
-      cmp.setup.cmdline({'/', '?'}, {
+      cmp.setup.cmdline({ '/', '?' }, {
         mapping = {
-          ['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item(), {'c'}),
-          ['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'c'}),
+          ['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'c' }),
+          ['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'c' }),
         },
         sources = cmp.config.sources({ { name = 'buffer' } })
       })
@@ -141,9 +142,9 @@ require('lazy').setup({
       cmp.setup.cmdline(':', {
         completion = { autocomplete = false },
         mapping = {
-          ['<C-Space>'] = cmp.mapping(toggle_menu, {'c'}),
-          ['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item(), {'c'}),
-          ['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'c'}),
+          ['<C-Space>'] = cmp.mapping(toggle_menu, { 'c' }),
+          ['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'c' }),
+          ['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'c' }),
         },
         sources = cmp.config.sources({ { name = 'cmdline' } })
       })
@@ -200,7 +201,7 @@ require('lazy').setup({
     config = function()
       require('mason').setup({})
       require('mason-lspconfig').setup({
-        ensure_installed = {'eslint', 'lua_ls', 'pyright', 'rust_analyzer', 'solargraph', 'tsserver'},
+        ensure_installed = { 'bashls', 'eslint', 'lua_ls', 'pyright', 'rust_analyzer', 'solargraph', 'tsserver' },
       })
 
       local lsp_status = require('lsp-status')
@@ -220,7 +221,6 @@ require('lazy').setup({
         function(server)
           require('lspconfig')[server].setup({ on_attach = lsp_status.on_attach, capabilities = capabilities })
         end,
-
         ['eslint'] = function()
           require('lspconfig').eslint.setup({
             on_attach = function(client, bufnr)
@@ -229,7 +229,6 @@ require('lazy').setup({
             end
           })
         end,
-
         ['lua_ls'] = function()
           require('lspconfig').lua_ls.setup({
             on_attach = lsp_status.on_attach,
@@ -237,7 +236,7 @@ require('lazy').setup({
             settings = {
               Lua = {
                 runtime = { version = 'LuaJIT' },
-                diagnostics = { globals = {'vim'} },
+                diagnostics = { globals = { 'vim' } },
                 workspace = { library = vim.api.nvim_get_runtime_file('', true), checkThirdParty = false },
                 telemetry = { enable = false },
               },
@@ -269,16 +268,16 @@ require('lazy').setup({
             require('telescope.builtin').lsp_definitions({ jump_type = 'split' })
           end, { buffer = args.buf })
           vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, { buffer = args.buf })
-          vim.keymap.set({'n', 'v'}, '<leader>f', vim.lsp.buf.format, { buffer = args.buf })
+          vim.keymap.set({ 'n', 'v' }, '<leader>f', vim.lsp.buf.format, { buffer = args.buf })
         end,
       })
     end
   },
   {
     'nvim-tree/nvim-tree.lua',
-    dependencies = {'nvim-tree/nvim-web-devicons'},
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     keys = {
-      {'<C-n>', vim.cmd.NvimTreeToggle },
+      { '<C-n>', vim.cmd.NvimTreeToggle },
     },
     config = function()
       require('nvim-tree').setup({
@@ -299,7 +298,7 @@ require('lazy').setup({
   },
   {
     'nvim-lualine/lualine.nvim',
-    dependencies = {'nvim-tree/nvim-web-devicons', 'nvim-lua/lsp-status.nvim'},
+    dependencies = { 'nvim-tree/nvim-web-devicons', 'nvim-lua/lsp-status.nvim' },
     opts = {
       options = { globalstatus = true },
       sections = {
@@ -309,7 +308,7 @@ require('lazy').setup({
   },
   {
     'sindrets/diffview.nvim',
-    dependencies = {'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons'},
+    dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('diffview').setup({
         keymaps = {
@@ -329,7 +328,7 @@ require('lazy').setup({
   },
   {
     'lewis6991/gitsigns.nvim',
-    dependencies = {'sindrets/diffview.nvim'},
+    dependencies = { 'sindrets/diffview.nvim' },
     config = function()
       local gitsigns = require('gitsigns')
 
@@ -356,7 +355,9 @@ require('lazy').setup({
           vim.keymap.set('n', '<leader>gs', git_show, { buffer = bufnr })
           vim.keymap.set('n', '<leader>gb', git_blame, { buffer = bufnr })
           vim.keymap.set('n', '<leader>d', gitsigns.preview_hunk, { buffer = bufnr })
-          vim.keymap.set('n', '<leader>b', function() gitsigns.blame_line({ full = true }) end, { buffer = bufnr })
+          vim.keymap.set('n', '<leader>b', function()
+            gitsigns.blame_line({ full = true })
+          end, { buffer = bufnr })
         end
       })
     end
@@ -392,7 +393,11 @@ vim.opt.diffopt:append({ 'algorithm:histogram' })
 vim.opt.fillchars:append({ diff = ' ' })
 
 -- Other keybindings
-vim.keymap.set('n', '<M-t>', function() vim.cmd.vnew(); vim.cmd.terminal(); vim.cmd.startinsert() end)
+vim.keymap.set('n', '<M-t>', function()
+  vim.cmd.vnew();
+  vim.cmd.terminal();
+  vim.cmd.startinsert()
+end)
 vim.keymap.set('i', '<S-Tab>', function() vim.cmd('<') end)
 vim.keymap.set('i', '<C-h>', '<C-w>') -- <C-h> is <C-BS>
 vim.keymap.set('t', '<M-BS>', '<C-w>')
