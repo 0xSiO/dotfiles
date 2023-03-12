@@ -224,12 +224,16 @@ require('lazy').setup({
       vim.api.nvim_create_autocmd('CursorHold', {
         callback = function() vim.diagnostic.open_float({ focusable = false, source = true }) end
       })
+      vim.api.nvim_create_augroup('AutoFormat', {})
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        group = 'AutoFormat',
+        callback = function(args) vim.lsp.buf.format({ bufnr = args.buf }) end,
+      })
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, lsp_status.capabilities)
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-      -- TODO: Format-on-save filetypes?
       require('mason-lspconfig').setup_handlers({
         function(server)
           require('lspconfig')[server].setup({ on_attach = lsp_status.on_attach, capabilities = capabilities })
@@ -238,7 +242,12 @@ require('lazy').setup({
           require('lspconfig').eslint.setup({
             on_attach = function(client, bufnr)
               lsp_status.on_attach(client)
-              vim.api.nvim_create_autocmd('BufWritePre', { buffer = bufnr, command = 'EslintFixAll' })
+              vim.api.nvim_clear_autocmds({ event = 'BufWritePre', group = 'AutoFormat' })
+              vim.api.nvim_create_autocmd('BufWritePre', {
+                group = 'AutoFormat',
+                buffer = bufnr,
+                command = 'EslintFixAll'
+              })
             end
           })
         end,
@@ -258,7 +267,6 @@ require('lazy').setup({
         end,
       })
 
-      -- LSP hover that ignores cursor hold event
       local function sticky_hover()
         vim.o.eventignore = 'CursorHold'
         vim.lsp.buf.hover()
@@ -273,7 +281,7 @@ require('lazy').setup({
         callback = function(args)
           vim.keymap.set('n', '<C-Space>', sticky_hover, { buffer = args.buf })
           vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = args.buf })
-          -- TODO: Doing this in a modified buffer throws an error?
+          -- TODO: Doing this in a modified buffer throws an error
           vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, { buffer = args.buf })
           vim.keymap.set('n', 'gs', function()
             require('telescope.builtin').lsp_definitions({ jump_type = 'vsplit' })
