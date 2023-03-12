@@ -99,7 +99,6 @@ require('lazy').setup({
         end
       end
 
-      -- TODO: Maybe make completion a higher priority than snippet jumping
       local function confirm_or_jump(fallback)
         if luasnip.in_snippet() then
           if cmp.get_selected_entry() then
