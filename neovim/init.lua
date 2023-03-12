@@ -224,7 +224,22 @@ require('lazy').setup({
 
       vim.diagnostic.config({ virtual_text = false })
       vim.api.nvim_create_autocmd('CursorHold', {
-        callback = function() vim.diagnostic.open_float({ focusable = false, source = true }) end
+        callback = function()
+          vim.diagnostic.open_float({
+            focusable = false,
+            format = function(d)
+              local result = string.format('%s: %s [%s]', d.source, d.message, d.code)
+
+              if d.user_data.lsp
+                  and d.user_data.lsp.codeDescription
+                  and d.user_data.lsp.codeDescription.href then
+                result = result .. '\n  ' .. d.user_data.lsp.codeDescription.href
+              end
+
+              return result
+            end,
+          })
+        end
       })
       vim.api.nvim_create_augroup('AutoFormat', {})
       vim.api.nvim_create_autocmd('BufWritePre', {
