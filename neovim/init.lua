@@ -57,7 +57,18 @@ require('lazy').setup({
   },
   {
     'windwp/nvim-autopairs',
-    config = true,
+    config = function()
+      local autopairs = require('nvim-autopairs')
+      local cond = require('nvim-autopairs.conds')
+      local Rule = require('nvim-autopairs.rule')
+
+      autopairs.setup({})
+      autopairs.add_rules({
+        Rule('<', '>')
+            :with_pair(cond.before_regex('%w+'))
+            :with_move(),
+      })
+    end,
   },
   {
     'hrsh7th/nvim-cmp',
@@ -85,6 +96,7 @@ require('lazy').setup({
         end
       end
 
+      -- TODO: Maybe make completion a higher priority than snippet jumping
       local function confirm_or_jump(fallback)
         if luasnip.in_snippet() then
           if cmp.get_selected_entry() then
@@ -217,6 +229,7 @@ require('lazy').setup({
       capabilities = vim.tbl_deep_extend('force', capabilities, lsp_status.capabilities)
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+      -- TODO: Format-on-save filetypes?
       require('mason-lspconfig').setup_handlers({
         function(server)
           require('lspconfig')[server].setup({ on_attach = lsp_status.on_attach, capabilities = capabilities })
@@ -260,6 +273,7 @@ require('lazy').setup({
         callback = function(args)
           vim.keymap.set('n', '<C-Space>', sticky_hover, { buffer = args.buf })
           vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = args.buf })
+          -- TODO: Doing this in a modified buffer throws an error?
           vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, { buffer = args.buf })
           vim.keymap.set('n', 'gs', function()
             require('telescope.builtin').lsp_definitions({ jump_type = 'vsplit' })
