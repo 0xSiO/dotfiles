@@ -222,6 +222,7 @@ require('lazy').setup({
       lsp_status.config({ current_function = false, diagnostics = false, status_symbol = 'λ' })
       lsp_status.register_progress()
 
+      -- LSP diagnostics on CursorHold
       vim.diagnostic.config({ virtual_text = false })
       vim.api.nvim_create_autocmd('CursorHold', {
         callback = function()
@@ -241,6 +242,8 @@ require('lazy').setup({
           })
         end
       })
+
+      -- LSP format on save
       vim.api.nvim_create_augroup('AutoFormat', {})
       vim.api.nvim_create_autocmd('BufWritePre', {
         group = 'AutoFormat',
@@ -297,6 +300,7 @@ require('lazy').setup({
         end
       })
 
+      -- LSP hover ignoring CursorHold
       local function sticky_hover()
         vim.o.eventignore = 'CursorHold'
         vim.lsp.buf.hover()
