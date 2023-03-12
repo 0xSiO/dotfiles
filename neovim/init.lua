@@ -41,6 +41,9 @@ require('lazy').setup({
         indent = { enable = true },
       })
 
+      -- TODO: Losing folds on format, or folds out of sync
+      -- https://github.com/nvim-treesitter/nvim-treesitter/issues/1424
+      -- https://github.com/neovim/neovim/issues/14977
       vim.o.foldmethod = 'expr'
       vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
       vim.o.foldlevel = 1
