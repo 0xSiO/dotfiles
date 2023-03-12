@@ -255,7 +255,7 @@ require('lazy').setup({
         function(server)
           require('lspconfig')[server].setup({ on_attach = lsp_status.on_attach, capabilities = capabilities })
         end,
-        ['eslint'] = function()
+        eslint = function()
           require('lspconfig').eslint.setup({
             on_attach = function(client, bufnr)
               lsp_status.on_attach(client)
@@ -265,10 +265,11 @@ require('lazy').setup({
                 buffer = bufnr,
                 command = 'EslintFixAll'
               })
-            end
+            end,
+            capabilities = capabilities,
           })
         end,
-        ['lua_ls'] = function()
+        lua_ls = function()
           require('lspconfig').lua_ls.setup({
             on_attach = lsp_status.on_attach,
             capabilities = capabilities,
@@ -282,6 +283,18 @@ require('lazy').setup({
             },
           })
         end,
+        rust_analyzer = function()
+          require('lspconfig').rust_analyzer.setup({
+            on_attach = lsp_status.on_attach,
+            capabilities = capabilities,
+            settings = {
+              ['rust-analyzer'] = {
+                check = { command = 'clippy' },
+                cargo = { features = 'all' },
+              }
+            }
+          })
+        end
       })
 
       local function sticky_hover()
