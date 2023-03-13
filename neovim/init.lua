@@ -298,11 +298,11 @@ require('lazy').setup({
           require('lspconfig').eslint.setup({
             on_attach = function(client, bufnr)
               lsp_status.on_attach(client)
-              vim.api.nvim_clear_autocmds({ event = 'BufWritePre', group = 'user_format' })
+              vim.api.nvim_clear_autocmds({ event = 'BufWritePre', buffer = bufnr, group = 'user_format' })
               vim.api.nvim_create_autocmd('BufWritePre', {
                 group = 'user_format',
                 buffer = bufnr,
-                command = 'EslintFixAll'
+                command = 'EslintFixAll',
               })
             end,
             capabilities = capabilities,
