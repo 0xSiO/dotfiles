@@ -63,13 +63,13 @@ require('lazy').setup({
     config = function()
       local autopairs = require('nvim-autopairs')
       local cond = require('nvim-autopairs.conds')
-      local Rule = require('nvim-autopairs.rule')
+      local basic_rules = require('nvim-autopairs.rules.basic')
 
       autopairs.setup({})
       autopairs.add_rules({
-        Rule('<', '>')
+        basic_rules.bracket_creator(autopairs.config)('<', '>')
             :with_pair(cond.before_regex('%w+'))
-            :with_move(),
+            :with_del(cond.not_before_text('<'))
       })
     end,
   },
@@ -222,31 +222,57 @@ require('lazy').setup({
       lsp_status.config({ current_function = false, diagnostics = false, status_symbol = 'λ' })
       lsp_status.register_progress()
 
-      -- LSP diagnostics on CursorHold
       vim.diagnostic.config({ virtual_text = false })
+
+      local function pause_cursor_hold()
+        vim.o.eventignore = 'CursorHold'
+        vim.api.nvim_clear_autocmds({ event = 'CursorMoved', group = 'user_hover' })
+        vim.api.nvim_create_autocmd('CursorMoved', {
+          group = 'user_hover',
+          callback = function() vim.o.eventignore = '' end,
+          once = true
+        })
+      end
+
+      local function highlight_references()
+        vim.lsp.buf.document_highlight()
+        vim.api.nvim_create_autocmd('CursorMoved', {
+          group = 'user_hover',
+          callback = vim.lsp.buf.clear_references,
+          once = true
+        })
+      end
+
+      local function open_diagnostics()
+        vim.diagnostic.open_float({
+          focusable = false,
+          format = function(d)
+            local result = string.format('%s: %s [%s]', d.source, d.message, d.code)
+
+            if d.user_data.lsp
+                and d.user_data.lsp.codeDescription
+                and d.user_data.lsp.codeDescription.href then
+              result = result .. '\n  ' .. d.user_data.lsp.codeDescription.href
+            end
+
+            return result
+          end,
+        })
+      end
+
+      vim.api.nvim_create_augroup('user_hover', {})
       vim.api.nvim_create_autocmd('CursorHold', {
+        group = 'user_hover',
         callback = function()
-          vim.diagnostic.open_float({
-            focusable = false,
-            format = function(d)
-              local result = string.format('%s: %s [%s]', d.source, d.message, d.code)
-
-              if d.user_data.lsp
-                  and d.user_data.lsp.codeDescription
-                  and d.user_data.lsp.codeDescription.href then
-                result = result .. '\n  ' .. d.user_data.lsp.codeDescription.href
-              end
-
-              return result
-            end,
-          })
+          pause_cursor_hold()
+          highlight_references()
+          open_diagnostics()
         end
       })
 
-      -- LSP format on save
-      vim.api.nvim_create_augroup('AutoFormat', {})
+      vim.api.nvim_create_augroup('user_format', {})
       vim.api.nvim_create_autocmd('BufWritePre', {
-        group = 'AutoFormat',
+        group = 'user_format',
         callback = function(args) vim.lsp.buf.format({ bufnr = args.buf }) end,
       })
 
@@ -262,9 +288,9 @@ require('lazy').setup({
           require('lspconfig').eslint.setup({
             on_attach = function(client, bufnr)
               lsp_status.on_attach(client)
-              vim.api.nvim_clear_autocmds({ event = 'BufWritePre', group = 'AutoFormat' })
+              vim.api.nvim_clear_autocmds({ event = 'BufWritePre', group = 'user_format' })
               vim.api.nvim_create_autocmd('BufWritePre', {
-                group = 'AutoFormat',
+                group = 'user_format',
                 buffer = bufnr,
                 command = 'EslintFixAll'
               })
@@ -300,20 +326,10 @@ require('lazy').setup({
         end
       })
 
-      -- LSP hover ignoring CursorHold
-      local function sticky_hover()
-        vim.o.eventignore = 'CursorHold'
-        vim.lsp.buf.hover()
-        vim.api.nvim_create_autocmd('CursorMoved', {
-          callback = function() vim.o.eventignore = '' end,
-          once = true
-        })
-      end
-
       -- LSP keybindings
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(args)
-          vim.keymap.set('n', '<C-Space>', sticky_hover, { buffer = args.buf })
+          vim.keymap.set('n', '<C-Space>', vim.lsp.buf.hover, { buffer = args.buf })
           vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = args.buf })
           -- TODO: Doing this in a modified buffer throws an error
           vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, { buffer = args.buf })
