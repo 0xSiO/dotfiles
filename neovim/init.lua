@@ -224,6 +224,10 @@ require('lazy').setup({
 
       vim.diagnostic.config({ virtual_text = false })
 
+      vim.api.nvim_create_augroup('user_hover', {})
+      vim.api.nvim_create_augroup('user_highlight', {})
+      vim.api.nvim_create_augroup('user_format', {})
+
       local function pause_cursor_hold()
         vim.o.eventignore = 'CursorHold'
         vim.api.nvim_clear_autocmds({ event = 'CursorMoved', group = 'user_hover' })
@@ -237,7 +241,7 @@ require('lazy').setup({
       local function highlight_references()
         vim.lsp.buf.document_highlight()
         vim.api.nvim_create_autocmd('CursorMoved', {
-          group = 'user_hover',
+          group = 'user_highlight',
           callback = vim.lsp.buf.clear_references,
           once = true
         })
@@ -260,7 +264,6 @@ require('lazy').setup({
         })
       end
 
-      vim.api.nvim_create_augroup('user_hover', {})
       vim.api.nvim_create_autocmd('CursorHold', {
         group = 'user_hover',
         callback = function()
@@ -270,7 +273,6 @@ require('lazy').setup({
         end
       })
 
-      vim.api.nvim_create_augroup('user_format', {})
       vim.api.nvim_create_autocmd('BufWritePre', {
         group = 'user_format',
         callback = function(args) vim.lsp.buf.format({ bufnr = args.buf }) end,
@@ -329,7 +331,10 @@ require('lazy').setup({
       -- LSP keybindings
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(args)
-          vim.keymap.set('n', '<C-Space>', vim.lsp.buf.hover, { buffer = args.buf })
+          vim.keymap.set('n', '<C-Space>', function()
+            pause_cursor_hold()
+            vim.lsp.buf.hover()
+          end, { buffer = args.buf })
           vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = args.buf })
           -- TODO: Doing this in a modified buffer throws an error
           vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, { buffer = args.buf })
