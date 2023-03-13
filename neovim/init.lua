@@ -395,9 +395,9 @@ require('lazy').setup({
     config = function()
       require('diffview').setup({
         keymaps = {
-          view = { { 'n', 'q', vim.cmd.tabclose } },
-          file_history_panel = { { 'n', 'q', vim.cmd.tabclose } },
-          file_panel = { { 'n', 'q', vim.cmd.tabclose } }
+          view = { { 'n', 'q', vim.cmd.tabclose, { desc = 'Quit' } } },
+          file_history_panel = { { 'n', 'q', vim.cmd.tabclose, { desc = 'Quit' } } },
+          file_panel = { { 'n', 'q', vim.cmd.tabclose, { desc = 'Quit' } } }
         }
       })
 
