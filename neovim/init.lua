@@ -204,6 +204,10 @@ require('lazy').setup({
     end,
   },
   {
+    'williamboman/mason.nvim',
+    config = true,
+  },
+  {
     'williamboman/mason-lspconfig.nvim',
     dependencies = {
       'williamboman/mason.nvim',
@@ -213,7 +217,6 @@ require('lazy').setup({
       'nvim-telescope/telescope.nvim'
     },
     config = function()
-      require('mason').setup({})
       require('mason-lspconfig').setup({
         ensure_installed = { 'bashls', 'eslint', 'lua_ls', 'pyright', 'rust_analyzer', 'solargraph', 'tsserver' },
       })
@@ -224,22 +227,14 @@ require('lazy').setup({
 
       vim.diagnostic.config({ virtual_text = false })
 
-      vim.api.nvim_create_augroup('user_hover', {})
       vim.api.nvim_create_augroup('user_highlight', {})
+      vim.api.nvim_create_augroup('user_diagnostic', {})
+      vim.api.nvim_create_augroup('user_hover', {})
       vim.api.nvim_create_augroup('user_format', {})
-
-      local function pause_cursor_hold()
-        vim.o.eventignore = 'CursorHold'
-        vim.api.nvim_clear_autocmds({ event = 'CursorMoved', group = 'user_hover' })
-        vim.api.nvim_create_autocmd('CursorMoved', {
-          group = 'user_hover',
-          callback = function() vim.o.eventignore = '' end,
-          once = true
-        })
-      end
 
       local function highlight_references()
         vim.lsp.buf.document_highlight()
+        vim.api.nvim_clear_autocmds({ event = 'CursorMoved', group = 'user_highlight' })
         vim.api.nvim_create_autocmd('CursorMoved', {
           group = 'user_highlight',
           callback = vim.lsp.buf.clear_references,
@@ -261,13 +256,26 @@ require('lazy').setup({
 
             return result
           end,
+          close_events = { 'CursorMoved', 'BufEnter', 'BufWritePre' }
+        })
+      end
+
+      local function persist_hover()
+        vim.opt.eventignore:append('CursorHold')
+        vim.lsp.buf.hover()
+        vim.api.nvim_clear_autocmds({ event = 'CursorMoved', group = 'user_hover' })
+        vim.api.nvim_create_autocmd('CursorMoved', {
+          group = 'user_hover',
+          callback = function()
+            vim.opt.eventignore:remove('CursorHold')
+          end,
+          once = true
         })
       end
 
       vim.api.nvim_create_autocmd('CursorHold', {
         group = 'user_hover',
         callback = function()
-          pause_cursor_hold()
           highlight_references()
           open_diagnostics()
         end
@@ -331,10 +339,7 @@ require('lazy').setup({
       -- LSP keybindings
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(args)
-          vim.keymap.set('n', '<C-Space>', function()
-            pause_cursor_hold()
-            vim.lsp.buf.hover()
-          end, { buffer = args.buf })
+          vim.keymap.set('n', '<C-Space>', persist_hover, { buffer = args.buf })
           vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = args.buf })
           -- TODO: Doing this in a modified buffer throws an error
           vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, { buffer = args.buf })
@@ -346,6 +351,7 @@ require('lazy').setup({
           end, { buffer = args.buf })
           vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, { buffer = args.buf })
           vim.keymap.set({ 'n', 'v' }, '<leader>f', vim.lsp.buf.format, { buffer = args.buf })
+          vim.keymap.set({ 'n', 'v' }, '<leader>rn', vim.lsp.buf.rename, { buffer = args.buf })
         end,
       })
     end
