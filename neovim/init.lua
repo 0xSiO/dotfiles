@@ -22,7 +22,7 @@ require('lazy').setup({
     'sainnhe/edge',
     priority = 1000,
     config = function()
-      vim.o.termguicolors = vim.fn.has('termguicolors') == 1
+      vim.o.termguicolors = 1
       vim.g.edge_show_eob = 0
       vim.g.edge_better_performance = 1
       vim.cmd.colorscheme('edge')
@@ -273,6 +273,15 @@ require('lazy').setup({
         })
       end
 
+      local function use_lsp_format(bufnr)
+        vim.api.nvim_clear_autocmds({ event = 'BufWritePre', buffer = bufnr, group = 'user_format' })
+        vim.api.nvim_create_autocmd('BufWritePre', {
+          group = 'user_format',
+          buffer = bufnr,
+          callback = function(args) vim.lsp.buf.format({ bufnr = args.buf }) end,
+        })
+      end
+
       vim.api.nvim_create_autocmd('CursorHold', {
         group = 'user_hover',
         callback = function()
@@ -281,23 +290,27 @@ require('lazy').setup({
         end
       })
 
-      vim.api.nvim_create_autocmd('BufWritePre', {
-        group = 'user_format',
-        callback = function(args) vim.lsp.buf.format({ bufnr = args.buf }) end,
-      })
-
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, lsp_status.capabilities)
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+      local lsp_format_off = { eslint = true, tsserver = true }
+
+      local function on_attach(client, bufnr)
+        lsp_status.on_attach(client)
+        if not lsp_format_off[client.name] then
+          use_lsp_format(bufnr)
+        end
+      end
+
       require('mason-lspconfig').setup_handlers({
         function(server)
-          require('lspconfig')[server].setup({ on_attach = lsp_status.on_attach, capabilities = capabilities })
+          require('lspconfig')[server].setup({ on_attach = on_attach, capabilities = capabilities })
         end,
         eslint = function()
           require('lspconfig').eslint.setup({
             on_attach = function(client, bufnr)
-              lsp_status.on_attach(client)
+              on_attach(client, bufnr)
               vim.api.nvim_clear_autocmds({ event = 'BufWritePre', buffer = bufnr, group = 'user_format' })
               vim.api.nvim_create_autocmd('BufWritePre', {
                 group = 'user_format',
@@ -310,7 +323,7 @@ require('lazy').setup({
         end,
         lua_ls = function()
           require('lspconfig').lua_ls.setup({
-            on_attach = lsp_status.on_attach,
+            on_attach = on_attach,
             capabilities = capabilities,
             settings = {
               Lua = {
@@ -324,7 +337,7 @@ require('lazy').setup({
         end,
         rust_analyzer = function()
           require('lspconfig').rust_analyzer.setup({
-            on_attach = lsp_status.on_attach,
+            on_attach = on_attach,
             capabilities = capabilities,
             settings = {
               ['rust-analyzer'] = {
