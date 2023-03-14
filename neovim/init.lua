@@ -41,12 +41,29 @@ require('lazy').setup({
         indent = { enable = true },
       })
 
-      -- TODO: Losing folds on format, or folds out of sync
-      -- https://github.com/nvim-treesitter/nvim-treesitter/issues/1424
-      -- https://github.com/neovim/neovim/issues/14977
       vim.o.foldmethod = 'expr'
       vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
       vim.o.foldlevel = 1
+
+      -- TODO: Sometimes folds disappear on format or get out of sync
+      -- https://github.com/nvim-treesitter/nvim-treesitter/issues/1424
+      -- https://github.com/neovim/neovim/issues/14977
+
+      -- Workaround for keeping folds after formatting
+      vim.api.nvim_create_augroup('user_foldfix', {})
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        group = 'user_foldfix',
+        callback = function()
+          vim.cmd.mkview()
+        end
+      })
+      vim.api.nvim_create_autocmd('BufWritePost', {
+        group = 'user_foldfix',
+        callback = function()
+          vim.cmd.edit()
+          vim.cmd.loadview()
+        end
+      })
     end,
   },
   {
