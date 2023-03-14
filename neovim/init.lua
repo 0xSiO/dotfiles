@@ -336,19 +336,40 @@ require('lazy').setup({
         end
       })
 
+      local function vsplit_lsp_definitions()
+        require('telescope.builtin').lsp_definitions({
+          jump_type = 'vsplit',
+          attach_mappings = function(_, map)
+            map('i', '<CR>', 'select_vertical')
+            return true
+          end,
+        })
+      end
+
+      local function hsplit_lsp_definitions()
+        require('telescope.builtin').lsp_definitions({
+          jump_type = 'split',
+          attach_mappings = function(_, map)
+            map('i', '<CR>', 'select_horizontal')
+            return true
+          end,
+        })
+      end
+
       -- LSP keybindings
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(args)
           vim.keymap.set('n', '<C-Space>', persist_hover, { buffer = args.buf })
           vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = args.buf })
-          -- TODO: Doing this in a modified buffer throws an error
-          vim.keymap.set('n', 'gd', require('telescope.builtin').lsp_definitions, { buffer = args.buf })
-          vim.keymap.set('n', 'gs', function()
-            require('telescope.builtin').lsp_definitions({ jump_type = 'vsplit' })
+          vim.keymap.set('n', 'gd', function()
+            if vim.o.modified then
+              vsplit_lsp_definitions()
+            else
+              require('telescope.builtin').lsp_definitions()
+            end
           end, { buffer = args.buf })
-          vim.keymap.set('n', 'gS', function()
-            require('telescope.builtin').lsp_definitions({ jump_type = 'split' })
-          end, { buffer = args.buf })
+          vim.keymap.set('n', 'gs', vsplit_lsp_definitions, { buffer = args.buf })
+          vim.keymap.set('n', 'gS', hsplit_lsp_definitions, { buffer = args.buf })
           vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, { buffer = args.buf })
           vim.keymap.set({ 'n', 'v' }, '<leader>f', vim.lsp.buf.format, { buffer = args.buf })
           vim.keymap.set({ 'n', 'v' }, '<leader>rn', vim.lsp.buf.rename, { buffer = args.buf })
