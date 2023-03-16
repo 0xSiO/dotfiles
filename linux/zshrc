@@ -11,8 +11,8 @@ fi
 setopt histignoredups
 setopt histignorespace
 
-bindkey "^[[1;5C" forward-word
-bindkey "^[[1;5D" backward-word
+bindkey -v
+bindkey "^R" history-incremental-search-backward
 
 export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=10000

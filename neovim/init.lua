@@ -50,6 +50,7 @@ require('lazy').setup({
       -- https://github.com/neovim/neovim/issues/14977
 
       -- Workaround for keeping folds after formatting
+      -- TODO: This can change NvimTree state in other Neovim tabs on save
       vim.api.nvim_create_augroup('user_foldfix', {})
       vim.api.nvim_create_autocmd('BufWritePre', {
         group = 'user_foldfix',
