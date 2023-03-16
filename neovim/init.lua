@@ -299,14 +299,6 @@ require('lazy').setup({
         })
       end
 
-      vim.api.nvim_create_autocmd('CursorHold', {
-        group = 'user_hover',
-        callback = function()
-          highlight_references()
-          open_diagnostics()
-        end
-      })
-
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, lsp_status.capabilities)
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
@@ -318,6 +310,16 @@ require('lazy').setup({
         if not lsp_format_off[client.name] then
           use_lsp_format(bufnr)
         end
+
+        vim.api.nvim_clear_autocmds({ event = 'CursorHold', buffer = bufnr, group = 'user_hover' })
+        vim.api.nvim_create_autocmd('CursorHold', {
+          group = 'user_hover',
+          buffer = bufnr,
+          callback = function()
+            highlight_references()
+            open_diagnostics()
+          end
+        })
       end
 
       require('mason-lspconfig').setup_handlers({

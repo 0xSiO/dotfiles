@@ -19,6 +19,9 @@ fi
 setopt histignoredups
 setopt histignorespace
 
+bindkey -v
+bindkey "^R" history-incremental-search-backward
+
 export HISTSIZE=10000
 export SAVEHIST=$HISTSIZE
 export EDITOR=nvim
