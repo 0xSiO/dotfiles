@@ -362,7 +362,7 @@ require('lazy').setup({
             settings = {
               ['rust-analyzer'] = {
                 check = { command = 'clippy' },
-                cargo = { features = 'all' },
+                interpret = { tests = true },
               }
             }
           })
@@ -406,6 +406,7 @@ require('lazy').setup({
           vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, { buffer = args.buf })
           vim.keymap.set({ 'n', 'v' }, '<leader>f', vim.lsp.buf.format, { buffer = args.buf })
           vim.keymap.set({ 'n', 'v' }, '<leader>rn', vim.lsp.buf.rename, { buffer = args.buf })
+          vim.keymap.set('n', '<leader>lr', vim.cmd.LspRestart, { buffer = args.buf })
         end,
       })
     end
