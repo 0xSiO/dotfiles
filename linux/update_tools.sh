@@ -8,6 +8,6 @@ source .zshrc
 
 asdf plugin update --all
 rustup update stable
-pip install -U poetry pynvim
+pip install -U pip poetry pynvim
 npm upgrade -g npm
 '

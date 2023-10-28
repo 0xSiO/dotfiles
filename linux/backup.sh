@@ -22,6 +22,7 @@ restic -r "$BACKUP_LOCATION" backup --verbose ~/ \
     -e ~/.npm \
     -e ~/.pcloud \
     -e ~/.rustup \
+    -e ~/.venvs \
     -e "node_modules" \
     -e "target/debug" \
     -e "target/doc" \
