@@ -1,7 +1,7 @@
 #!/bin/sh
 # Use restic to backup important files to external location
 
-BACKUP_LOCATION="/Volumes/GoogleDrive/My Drive"
+BACKUP_LOCATION="$HOME/Google Drive/My Drive"
 REPO_NAME="Backup"
 
 if [ ! -d "$BACKUP_LOCATION" ]; then
@@ -28,10 +28,13 @@ restic -r "$BACKUP_LOCATION/$REPO_NAME" backup --verbose ~/ \
     --exclude ".npm" \
     --exclude '.rustup' \
     --exclude '.zsh_sessions' \
+    --exclude "Library/CloudStorage" \
     --exclude "Library/Containers/com.docker.docker" \
+    --exclude "Library/Application Support/FileProvider" \
     --exclude "Library/Application Support/Google" \
     --exclude "Library/Application Support/Slack" \
     --exclude "Library/Application Support/Firefox/Profiles/yrs8jrej.default-release/storage/default" \
+    --exclude "Library/Group Containers" \
     --exclude "Library/Caches" \
     --exclude "Library/News" \
     --exclude "node_modules" \
