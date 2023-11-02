@@ -103,7 +103,8 @@ require('lazy').setup({
       'saadparwaiz1/cmp_luasnip',
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
-      'hrsh7th/cmp-cmdline'
+      'hrsh7th/cmp-cmdline',
+      'kirasok/cmp-hledger',
     },
     config = function()
       local cmp = require('cmp')
@@ -154,6 +155,7 @@ require('lazy').setup({
           ['<S-Tab>'] = cmp.mapping(jump_back, { 'i', 's' }),
         },
         sources = cmp.config.sources({
+          { name = 'hledger' },
           { name = 'nvim_lua' },
           { name = 'nvim_lsp' },
           { name = 'nvim_lsp_signature_help' },
@@ -168,7 +170,10 @@ require('lazy').setup({
           ['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'c' }),
           ['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'c' }),
         },
-        sources = cmp.config.sources({ { name = 'buffer' } })
+        sources = cmp.config.sources({
+          { name = 'hledger' },
+          { name = 'buffer' },
+        })
       })
 
       cmp.setup.cmdline(':', {
@@ -178,7 +183,10 @@ require('lazy').setup({
           ['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'c' }),
           ['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'c' }),
         },
-        sources = cmp.config.sources({ { name = 'cmdline' } })
+        sources = cmp.config.sources({
+          { name = 'hledger' },
+          { name = 'cmdline' },
+        })
       })
     end,
   },
@@ -510,6 +518,26 @@ require('lazy').setup({
   },
   {
     'machakann/vim-sandwich',
+  },
+  {
+    'ledger/vim-ledger',
+    config = function()
+      vim.g.ledger_extra_options = '--strict'
+      vim.g.ledger_date_format = '%Y-%m-%d'
+      vim.g.ledger_winpos = 'r'
+
+      vim.api.nvim_create_augroup('user_hledger', {})
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        group = 'user_hledger',
+        pattern = '*.journal',
+        command = 'LedgerAlignBuffer',
+      })
+      vim.api.nvim_create_autocmd('BufWritePost', {
+        group = 'user_hledger',
+        pattern = '*.journal',
+        command = 'Ledger check',
+      })
+    end
   },
 })
 
