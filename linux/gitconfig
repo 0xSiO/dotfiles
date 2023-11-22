@@ -28,3 +28,4 @@
 [delta]
     features = side-by-side
     plus-style = syntax "#003800"
+    wrap-max-lines = unlimited
