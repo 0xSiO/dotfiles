@@ -34,7 +34,7 @@ require('lazy').setup({
     config = function()
       require('nvim-treesitter.configs').setup({
         ensure_installed = {
-          'bash', 'javascript', 'json', 'lua', 'regex', 'ruby', 'rust', 'sql', 'terraform', 'toml',
+          'bash', 'javascript', 'json', 'lua', 'python', 'regex', 'ruby', 'rust', 'sql', 'terraform', 'toml',
           'typescript'
         },
         highlight = { enable = true },
@@ -44,32 +44,11 @@ require('lazy').setup({
       vim.o.foldmethod = 'expr'
       vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
       vim.o.foldlevel = 1
-
-      -- TODO: Sometimes folds disappear on format or get out of sync
-      -- https://github.com/nvim-treesitter/nvim-treesitter/issues/1424
-      -- https://github.com/neovim/neovim/issues/14977
-
-      -- Workaround for keeping folds after formatting
-      -- TODO: This can change NvimTree state in other Neovim tabs on save
-      vim.api.nvim_create_augroup('user_foldfix', {})
-      vim.api.nvim_create_autocmd('BufWritePre', {
-        group = 'user_foldfix',
-        callback = function()
-          vim.cmd.mkview()
-        end
-      })
-      vim.api.nvim_create_autocmd('BufWritePost', {
-        group = 'user_foldfix',
-        callback = function()
-          vim.cmd.edit()
-          vim.cmd.loadview()
-        end
-      })
     end,
   },
   {
     'L3MON4D3/LuaSnip',
-    version = 'v1.*',
+    version = 'v2.*',
     dependencies = { 'honza/vim-snippets' },
     config = function()
       require('luasnip').setup({ region_check_events = 'InsertEnter' })
@@ -197,8 +176,7 @@ require('lazy').setup({
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
       'nvim-tree/nvim-web-devicons',
-      'nvim-telescope/telescope-ui-select.nvim',
-      'debugloop/telescope-undo.nvim',
+      'stevearc/dressing.nvim',
     },
     config = function()
       require('telescope').setup({
@@ -213,20 +191,12 @@ require('lazy').setup({
             }
           }
         },
-        extensions = {
-          ['ui-select'] = { require('telescope.themes').get_cursor({}) },
-          undo = { layout_strategy = 'vertical', layout_config = { preview_height = 0.7 } },
-        },
       })
-
-      require('telescope').load_extension('ui-select')
-      require('telescope').load_extension('undo')
 
       vim.keymap.set('n', 'ff', require('telescope.builtin').find_files)
       vim.keymap.set('n', 'fg', require('telescope.builtin').live_grep)
       vim.keymap.set('n', 'fh', require('telescope.builtin').help_tags)
       vim.keymap.set('n', 'fm', require('telescope.builtin').man_pages)
-      vim.keymap.set('n', 'fu', require('telescope').extensions.undo.undo)
     end,
   },
   {
@@ -240,7 +210,7 @@ require('lazy').setup({
       'neovim/nvim-lspconfig',
       'nvim-lua/lsp-status.nvim',
       'hrsh7th/cmp-nvim-lsp',
-      'nvim-telescope/telescope.nvim'
+      'nvim-telescope/telescope.nvim',
     },
     config = function()
       require('mason-lspconfig').setup({
@@ -417,7 +387,7 @@ require('lazy').setup({
           vim.keymap.set('n', '<leader>lr', vim.cmd.LspRestart, { buffer = args.buf })
         end,
       })
-    end
+    end,
   },
   {
     'nvim-tree/nvim-tree.lua',
@@ -428,14 +398,13 @@ require('lazy').setup({
     config = function()
       require('nvim-tree').setup({
         view = { width = 40 },
-        filters = { dotfiles = true },
-        git = { ignore = false },
+        filters = { dotfiles = true, git_ignored = false },
       })
 
       vim.api.nvim_create_autocmd('BufEnter', {
         nested = true,
         callback = function()
-          if #vim.api.nvim_list_wins() == 1 and require('nvim-tree.utils').is_nvim_tree_buf(0) then
+          if #vim.api.nvim_list_wins() == 1 and require('nvim-tree.utils').is_nvim_tree_buf() then
             vim.cmd.quit()
           end
         end
@@ -454,7 +423,7 @@ require('lazy').setup({
   },
   {
     'sindrets/diffview.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons' },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('diffview').setup({
         keymaps = {
@@ -464,12 +433,8 @@ require('lazy').setup({
         }
       })
 
-      local function file_history()
-        vim.cmd.DiffviewFileHistory('%', '--follow')
-      end
-
       vim.keymap.set('n', '<leader>gd', vim.cmd.DiffviewOpen)
-      vim.keymap.set('n', '<leader>gf', file_history)
+      vim.keymap.set('n', '<leader>gf', function() vim.cmd.DiffviewFileHistory('%', '--follow') end)
     end,
   },
   {
@@ -532,11 +497,11 @@ require('lazy').setup({
         pattern = '*.journal',
         command = 'LedgerAlignBuffer',
       })
-      vim.api.nvim_create_autocmd('BufWritePost', {
-        group = 'user_hledger',
-        pattern = '*.journal',
-        command = 'Ledger check',
-      })
+      -- vim.api.nvim_create_autocmd('BufWritePost', {
+      --   group = 'user_hledger',
+      --   pattern = '*.journal',
+      --   command = 'Ledger check',
+      -- })
     end
   },
 })
