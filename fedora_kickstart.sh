@@ -17,13 +17,17 @@ dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-releas
 dnf update -y
 systemctl daemon-reload
 
+# RPM Fusion multimedia tweaks
+dnf swap -y ffmpeg-free ffmpeg --allowerasing
+dnf install -y intel-media-driver
+
 # Basic goodies
 dnf install -y arc-theme numix-icon-theme-circle \
       anacron ffmpegthumbnailer postfix \
-      bat cmake ffmpeg-devel gcc-c++ kernel-devel libpq-devel neovim postgresql-server \
-      autojump-zsh exa fd-find ffmpeg file-roller file-roller-nautilus \
-      firewall-config git-delta gnome-tweaks htop mailx mpv ncdu puddletag pv restic ripgrep \
-      tokei transmission-gtk zsh
+      bat cmake ffmpeg-devel gcc-c++ kernel-devel libpq-devel neovim postgresql-server postgresql-contrib \
+      autojump-zsh eza fd-find file-roller file-roller-nautilus \
+      aria2 firewall-config git-delta gnome-tweaks htop mailx megasync mpv ncdu puddletag pv restic ripgrep \
+      tokei transmission zsh
 
 echo -e "\n=== Miscellaneous configuration ==="
 
@@ -55,7 +59,7 @@ file://$HOME/Development Development" > ~/.config/gtk-3.0/bookmarks
 
 # Install Sauce Code Pro Nerd Font
 SCP_FONT_PATH=~/.local/share/fonts/SauceCodePro.zip
-curl --create-dirs -Lo $SCP_FONT_PATH https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/SourceCodePro.zip
+curl --create-dirs -Lo $SCP_FONT_PATH https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/SourceCodePro.zip
 unzip $SCP_FONT_PATH -d ~/.local/share/fonts/SauceCodePro
 rm $SCP_FONT_PATH
 
@@ -75,12 +79,13 @@ echo -e "\n=== Downloading dotfiles ==="
 rm -rf ~/.dotfiles_old
 git clone --single-branch --branch master --recursive https://github.com/0xSiO/dotfiles ~/.dotfiles
 ~/.dotfiles/setup.sh linux
+mkdir /etc/cron.daily
 ln -sf ~/.dotfiles/linux/update_tools.sh /etc/cron.daily/update-tools
 
 source ~/.asdf/asdf.sh
 
 echo -e "\n=== Installing latest stable ruby ==="
-dnf install -y bzip2 openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel
+dnf install -y autoconf patch make bzip2 openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel
 asdf plugin add ruby
 asdf install ruby latest
 asdf global ruby latest
@@ -93,7 +98,7 @@ else
 fi
 
 echo -e "\n=== Installing latest stable python / poetry ==="
-dnf install -y zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl-devel tk-devel xz xz-devel libffi-devel patch
+dnf install -y make patch zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl-devel tk-devel libffi-devel xz-devel libuuid-devel gdbm-libs libnsl2
 asdf plugin add python
 asdf install python latest
 asdf global python latest
