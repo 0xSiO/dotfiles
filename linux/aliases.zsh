@@ -1,4 +1,4 @@
-alias backup="~/.dotfiles/linux/backup.sh"
+alias backup="~/.dotfiles/linux/backup-linux.sh"
 alias cat="bat -p"
 alias gits="git submodule"
 alias history="history 1"
