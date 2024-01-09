@@ -13,6 +13,7 @@ setopt histignorespace
 
 bindkey -v
 bindkey "^R" history-incremental-search-backward
+bindkey "^?" backward-delete-char
 
 export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=10000
