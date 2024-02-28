@@ -45,7 +45,7 @@ for file in $platform_files; do
 done
 
 section "Setting up common files"
-common_files="venvs"
+common_files="alacritty.toml tmux.conf venvs"
 
 for file in $common_files; do
     echo "linking ~/.$file to $dir/$file"
