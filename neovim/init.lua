@@ -22,7 +22,6 @@ require('lazy').setup({
     'sainnhe/edge',
     priority = 1000,
     config = function()
-      vim.o.termguicolors = 1
       vim.g.edge_show_eob = 0
       vim.g.edge_better_performance = 1
       vim.cmd.colorscheme('edge')
@@ -34,8 +33,8 @@ require('lazy').setup({
     config = function()
       require('nvim-treesitter.configs').setup({
         ensure_installed = {
-          'bash', 'javascript', 'json', 'lua', 'python', 'regex', 'ruby', 'rust', 'sql', 'terraform', 'toml',
-          'typescript'
+          'bash', 'javascript', 'json', 'lua', 'markdown', 'python', 'regex', 'ruby', 'rust', 'sql',
+          'terraform', 'toml', 'typescript'
         },
         highlight = { enable = true },
         indent = { enable = true },
@@ -242,7 +241,7 @@ require('lazy').setup({
         vim.diagnostic.open_float({
           focusable = false,
           format = function(d)
-            local result = string.format('%s: %s [%s]', d.source, d.message, d.code)
+            local result = string.format('%s: %s', d.source, d.message)
 
             if d.user_data.lsp
                 and d.user_data.lsp.codeDescription
@@ -525,8 +524,7 @@ vim.opt.fillchars:append({ diff = ' ' })
 
 -- Other keybindings
 vim.keymap.set('n', '<M-t>', function()
-  vim.cmd.vnew();
-  vim.cmd.terminal();
+  vim.cmd('vertical botright terminal')
   vim.cmd.startinsert()
 end)
 vim.keymap.set('i', '<S-Tab>', function() vim.cmd('<') end)
