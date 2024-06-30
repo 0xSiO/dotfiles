@@ -22,12 +22,10 @@ dnf swap -y ffmpeg-free ffmpeg --allowerasing
 dnf install -y intel-media-driver
 
 # Basic goodies
-dnf install -y arc-theme numix-icon-theme-circle \
-      anacron ffmpegthumbnailer postfix \
-      bat cmake ffmpeg-devel gcc-c++ kernel-devel libpq-devel neovim postgresql-server postgresql-contrib \
-      autojump-zsh eza fd-find file-roller file-roller-nautilus \
-      aria2 firewall-config git-delta gnome-tweaks htop mailx megasync mpv ncdu puddletag pv restic ripgrep \
-      tokei transmission zsh
+dnf install -y anacron aria2 autojump-zsh bat cmake eza fd-find ffmpeg-devel ffmpegthumbnailer file-roller \
+    file-roller-nautilus firewall-config gcc-c++ git-delta gnome-tweaks htop kernel-devel libpq-devel megasync \
+    mpv ncdu neovim numix-icon-theme-circle postfix postgresql-server postgresql-contrib puddletag pv restic \
+    ripgrep tokei transmission zsh
 
 echo -e "\n=== Miscellaneous configuration ==="
 
@@ -58,9 +56,10 @@ file://$HOME/Downloads
 file://$HOME/Development Development" > ~/.config/gtk-3.0/bookmarks
 
 # Install Sauce Code Pro Nerd Font
-SCP_FONT_PATH=~/.local/share/fonts/SauceCodePro.zip
-curl --create-dirs -Lo $SCP_FONT_PATH https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/SourceCodePro.zip
-unzip $SCP_FONT_PATH -d ~/.local/share/fonts/SauceCodePro
+SCP_FONT_PATH=~/.local/share/fonts/SauceCodePro.tar.xz
+curl --create-dirs -Lo $SCP_FONT_PATH https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/SourceCodePro.tar.xz
+mkdir ~/.local/share/fonts/SauceCodePro
+tar -xvf $SCP_FONT_PATH -C ~/.local/share/fonts/SauceCodePro
 rm $SCP_FONT_PATH
 
 # Reload fonts
