@@ -14,7 +14,7 @@
   "edge": { "branch": "master", "commit": "95d2ccf1a962445eec8640a507b97ed10d7d865b" },
   "gitsigns.nvim": { "branch": "main", "commit": "6b1a14eabcebbcca1b9e9163a26b2f8371364cb7" },
   "help-vsplit.nvim": { "branch": "master", "commit": "1268670db1bde2276fbfbadb9b12ec0c984ef229" },
-  "lazy.nvim": { "branch": "main", "commit": "0507e19289539396313503f6eb6b02bbe8a5e483" },
+  "lazy.nvim": { "branch": "main", "commit": "c882227f1fdc4580d14212df8f814a0772951e3d" },
   "lsp-status.nvim": { "branch": "master", "commit": "54f48eb5017632d81d0fd40112065f1d062d0629" },
   "lspkind.nvim": { "branch": "master", "commit": "1735dd5a5054c1fb7feaf8e8658dbab925f4f0cf" },
   "lualine.nvim": { "branch": "master", "commit": "0a5a66803c7407767b799067986b4dc3036e1983" },
