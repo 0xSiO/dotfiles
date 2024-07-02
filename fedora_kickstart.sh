@@ -24,8 +24,8 @@ dnf install -y intel-media-driver
 # Basic goodies
 dnf install -y alacritty aria2 autojump-zsh bat clang cronie-anacron eza fd-find ffmpegthumbnailer \
     file-roller file-roller-nautilus firewall-config git-delta gnome-tweaks htop mpv ncdu neovim \
-    numix-icon-theme-circle postfix postgresql-server postgresql-contrib puddletag pv restic \
-    ripgrep s-nail tokei tmux transmission zsh
+    numix-icon-theme-circle parallel postfix postgresql-server postgresql-contrib puddletag pv \
+    restic ripgrep s-nail tokei tmux transmission zsh
 
 echo -e "\n=== Miscellaneous configuration ==="
 
