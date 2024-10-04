@@ -213,7 +213,7 @@ require('lazy').setup({
     },
     config = function()
       require('mason-lspconfig').setup({
-        ensure_installed = { 'bashls', 'eslint', 'lua_ls', 'pyright', 'rust_analyzer', 'solargraph', 'tsserver' },
+        ensure_installed = { 'bashls', 'eslint', 'lua_ls', 'pyright', 'rust_analyzer', 'solargraph', 'ts_ls' },
       })
 
       local lsp_status = require('lsp-status')
@@ -281,7 +281,7 @@ require('lazy').setup({
       capabilities = vim.tbl_deep_extend('force', capabilities, lsp_status.capabilities)
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-      local lsp_format_off = { eslint = true, tsserver = true }
+      local lsp_format_off = { eslint = true, ts_ls = true }
 
       local function on_attach(client, bufnr)
         lsp_status.on_attach(client)
