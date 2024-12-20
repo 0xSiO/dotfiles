@@ -213,7 +213,7 @@ require('lazy').setup({
     },
     config = function()
       require('mason-lspconfig').setup({
-        ensure_installed = { 'bashls', 'eslint', 'lua_ls', 'pyright', 'rust_analyzer', 'solargraph', 'ts_ls' },
+        ensure_installed = { 'bashls', 'eslint', 'lua_ls', 'pyright', 'rust_analyzer', 'solargraph', 'ts_ls', 'volar' },
       })
 
       local lsp_status = require('lsp-status')

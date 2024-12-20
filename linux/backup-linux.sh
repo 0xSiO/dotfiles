@@ -18,6 +18,7 @@ restic -r "$BACKUP_LOCATION" backup --verbose ~/ \
     -e ~/.gradle \
     -e ~/.npm \
     -e ~/.rustup \
+    -e ~/.var \
     -e ~/.venvs \
     -e "node_modules" \
     -e "target/debug" \

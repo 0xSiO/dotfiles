@@ -13,6 +13,7 @@ restic -r "$BACKUP_LOCATION" backup --verbose /run/media/luc/F88C2AE88C2AA0DC/Us
     -e "scoop/persist/steam" \
     -e "scoop/cache" \
     -e "node_modules" \
+    -e "npm-cache" \
     -e "target/debug" \
     -e "target/doc" \
     -e "target/release"
