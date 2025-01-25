@@ -39,10 +39,6 @@ mv -n totem.thumbnailer totem.thumbnailer.old
 ln -sf ffmpegthumbnailer.thumbnailer totem.thumbnailer
 cd ~
 
-# Fix random audio cutoffs
-systemctl --user enable pipewire.service
-systemctl --user enable pipewire-pulse.service
-
 # Randomize MAC address every time you connect to WiFi
 echo "[device]
 wifi.scan-rand-mac-address=yes
@@ -51,6 +47,14 @@ wifi.scan-rand-mac-address=yes
 wifi.cloned-mac-address=random
 ethernet.cloned-mac-address=random
 connection.stable-id=\${CONNECTION}/\${BOOT}" > /etc/NetworkManager/conf.d/00-macrandomize.conf
+
+# Fix random audio cutoffs
+mkdir ~/.config/pipewire/pipewire.conf.d
+echo "context.properties = {
+    default.clock.quantum     = 2048
+    default.clock.min-quantum = 1024
+    default.clock.max-quantum = 4096
+}" > ~/.config/pipewire/pipewire.conf.d/00-increase-quantum.conf
 
 # Bookmarks
 echo "file://$HOME/Documents
