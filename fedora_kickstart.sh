@@ -13,6 +13,7 @@ dnf remove -y gnome-boxes gnome-calendar gnome-clocks gnome-contacts gnome-maps 
 echo -e "\n=== Updating system and installing essential packages ==="
 dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
     https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+dnf config-manager addrepo --from-repofile=https://repository.mullvad.net/rpm/stable/mullvad.repo
 
 dnf update -y
 systemctl daemon-reload
@@ -23,20 +24,24 @@ dnf install -y intel-media-driver
 
 # Basic goodies
 dnf install -y alacritty aria2 autojump-zsh bat clang cronie-anacron eza fd-find ffmpegthumbnailer \
-    file-roller file-roller-nautilus firewall-config git-delta gnome-tweaks htop mpv ncdu neovim \
-    numix-icon-theme-circle parallel postfix postgresql-server postgresql-contrib puddletag pv \
-    qbittorrent restic ripgrep s-nail tokei tmux zsh
+    file-roller file-roller-nautilus firewall-config git-delta gnome-tweaks htop mpv mullvad-vpn \
+    ncdu neovim numix-icon-theme-circle parallel postfix postgresql-server postgresql-contrib \
+    puddletag pv qbittorrent restic ripgrep s-nail tokei tmux zsh
 
 echo -e "\n=== Miscellaneous configuration ==="
 
 # Change default shell to zsh
-lchsh $SUDO_USER <<< /bin/zsh
+chsh -s /bin/zsh $SUDO_USER
 
 # Change default thumbnailer
 cd /usr/share/thumbnailers
 mv -n totem.thumbnailer totem.thumbnailer.old
 ln -sf ffmpegthumbnailer.thumbnailer totem.thumbnailer
 cd ~
+
+# Fix random audio cutoffs
+systemctl --user enable pipewire.service
+systemctl --user enable pipewire-pulse.service
 
 # Randomize MAC address every time you connect to WiFi
 echo "[device]
@@ -57,7 +62,7 @@ file://$HOME/Development Development" > ~/.config/gtk-3.0/bookmarks
 
 # Install Sauce Code Pro Nerd Font
 SCP_FONT_PATH=~/.local/share/fonts/SauceCodePro.tar.xz
-curl --create-dirs -Lo $SCP_FONT_PATH https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/SourceCodePro.tar.xz
+curl --create-dirs -Lo $SCP_FONT_PATH https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/SourceCodePro.tar.xz
 mkdir ~/.local/share/fonts/SauceCodePro
 tar -xvf $SCP_FONT_PATH -C ~/.local/share/fonts/SauceCodePro
 rm $SCP_FONT_PATH

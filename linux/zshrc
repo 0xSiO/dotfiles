@@ -16,7 +16,7 @@ bindkey "^R" history-incremental-search-backward
 bindkey "^?" backward-delete-char
 
 export HISTFILE="$HOME/.zsh_history"
-export HISTSIZE=10000
+export HISTSIZE=100000
 export SAVEHIST=$HISTSIZE
 export EDITOR=nvim
 export PAGER=/bin/less
