@@ -10,12 +10,13 @@ vim.g.loaded_netrwPlugin = 1
 
 -- Install lazy.nvim
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    'git', 'clone', '--filter=blob:none', 'https://github.com/folke/lazy.nvim.git', '--branch=stable', lazypath
-  })
+if not vim.uv.fs_stat(lazypath) then
+  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
+  vim.fn.system({ 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath })
 end
 vim.opt.rtp:prepend(lazypath)
+
+-- TODO: Other plugins to explore - replace dressing.nvim with snacks.nvim
 
 require('lazy').setup({
   {
@@ -34,139 +35,33 @@ require('lazy').setup({
       require('nvim-treesitter.configs').setup({
         ensure_installed = {
           'bash', 'javascript', 'json', 'lua', 'markdown', 'python', 'regex', 'ruby', 'rust', 'sql',
-          'terraform', 'toml', 'typescript'
+          'toml', 'typescript'
         },
         highlight = { enable = true },
         indent = { enable = true },
       })
 
       vim.o.foldmethod = 'expr'
-      vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+      vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
       vim.o.foldlevel = 1
     end,
   },
   {
-    'L3MON4D3/LuaSnip',
-    version = 'v2.*',
-    dependencies = { 'honza/vim-snippets' },
-    config = function()
-      require('luasnip').setup({ region_check_events = 'InsertEnter' })
-      require('luasnip.loaders.from_snipmate').lazy_load()
-    end,
-  },
-  {
-    'windwp/nvim-autopairs',
-    config = function()
-      local autopairs = require('nvim-autopairs')
-      local cond = require('nvim-autopairs.conds')
-      local basic_rules = require('nvim-autopairs.rules.basic')
-
-      autopairs.setup({})
-      autopairs.add_rules({
-        basic_rules.bracket_creator(autopairs.config)('<', '>')
-            :with_pair(cond.before_regex('%w+'))
-            :with_del(cond.not_before_text('<'))
-      })
-    end,
-  },
-  {
-    'hrsh7th/nvim-cmp',
-    dependencies = {
-      'L3MON4D3/LuaSnip',
-      'windwp/nvim-autopairs',
-      'onsails/lspkind.nvim',
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-nvim-lsp-signature-help',
-      'hrsh7th/cmp-nvim-lua',
-      'saadparwaiz1/cmp_luasnip',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-cmdline',
-      'kirasok/cmp-hledger',
-    },
-    config = function()
-      local cmp = require('cmp')
-      local luasnip = require('luasnip')
-
-      local function toggle_menu()
-        if cmp.visible() then
-          cmp.abort()
-        else
-          cmp.complete()
-        end
-      end
-
-      local function confirm_or_jump(fallback)
-        if luasnip.in_snippet() then
-          if cmp.get_selected_entry() then
-            cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace })
-          else
-            luasnip.jump(1)
-          end
-        elseif cmp.visible() then
-          cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
-        else
-          fallback()
-        end
-      end
-
-      local function jump_back(fallback)
-        if luasnip.in_snippet() then
-          luasnip.jump(-1)
-        else
-          fallback()
-        end
-      end
-
-      cmp.event:on('confirm_done', require('nvim-autopairs.completion.cmp').on_confirm_done())
-
-      cmp.setup({
-        formatting = { format = require('lspkind').cmp_format() },
-        snippet = { expand = function(args) require('luasnip').lsp_expand(args.body) end },
-        mapping = {
-          ['<C-Space>'] = toggle_menu,
-          ['<C-j>'] = cmp.mapping.select_next_item(),
-          ['<C-k>'] = cmp.mapping.select_prev_item(),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<Tab>'] = cmp.mapping(confirm_or_jump, { 'i', 's' }),
-          ['<S-Tab>'] = cmp.mapping(jump_back, { 'i', 's' }),
-        },
-        sources = cmp.config.sources({
-          { name = 'hledger' },
-          { name = 'nvim_lua' },
-          { name = 'nvim_lsp' },
-          { name = 'nvim_lsp_signature_help' },
-          { name = 'luasnip' },
-          { name = 'buffer' },
-          { name = 'path' },
-        })
-      })
-
-      cmp.setup.cmdline({ '/', '?' }, {
-        mapping = {
-          ['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'c' }),
-          ['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'c' }),
-        },
-        sources = cmp.config.sources({
-          { name = 'hledger' },
-          { name = 'buffer' },
-        })
-      })
-
-      cmp.setup.cmdline(':', {
-        completion = { autocomplete = false },
-        mapping = {
-          ['<C-Space>'] = cmp.mapping(toggle_menu, { 'c' }),
-          ['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'c' }),
-          ['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'c' }),
-        },
-        sources = cmp.config.sources({
-          { name = 'hledger' },
-          { name = 'cmdline' },
-        })
-      })
-    end,
+    'saghen/blink.cmp',
+    dependencies = { 'rafamadriz/friendly-snippets' },
+    version = '1.*',
+    opts = {
+      keymap = {
+        preset = 'super-tab',
+        ['<C-j>'] = { 'select_next' },
+        ['<C-k>'] = { 'select_prev' },
+        ['<C-f>'] = { 'scroll_documentation_down' },
+        ['<C-b>'] = { 'scroll_documentation_up' },
+      },
+      completion = { documentation = { auto_show = true } },
+      signature = { enabled = true },
+      cmdline = { keymap = { preset = 'inherit' } },
+    }
   },
   {
     'nvim-telescope/telescope.nvim',
@@ -208,7 +103,7 @@ require('lazy').setup({
       'williamboman/mason.nvim',
       'neovim/nvim-lspconfig',
       'nvim-lua/lsp-status.nvim',
-      'hrsh7th/cmp-nvim-lsp',
+      'saghen/blink.cmp',
       'nvim-telescope/telescope.nvim',
     },
     config = function()
@@ -278,8 +173,8 @@ require('lazy').setup({
       end
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend('force', capabilities, lsp_status.capabilities)
-      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+      capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities)
+      capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
 
       local lsp_format_off = { eslint = true, ts_ls = true }
 
@@ -391,15 +286,13 @@ require('lazy').setup({
   {
     'nvim-tree/nvim-tree.lua',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
-    keys = {
-      { '<C-n>', vim.cmd.NvimTreeToggle },
-    },
     config = function()
       require('nvim-tree').setup({
         view = { width = 40 },
         filters = { dotfiles = true, git_ignored = false },
       })
 
+      vim.keymap.set('n', '<C-n>', require('nvim-tree.api').tree.toggle)
       vim.api.nvim_create_autocmd('BufEnter', {
         nested = true,
         callback = function()
@@ -426,9 +319,9 @@ require('lazy').setup({
     config = function()
       require('diffview').setup({
         keymaps = {
-          view = { { 'n', 'q', vim.cmd.tabclose, { desc = 'Quit' } } },
-          file_history_panel = { { 'n', 'q', vim.cmd.tabclose, { desc = 'Quit' } } },
-          file_panel = { { 'n', 'q', vim.cmd.tabclose, { desc = 'Quit' } } }
+          view = { { 'n', 'q', vim.cmd.tabclose } },
+          file_history_panel = { { 'n', 'q', vim.cmd.tabclose } },
+          file_panel = { { 'n', 'q', vim.cmd.tabclose } }
         }
       })
 
@@ -450,20 +343,11 @@ require('lazy').setup({
         vim.cmd.DiffviewOpen(commit .. '^..' .. commit)
       end
 
-      local function git_blame()
-        local abs_path = vim.api.nvim_buf_get_name(0)
-
-        vim.cmd.tabnew()
-        vim.cmd.terminal('git blame ' .. abs_path)
-        vim.cmd.startinsert()
-      end
-
       gitsigns.setup({
         current_line_blame = true,
         current_line_blame_opts = { virt_text = false, delay = 250 },
         on_attach = function(bufnr)
           vim.keymap.set('n', '<leader>gs', git_show, { buffer = bufnr })
-          vim.keymap.set('n', '<leader>gb', git_blame, { buffer = bufnr })
           vim.keymap.set('n', '<leader>d', gitsigns.preview_hunk, { buffer = bufnr })
           vim.keymap.set('n', '<leader>b', function()
             gitsigns.blame_line({ full = true })
@@ -473,35 +357,18 @@ require('lazy').setup({
     end
   },
   {
-    'anuvyklack/help-vsplit.nvim',
-    opts = { always = true },
-  },
-  {
-    'numToStr/Comment.nvim',
-    config = true,
-  },
-  {
-    'machakann/vim-sandwich',
-  },
-  {
-    'ledger/vim-ledger',
+    'echasnovski/mini.nvim',
+    version = '0.15.x',
     config = function()
-      vim.g.ledger_extra_options = '--strict'
-      vim.g.ledger_date_format = '%Y-%m-%d'
-      vim.g.ledger_winpos = 'r'
-
-      vim.api.nvim_create_augroup('user_hledger', {})
-      vim.api.nvim_create_autocmd('BufWritePre', {
-        group = 'user_hledger',
-        pattern = '*.journal',
-        command = 'LedgerAlignBuffer',
+      require('mini.comment').setup()
+      require('mini.pairs').setup({
+        mappings = {
+          ['<'] = { action = 'open', pair = '<>', neigh_pattern = '[^\\].' },
+          ['>'] = { action = 'close', pair = '<>', neigh_pattern = '[^\\].' },
+        }
       })
-      -- vim.api.nvim_create_autocmd('BufWritePost', {
-      --   group = 'user_hledger',
-      --   pattern = '*.journal',
-      --   command = 'Ledger check',
-      -- })
-    end
+      require('mini.surround').setup()
+    end,
   },
 })
 
