@@ -366,12 +366,7 @@ require('lazy').setup({
     version = '0.15.x',
     config = function()
       require('mini.comment').setup()
-      require('mini.pairs').setup({
-        mappings = {
-          ['<'] = { action = 'open', pair = '<>', neigh_pattern = '[^\\].' },
-          ['>'] = { action = 'close', pair = '<>', neigh_pattern = '[^\\].' },
-        }
-      })
+      require('mini.pairs').setup()
       require('mini.surround').setup()
     end,
   },
