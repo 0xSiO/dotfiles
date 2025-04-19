@@ -60,7 +60,12 @@ require('lazy').setup({
       },
       completion = { documentation = { auto_show = true } },
       signature = { enabled = true },
-      cmdline = { keymap = { preset = 'inherit' } },
+      cmdline = {
+        keymap = {
+          ['<C-j>'] = { 'select_next' },
+          ['<C-k>'] = { 'select_prev' },
+        },
+      },
     }
   },
   {
