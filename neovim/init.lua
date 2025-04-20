@@ -207,6 +207,13 @@ require('lazy').setup({
         end,
       })
 
+      vim.api.nvim_create_autocmd('LspDetach', {
+        callback = function(args)
+          vim.api.nvim_clear_autocmds({ event = 'BufWritePre', buffer = args.buf, group = 'user_format' })
+          vim.api.nvim_clear_autocmds({ event = 'CursorHold', buffer = args.buf, group = 'user_hover' })
+        end,
+      })
+
       local lsp_status = require('lsp-status')
       lsp_status.config({ current_function = false, diagnostics = false, status_symbol = 'λ' })
       lsp_status.register_progress()
