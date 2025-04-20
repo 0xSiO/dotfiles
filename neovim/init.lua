@@ -116,16 +116,37 @@ require('lazy').setup({
         ensure_installed = { 'bashls', 'eslint', 'lua_ls', 'pyright', 'rust_analyzer', 'solargraph', 'ts_ls', 'volar' },
       })
 
-      local lsp_status = require('lsp-status')
-      lsp_status.config({ current_function = false, diagnostics = false, status_symbol = 'λ' })
-      lsp_status.register_progress()
-
-      vim.diagnostic.config({ virtual_text = false })
-
-      vim.api.nvim_create_augroup('user_highlight', {})
-      vim.api.nvim_create_augroup('user_diagnostic', {})
-      vim.api.nvim_create_augroup('user_hover', {})
       vim.api.nvim_create_augroup('user_format', {})
+      vim.api.nvim_create_augroup('user_highlight', {})
+      vim.api.nvim_create_augroup('user_hover', {})
+
+      local function vsplit_lsp_definitions()
+        require('telescope.builtin').lsp_definitions({
+          jump_type = 'vsplit',
+          attach_mappings = function(_, map)
+            map('i', '<CR>', 'select_vertical')
+            return true
+          end,
+        })
+      end
+
+      local function hsplit_lsp_definitions()
+        require('telescope.builtin').lsp_definitions({
+          jump_type = 'split',
+          attach_mappings = function(_, map)
+            map('i', '<CR>', 'select_horizontal')
+            return true
+          end,
+        })
+      end
+
+      local function lsp_definitions()
+        if vim.o.modified then
+          vsplit_lsp_definitions()
+        else
+          require('telescope.builtin').lsp_definitions()
+        end
+      end
 
       local function highlight_references()
         vim.lsp.buf.document_highlight()
@@ -155,59 +176,53 @@ require('lazy').setup({
         })
       end
 
-      local function persist_hover()
-        vim.opt.eventignore:append('CursorHold')
-        vim.lsp.buf.hover()
-        vim.api.nvim_clear_autocmds({ event = 'CursorMoved', group = 'user_hover' })
-        vim.api.nvim_create_autocmd('CursorMoved', {
-          group = 'user_hover',
-          callback = function()
-            vim.opt.eventignore:remove('CursorHold')
-          end,
-          once = true
-        })
-      end
+      -- LSP keybindings & autocommands
+      vim.api.nvim_create_autocmd('LspAttach', {
+        callback = function(args)
+          vim.keymap.set('n', 'grr', require('telescope.builtin').lsp_references, { buffer = args.buf })
+          vim.keymap.set('n', 'gri', require('telescope.builtin').lsp_implementations, { buffer = args.buf })
+          vim.keymap.set('n', 'gO', require('telescope.builtin').lsp_document_symbols, { buffer = args.buf })
+          vim.keymap.set('n', 'gd', lsp_definitions, { buffer = args.buf })
+          vim.keymap.set('n', 'gs', vsplit_lsp_definitions, { buffer = args.buf })
+          vim.keymap.set('n', 'gS', hsplit_lsp_definitions, { buffer = args.buf })
+          vim.keymap.set({ 'n', 'v' }, '<leader>f', vim.lsp.buf.format, { buffer = args.buf })
+          vim.keymap.set('n', '<leader>lr', vim.cmd.LspRestart, { buffer = args.buf })
 
-      local function use_lsp_format(bufnr)
-        vim.api.nvim_clear_autocmds({ event = 'BufWritePre', buffer = bufnr, group = 'user_format' })
-        vim.api.nvim_create_autocmd('BufWritePre', {
-          group = 'user_format',
-          buffer = bufnr,
-          callback = function(args) vim.lsp.buf.format({ bufnr = args.buf }) end,
-        })
-      end
+          vim.api.nvim_clear_autocmds({ event = 'BufWritePre', buffer = args.buf, group = 'user_format' })
+          vim.api.nvim_create_autocmd('BufWritePre', {
+            group = 'user_format',
+            buffer = args.buf,
+            callback = vim.lsp.buf.format,
+          })
+
+          vim.api.nvim_clear_autocmds({ event = 'CursorHold', buffer = args.buf, group = 'user_hover' })
+          vim.api.nvim_create_autocmd('CursorHold', {
+            group = 'user_hover',
+            buffer = args.buf,
+            callback = function()
+              highlight_references()
+              open_diagnostics()
+            end
+          })
+        end,
+      })
+
+      local lsp_status = require('lsp-status')
+      lsp_status.config({ current_function = false, diagnostics = false, status_symbol = 'λ' })
+      lsp_status.register_progress()
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities)
       capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
 
-      local lsp_format_off = { eslint = true, ts_ls = true }
-
-      local function on_attach(client, bufnr)
-        lsp_status.on_attach(client)
-        if not lsp_format_off[client.name] then
-          use_lsp_format(bufnr)
-        end
-
-        vim.api.nvim_clear_autocmds({ event = 'CursorHold', buffer = bufnr, group = 'user_hover' })
-        vim.api.nvim_create_autocmd('CursorHold', {
-          group = 'user_hover',
-          buffer = bufnr,
-          callback = function()
-            highlight_references()
-            open_diagnostics()
-          end
-        })
-      end
-
       require('mason-lspconfig').setup_handlers({
         function(server)
-          require('lspconfig')[server].setup({ on_attach = on_attach, capabilities = capabilities })
+          require('lspconfig')[server].setup({ on_attach = lsp_status.on_attach, capabilities = capabilities })
         end,
         eslint = function()
           require('lspconfig').eslint.setup({
             on_attach = function(client, bufnr)
-              on_attach(client, bufnr)
+              lsp_status.on_attach(client)
               vim.api.nvim_clear_autocmds({ event = 'BufWritePre', buffer = bufnr, group = 'user_format' })
               vim.api.nvim_create_autocmd('BufWritePre', {
                 group = 'user_format',
@@ -220,7 +235,7 @@ require('lazy').setup({
         end,
         lua_ls = function()
           require('lspconfig').lua_ls.setup({
-            on_attach = on_attach,
+            on_attach = lsp_status.on_attach,
             capabilities = capabilities,
             settings = {
               Lua = {
@@ -234,7 +249,7 @@ require('lazy').setup({
         end,
         rust_analyzer = function()
           require('lspconfig').rust_analyzer.setup({
-            on_attach = on_attach,
+            on_attach = lsp_status.on_attach,
             capabilities = capabilities,
             settings = {
               ['rust-analyzer'] = {
@@ -244,47 +259,6 @@ require('lazy').setup({
             }
           })
         end
-      })
-
-      local function vsplit_lsp_definitions()
-        require('telescope.builtin').lsp_definitions({
-          jump_type = 'vsplit',
-          attach_mappings = function(_, map)
-            map('i', '<CR>', 'select_vertical')
-            return true
-          end,
-        })
-      end
-
-      local function hsplit_lsp_definitions()
-        require('telescope.builtin').lsp_definitions({
-          jump_type = 'split',
-          attach_mappings = function(_, map)
-            map('i', '<CR>', 'select_horizontal')
-            return true
-          end,
-        })
-      end
-
-      -- LSP keybindings
-      vim.api.nvim_create_autocmd('LspAttach', {
-        callback = function(args)
-          vim.keymap.set('n', '<C-Space>', persist_hover, { buffer = args.buf })
-          vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, { buffer = args.buf })
-          vim.keymap.set('n', 'gd', function()
-            if vim.o.modified then
-              vsplit_lsp_definitions()
-            else
-              require('telescope.builtin').lsp_definitions()
-            end
-          end, { buffer = args.buf })
-          vim.keymap.set('n', 'gs', vsplit_lsp_definitions, { buffer = args.buf })
-          vim.keymap.set('n', 'gS', hsplit_lsp_definitions, { buffer = args.buf })
-          vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, { buffer = args.buf })
-          vim.keymap.set({ 'n', 'v' }, '<leader>f', vim.lsp.buf.format, { buffer = args.buf })
-          vim.keymap.set({ 'n', 'v' }, '<leader>rn', vim.lsp.buf.rename, { buffer = args.buf })
-          vim.keymap.set('n', '<leader>lr', vim.cmd.LspRestart, { buffer = args.buf })
-        end,
       })
     end,
   },
