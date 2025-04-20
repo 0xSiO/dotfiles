@@ -95,7 +95,7 @@ echo -e "\n=== Installing rust ==="
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path --default-host $(arch)-unknown-linux-gnu --default-toolchain stable -c rust-src
 source ~/.cargo/env
 dnf install -y openssl-devel
-cargo install cargo-audit cargo-outdated cargo-update
+cargo install cargo-audit cargo-outdated cargo-update eza
 
 echo -e "\n=== Installing latest stable ruby ==="
 dnf install -y autoconf gcc patch make bzip2 openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel
