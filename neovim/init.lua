@@ -282,13 +282,14 @@ require('lazy').setup({
       require('snacks').setup({
         input = {},
         picker = {
+          hidden = true,
           win = {
             input = { keys = { ['<Esc>'] = { 'close', mode = { 'n', 'i' } } } }
           }
         }
       })
 
-      vim.keymap.set('n', 'ff', Snacks.picker.smart)
+      vim.keymap.set('n', 'ff', function() Snacks.picker.files({ hidden = true }) end)
       vim.keymap.set('n', 'fg', Snacks.picker.grep)
       vim.keymap.set('n', 'fh', Snacks.picker.help)
       vim.keymap.set('n', 'fm', Snacks.picker.man)
