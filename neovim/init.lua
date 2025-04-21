@@ -226,10 +226,14 @@ require('lazy').setup({
     'sindrets/diffview.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
+      local actions = require('diffview.actions')
       require('diffview').setup({
         keymaps = {
           view = { { 'n', 'q', vim.cmd.tabclose } },
-          file_history_panel = { { 'n', 'q', vim.cmd.tabclose } },
+          file_history_panel = {
+            { 'n', 'q', vim.cmd.tabclose },
+            { 'n', 'd', actions.open_in_diffview }
+          },
           file_panel = { { 'n', 'q', vim.cmd.tabclose } }
         }
       })
