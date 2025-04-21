@@ -117,6 +117,7 @@ require('lazy').setup({
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(args)
           vim.keymap.set({ 'n', 'v' }, '<leader>f', vim.lsp.buf.format, { buffer = args.buf })
+          vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, { buffer = args.buf })
           vim.keymap.set('n', '<leader>lr', vim.cmd.LspRestart, { buffer = args.buf })
 
           vim.api.nvim_clear_autocmds({ event = 'BufWritePre', buffer = args.buf, group = 'user_format' })
