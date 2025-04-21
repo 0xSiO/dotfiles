@@ -272,7 +272,9 @@ require('lazy').setup({
       require('mini.comment').setup()
       require('mini.pairs').setup()
       require('mini.surround').setup()
-      require('mini.notify').setup()
+      require('mini.notify').setup({
+        window = { config = { anchor = 'SE', col = vim.o.columns, row = vim.o.lines - vim.o.cmdheight - 1 } }
+      })
       vim.notify = require('mini.notify').make_notify()
     end,
   },
