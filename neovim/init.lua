@@ -16,8 +16,6 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- TODO: Other plugins to explore - replace dressing.nvim with snacks.nvim
-
 require('lazy').setup({
   {
     'sainnhe/edge',
@@ -75,7 +73,6 @@ require('lazy').setup({
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
       'nvim-tree/nvim-web-devicons',
-      'stevearc/dressing.nvim',
     },
     config = function()
       require('telescope').setup({
@@ -107,7 +104,6 @@ require('lazy').setup({
     dependencies = {
       'williamboman/mason.nvim',
       'neovim/nvim-lspconfig',
-      'nvim-lua/lsp-status.nvim',
       'saghen/blink.cmp',
       'nvim-telescope/telescope.nvim',
     },
@@ -191,7 +187,7 @@ require('lazy').setup({
           vim.api.nvim_create_autocmd('BufWritePre', {
             group = 'user_format',
             buffer = args.buf,
-            callback = vim.lsp.buf.format,
+            callback = function() vim.lsp.buf.format({ bufnr = args.buf }) end,
           })
 
           vim.api.nvim_clear_autocmds({ event = 'CursorHold', buffer = args.buf, group = 'user_hover' })
@@ -213,22 +209,16 @@ require('lazy').setup({
         end,
       })
 
-      local lsp_status = require('lsp-status')
-      lsp_status.config({ current_function = false, diagnostics = false, status_symbol = 'λ' })
-      lsp_status.register_progress()
-
       local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_extend('keep', capabilities, lsp_status.capabilities)
       capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
 
       require('mason-lspconfig').setup_handlers({
         function(server)
-          require('lspconfig')[server].setup({ on_attach = lsp_status.on_attach, capabilities = capabilities })
+          require('lspconfig')[server].setup({ capabilities = capabilities })
         end,
         eslint = function()
           require('lspconfig').eslint.setup({
             on_attach = function(client, bufnr)
-              lsp_status.on_attach(client)
               vim.api.nvim_clear_autocmds({ event = 'BufWritePre', buffer = bufnr, group = 'user_format' })
               vim.api.nvim_create_autocmd('BufWritePre', {
                 group = 'user_format',
@@ -241,7 +231,6 @@ require('lazy').setup({
         end,
         lua_ls = function()
           require('lspconfig').lua_ls.setup({
-            on_attach = lsp_status.on_attach,
             capabilities = capabilities,
             settings = {
               Lua = {
@@ -255,7 +244,6 @@ require('lazy').setup({
         end,
         rust_analyzer = function()
           require('lspconfig').rust_analyzer.setup({
-            on_attach = lsp_status.on_attach,
             capabilities = capabilities,
             settings = {
               ['rust-analyzer'] = {
@@ -290,11 +278,11 @@ require('lazy').setup({
   },
   {
     'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons', 'nvim-lua/lsp-status.nvim' },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {
       options = { globalstatus = true },
       sections = {
-        lualine_c = { { 'filename', path = 1 }, "require('lsp-status').status()" }
+        lualine_c = { { 'filename', path = 1 }, 'lsp_status' }
       }
     },
   },
@@ -348,8 +336,14 @@ require('lazy').setup({
       require('mini.comment').setup()
       require('mini.pairs').setup()
       require('mini.surround').setup()
+      require('mini.notify').setup()
+      vim.notify = require('mini.notify').make_notify()
     end,
   },
+  {
+    'folke/snacks.nvim',
+    opts = { input = {} },
+  }
 })
 
 -- Other options
