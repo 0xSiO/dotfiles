@@ -278,7 +278,11 @@ require('lazy').setup({
       require('mini.pairs').setup()
       require('mini.surround').setup()
       require('mini.notify').setup({
-        window = { config = { anchor = 'SE', col = vim.o.columns, row = vim.o.lines - vim.o.cmdheight - 1 } }
+        window = {
+          config = function()
+            return { anchor = 'SE', col = vim.o.columns, row = vim.o.lines - vim.o.cmdheight - 1 }
+          end
+        }
       })
       vim.notify = require('mini.notify').make_notify()
     end,
