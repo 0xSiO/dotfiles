@@ -161,16 +161,15 @@ require('lazy').setup({
       local function open_diagnostics()
         vim.diagnostic.open_float({
           focusable = false,
+          source = true,
           format = function(d)
-            local result = string.format('%s: %s', d.source, d.message)
-
             if d.user_data.lsp
                 and d.user_data.lsp.codeDescription
                 and d.user_data.lsp.codeDescription.href then
-              result = result .. '\n  ' .. d.user_data.lsp.codeDescription.href
+              return d.message .. '\n  ' .. d.user_data.lsp.codeDescription.href
+            else
+              return d.message
             end
-
-            return result
           end,
           close_events = { 'CursorMoved', 'BufEnter', 'BufWritePre' }
         })
