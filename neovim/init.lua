@@ -67,34 +67,6 @@ require('lazy').setup({
     }
   },
   {
-    'nvim-telescope/telescope.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
-      'nvim-tree/nvim-web-devicons',
-    },
-    config = function()
-      require('telescope').setup({
-        defaults = {
-          mappings = {
-            i = {
-              ['<C-j>'] = 'move_selection_next',
-              ['<C-k>'] = 'move_selection_previous',
-              ['<C-f>'] = 'preview_scrolling_down',
-              ['<C-b>'] = 'preview_scrolling_up',
-              ['<Esc>'] = 'close',
-            }
-          }
-        },
-      })
-
-      vim.keymap.set('n', 'ff', require('telescope.builtin').find_files)
-      vim.keymap.set('n', 'fg', require('telescope.builtin').live_grep)
-      vim.keymap.set('n', 'fh', require('telescope.builtin').help_tags)
-      vim.keymap.set('n', 'fm', require('telescope.builtin').man_pages)
-    end,
-  },
-  {
     'williamboman/mason.nvim',
     config = true,
   },
@@ -104,7 +76,6 @@ require('lazy').setup({
       'williamboman/mason.nvim',
       'neovim/nvim-lspconfig',
       'saghen/blink.cmp',
-      'nvim-telescope/telescope.nvim',
     },
     config = function()
       require('mason-lspconfig').setup({
@@ -114,34 +85,6 @@ require('lazy').setup({
       vim.api.nvim_create_augroup('user_format', {})
       vim.api.nvim_create_augroup('user_highlight', {})
       vim.api.nvim_create_augroup('user_hover', {})
-
-      local function vsplit_lsp_definitions()
-        require('telescope.builtin').lsp_definitions({
-          jump_type = 'vsplit',
-          attach_mappings = function(_, map)
-            map('i', '<CR>', 'select_vertical')
-            return true
-          end,
-        })
-      end
-
-      local function hsplit_lsp_definitions()
-        require('telescope.builtin').lsp_definitions({
-          jump_type = 'split',
-          attach_mappings = function(_, map)
-            map('i', '<CR>', 'select_horizontal')
-            return true
-          end,
-        })
-      end
-
-      local function lsp_definitions()
-        if vim.o.modified then
-          vsplit_lsp_definitions()
-        else
-          require('telescope.builtin').lsp_definitions()
-        end
-      end
 
       local function highlight_references()
         vim.lsp.buf.document_highlight()
@@ -173,12 +116,6 @@ require('lazy').setup({
       -- LSP keybindings & autocommands
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(args)
-          vim.keymap.set('n', 'grr', require('telescope.builtin').lsp_references, { buffer = args.buf })
-          vim.keymap.set('n', 'gri', require('telescope.builtin').lsp_implementations, { buffer = args.buf })
-          vim.keymap.set('n', 'gO', require('telescope.builtin').lsp_document_symbols, { buffer = args.buf })
-          vim.keymap.set('n', 'gd', lsp_definitions, { buffer = args.buf })
-          vim.keymap.set('n', 'gs', vsplit_lsp_definitions, { buffer = args.buf })
-          vim.keymap.set('n', 'gS', hsplit_lsp_definitions, { buffer = args.buf })
           vim.keymap.set({ 'n', 'v' }, '<leader>f', vim.lsp.buf.format, { buffer = args.buf })
           vim.keymap.set('n', '<leader>lr', vim.cmd.LspRestart, { buffer = args.buf })
 
@@ -342,7 +279,26 @@ require('lazy').setup({
   {
     'folke/snacks.nvim',
     config = function()
-      require('snacks').setup({ input = {}, picker = {} })
+      require('snacks').setup({
+        input = {},
+        picker = {
+          win = {
+            input = { keys = { ['<Esc>'] = { 'close', mode = { 'n', 'i' } } } }
+          }
+        }
+      })
+
+      vim.keymap.set('n', 'ff', Snacks.picker.smart)
+      vim.keymap.set('n', 'fg', Snacks.picker.grep)
+      vim.keymap.set('n', 'fh', Snacks.picker.help)
+      vim.keymap.set('n', 'fm', Snacks.picker.man)
+      vim.keymap.set('n', 'gd', function()
+        Snacks.picker.lsp_definitions({ confirm = vim.o.modified and 'vsplit' or 'jump' })
+      end)
+      vim.keymap.set('n', 'gs', function() Snacks.picker.lsp_definitions({ confirm = 'vsplit' }) end)
+      vim.keymap.set('n', 'gS', function() Snacks.picker.lsp_definitions({ confirm = 'split' }) end)
+      vim.keymap.set('n', 'gi', Snacks.picker.lsp_implementations)
+      vim.keymap.set('n', 'gr', Snacks.picker.lsp_references, { nowait = true })
     end
   }
 })
