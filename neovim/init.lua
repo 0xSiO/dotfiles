@@ -68,7 +68,6 @@ require('lazy').setup({
   },
   {
     'nvim-telescope/telescope.nvim',
-    version = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
@@ -342,7 +341,9 @@ require('lazy').setup({
   },
   {
     'folke/snacks.nvim',
-    opts = { input = {} },
+    config = function()
+      require('snacks').setup({ input = {}, picker = {} })
+    end
   }
 })
 

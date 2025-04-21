@@ -2,7 +2,7 @@
   "blink.cmp": { "branch": "main", "commit": "cb5e346d9e0efa7a3eee7fd4da0b690c48d2a98e" },
   "diffview.nvim": { "branch": "main", "commit": "4516612fe98ff56ae0415a259ff6361a89419b0a" },
   "edge": { "branch": "master", "commit": "8eeab1bc9d93eec3511cb4d3c87d2d599c7ce3d4" },
-  "friendly-snippets": { "branch": "main", "commit": "16833311a0c51e7ee9a1ce939000f5b20a5d9d2b" },
+  "friendly-snippets": { "branch": "main", "commit": "e381a9c3fa01c3a7b75ff336e77ce3a6a8e34b69" },
   "gitsigns.nvim": { "branch": "main", "commit": "02eafb1273afec94447f66d1a43fc5e477c2ab8a" },
   "lazy.nvim": { "branch": "main", "commit": "6c3bda4aca61a13a9c63f1c1d1b16b9d3be90d7a" },
   "lualine.nvim": { "branch": "master", "commit": "86fe39534b7da729a1ac56c0466e76f2c663dc42" },
@@ -15,5 +15,5 @@
   "nvim-web-devicons": { "branch": "master", "commit": "855c97005c8eebcdd19846f2e54706bffd40ee96" },
   "plenary.nvim": { "branch": "master", "commit": "857c5ac632080dba10aae49dba902ce3abf91b35" },
   "snacks.nvim": { "branch": "main", "commit": "bc0630e43be5699bb94dadc302c0d21615421d93" },
-  "telescope.nvim": { "branch": "master", "commit": "a0bbec21143c7bc5f8bb02e0005fa0b982edc026" }
+  "telescope.nvim": { "branch": "master", "commit": "a4ed82509cecc56df1c7138920a1aeaf246c0ac5" }
 }
