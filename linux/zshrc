@@ -29,9 +29,6 @@ export RUST_SRC_PATH="$HOME/.rustup/toolchains/stable-$(arch)-unknown-linux-gnu/
 # monero
 export PATH="$HOME/Crypto/monero-cli:$PATH"
 
-# autojump config
-. /usr/share/autojump/autojump.zsh
-
 # asdf config
 . $HOME/.asdf/asdf.sh
 fpath=(${ASDF_DIR}/completions $fpath)
@@ -40,6 +37,8 @@ source ~/.dotfiles/powerlevel10k/powerlevel10k.zsh-theme
 
 autoload -Uz compinit
 compinit
+
+eval "$(zoxide init zsh)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

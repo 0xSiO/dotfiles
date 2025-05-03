@@ -29,6 +29,11 @@ export RUST_SRC_PATH="$HOME/.rustup/toolchains/stable-$(uname -m)-apple-darwin/l
 # postgres
 export PATH="/usr/local/opt/postgresql@15/bin:$PATH"
 
+# asdf config
+. /usr/local/opt/asdf/libexec/asdf.sh
+
+source ~/.dotfiles/powerlevel10k/powerlevel10k.zsh-theme
+
 # load homebrew completions
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
@@ -37,13 +42,7 @@ if type brew &>/dev/null; then
   compinit
 fi
 
-# autojump config
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-
-# asdf config
-. /usr/local/opt/asdf/libexec/asdf.sh
-
-source ~/.dotfiles/powerlevel10k/powerlevel10k.zsh-theme
+eval "$(zoxide init zsh)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

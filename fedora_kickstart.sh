@@ -23,10 +23,10 @@ dnf swap -y ffmpeg-free ffmpeg --allowerasing
 dnf install -y intel-media-driver
 
 # Basic goodies
-dnf install -y alacritty aria2 autojump-zsh bat clang cronie-anacron eza fd-find ffmpegthumbnailer \
+dnf install -y alacritty aria2 bat clang cronie-anacron eza fd-find ffmpegthumbnailer \
     file-roller file-roller-nautilus firewall-config git-delta gnome-tweaks htop mpv mullvad-vpn \
     ncdu neovim numix-icon-theme-circle parallel postfix postgresql-server postgresql-contrib \
-    puddletag pv qbittorrent restic ripgrep s-nail tokei tmux zsh
+    puddletag pv qbittorrent restic ripgrep s-nail tokei tmux zoxide zsh
 
 echo -e "\n=== Miscellaneous configuration ==="
 

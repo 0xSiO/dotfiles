@@ -323,6 +323,7 @@ require('lazy').setup({
 
 -- Other options
 vim.o.signcolumn = 'yes'
+vim.o.winborder = 'rounded'
 vim.o.number = true
 vim.o.splitright = true
 vim.o.splitbelow = true
