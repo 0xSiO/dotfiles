@@ -1,6 +1,4 @@
 #!/bin/sh
-# Create symlinks from the home directory to any desired dotfiles in ~/.dotfiles
-# and setup a pre-commit hook for updating submodules
 
 dir=~/.dotfiles
 old_dir=~/.dotfiles.old
@@ -46,20 +44,17 @@ done
 
 section "Setting up common files"
 common_files="tmux.conf venvs"
-
 for file in $common_files; do
     echo "linking ~/.$file to $dir/$file"
     link $dir/$file ~/.$file
 done
 
 mpv_config=~/.config/mpv
-neovim_config=~/.config/nvim
 echo "linking $mpv_config to $dir/mpv"
 link $dir/mpv $mpv_config
+
+neovim_config=~/.config/nvim
 echo "linking $neovim_config to $dir/neovim"
 link $dir/neovim $neovim_config
-
-section "Setting up pre-commit hook"
-ln -sf $dir/submodules.sh $dir/.git/hooks/pre-commit
 
 section "Done!"
