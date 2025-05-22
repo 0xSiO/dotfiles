@@ -1,6 +1,5 @@
 [window]
 dimensions = { columns = 150, lines = 40 }
-opacity = 0.999
 option_as_alt = "OnlyLeft"
 
 [scrolling]

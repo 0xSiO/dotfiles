@@ -23,10 +23,13 @@ echo "Starting backup."
 restic -r "$BACKUP_LOCATION/$REPO_NAME" backup --verbose ~/ \
     --exclude ".Trash" \
     --exclude '.asdf' \
+    --exclude '.bundle' \
     --exclude '.cache' \
     --exclude '.cargo' \
+    --exclude '.gem' \
     --exclude ".npm" \
     --exclude '.rustup' \
+    --exclude '.solargraph' \
     --exclude '.zsh_sessions' \
     --exclude "Library/CloudStorage" \
     --exclude "Library/Containers/com.docker.docker" \

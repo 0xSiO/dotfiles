@@ -27,7 +27,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export RUST_SRC_PATH="$HOME/.rustup/toolchains/stable-$(uname -m)-apple-darwin/lib/rustlib/src/rust/library"
 
 # postgres
-export PATH="/usr/local/opt/postgresql@15/bin:$PATH"
+export PATH="/usr/local/opt/postgresql@16/bin:$PATH"
 
 # asdf config
 . /usr/local/opt/asdf/libexec/asdf.sh
