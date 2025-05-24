@@ -67,7 +67,8 @@
       {
         "trigger": "singleTap",
         "action": "shellScript",
-        "executablePath": "/System/Applications/Utilities/Screenshot.app/Contents/MacOS/Screenshot"
+        "executablePath": "/usr/bin/open",
+        "shellArguments": ["-a", "Screenshot"]
       }
     ]
   },

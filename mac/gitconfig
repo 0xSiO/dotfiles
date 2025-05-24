@@ -10,7 +10,7 @@
     defaultBranch = master
 
 [commit]
-    gpgsign = false
+    gpgsign = true
 
 [diff]
     algorithm = histogram
@@ -31,3 +31,4 @@
 [delta]
     features = side-by-side
     plus-style = syntax "#003800"
+    wrap-max-lines = unlimited

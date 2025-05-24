@@ -23,11 +23,11 @@ export EDITOR=nvim
 export PATH="/usr/local/sbin:$PATH"
 
 # rust config
-export PATH="$HOME/.cargo/bin:$PATH"
+. $HOME/.cargo/env
 export RUST_SRC_PATH="$HOME/.rustup/toolchains/stable-$(uname -m)-apple-darwin/lib/rustlib/src/rust/library"
 
 # postgres
-export PATH="/usr/local/opt/postgresql@16/bin:$PATH"
+export PATH="/usr/local/opt/postgresql@17/bin:$PATH"
 
 # asdf config
 . /usr/local/opt/asdf/libexec/asdf.sh
