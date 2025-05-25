@@ -57,6 +57,20 @@
   },
   {
     "type": "staticButton",
+    "title": ">_",
+    "align": "right",
+    "width": 48,
+    "actions": [
+      {
+        "trigger": "singleTap",
+        "action": "shellScript",
+        "executablePath": "/usr/bin/open",
+        "shellArguments": ["-a", "Alacritty", "-n"]
+      }
+    ]
+  },
+  {
+    "type": "staticButton",
     "title": "",
     "align": "right",
     "width": 48,
