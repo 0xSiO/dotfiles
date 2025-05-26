@@ -45,8 +45,17 @@ require('lazy').setup({
     end,
   },
   {
+    'saghen/blink.compat',
+    version = '2.*',
+    lazy = true,
+    opts = {},
+  },
+  {
     'saghen/blink.cmp',
-    dependencies = { 'rafamadriz/friendly-snippets' },
+    dependencies = {
+      'rafamadriz/friendly-snippets',
+      'kirasok/cmp-hledger',
+    },
     version = '1.*',
     opts = {
       keymap = {
@@ -62,6 +71,12 @@ require('lazy').setup({
         keymap = {
           ['<C-j>'] = { 'select_next' },
           ['<C-k>'] = { 'select_prev' },
+        },
+      },
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'hledger' },
+        providers = {
+          hledger = { name = 'hledger', module = 'blink.compat.source' }
         },
       },
     }
@@ -296,6 +311,7 @@ require('lazy').setup({
   },
   {
     'folke/snacks.nvim',
+    priority = 1000,
     config = function()
       require('snacks').setup({
         input = {},
@@ -319,7 +335,26 @@ require('lazy').setup({
       vim.keymap.set('n', 'gi', Snacks.picker.lsp_implementations)
       vim.keymap.set('n', 'gr', Snacks.picker.lsp_references, { nowait = true })
     end
-  }
+  },
+  {
+    'ledger/vim-ledger',
+    config = function()
+      vim.g.ledger_date_format = '%Y-%m-%d'
+      vim.g.ledger_extra_options = '--strict'
+
+      vim.api.nvim_create_augroup('user_hledger', {})
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        group = 'user_hledger',
+        pattern = '*.journal',
+        command = 'LedgerAlignBuffer',
+      })
+      vim.api.nvim_create_autocmd('BufWritePost', {
+        group = 'user_hledger',
+        pattern = '*.journal',
+        command = 'silent make | redraw! | cwindow',
+      })
+    end
+  },
 })
 
 -- Other options

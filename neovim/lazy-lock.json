@@ -1,5 +1,7 @@
 {
   "blink.cmp": { "branch": "main", "commit": "4f38ce99a472932d5776337f08f7a8180f1f571a" },
+  "blink.compat": { "branch": "main", "commit": "2ed6d9a28b07fa6f3bface818470605f8896408c" },
+  "cmp-hledger": { "branch": "main", "commit": "ea2211cdd4f5d171ad2bdb0d66197173ce384ddd" },
   "diffview.nvim": { "branch": "main", "commit": "4516612fe98ff56ae0415a259ff6361a89419b0a" },
   "edge": { "branch": "master", "commit": "8eeab1bc9d93eec3511cb4d3c87d2d599c7ce3d4" },
   "friendly-snippets": { "branch": "main", "commit": "572f5660cf05f8cd8834e096d7b4c921ba18e175" },
@@ -13,5 +15,6 @@
   "nvim-tree.lua": { "branch": "master", "commit": "582ae48c9e43d2bcd55dfcc8e2e7a1f29065d924" },
   "nvim-treesitter": { "branch": "master", "commit": "94ea4f436d2b59c80f02e293466c374584f03b8c" },
   "nvim-web-devicons": { "branch": "master", "commit": "2c2b4eafce6cdd0cb165036faa17396eff18f847" },
-  "snacks.nvim": { "branch": "main", "commit": "bc0630e43be5699bb94dadc302c0d21615421d93" }
+  "snacks.nvim": { "branch": "main", "commit": "bc0630e43be5699bb94dadc302c0d21615421d93" },
+  "vim-ledger": { "branch": "master", "commit": "aabf1976dfefe5665233c600421aea2798ff7ea0" }
 }
