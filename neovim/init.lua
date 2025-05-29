@@ -27,6 +27,33 @@ require('lazy').setup({
     end,
   },
   {
+    'folke/snacks.nvim',
+    priority = 1000,
+    config = function()
+      require('snacks').setup({
+        input = {},
+        picker = {
+          hidden = true,
+          win = {
+            input = { keys = { ['<Esc>'] = { 'close', mode = { 'n', 'i' } } } }
+          }
+        }
+      })
+
+      vim.keymap.set('n', 'ff', function() Snacks.picker.files({ hidden = true }) end)
+      vim.keymap.set('n', 'fg', Snacks.picker.grep)
+      vim.keymap.set('n', 'fh', Snacks.picker.help)
+      vim.keymap.set('n', 'fm', Snacks.picker.man)
+      vim.keymap.set('n', 'gd', function()
+        Snacks.picker.lsp_definitions({ confirm = vim.o.modified and 'vsplit' or 'jump' })
+      end)
+      vim.keymap.set('n', 'gs', function() Snacks.picker.lsp_definitions({ confirm = 'vsplit' }) end)
+      vim.keymap.set('n', 'gS', function() Snacks.picker.lsp_definitions({ confirm = 'split' }) end)
+      vim.keymap.set('n', 'gi', Snacks.picker.lsp_implementations)
+      vim.keymap.set('n', 'gr', Snacks.picker.lsp_references, { nowait = true })
+    end
+  },
+  {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     config = function()
@@ -90,6 +117,7 @@ require('lazy').setup({
     },
     config = function()
       require('mason-lspconfig').setup({
+        automatic_enable = true,
         ensure_installed = {
           'bashls', 'eslint', 'gopls', 'lua_ls', 'pyright', 'rust_analyzer', 'solargraph', 'ts_ls',
           'vue_ls'
@@ -285,7 +313,6 @@ require('lazy').setup({
   },
   {
     'echasnovski/mini.nvim',
-    version = '0.15.x',
     config = function()
       require('mini.comment').setup()
       require('mini.pairs').setup()
@@ -299,33 +326,6 @@ require('lazy').setup({
       })
       vim.notify = require('mini.notify').make_notify()
     end,
-  },
-  {
-    'folke/snacks.nvim',
-    priority = 1000,
-    config = function()
-      require('snacks').setup({
-        input = {},
-        picker = {
-          hidden = true,
-          win = {
-            input = { keys = { ['<Esc>'] = { 'close', mode = { 'n', 'i' } } } }
-          }
-        }
-      })
-
-      vim.keymap.set('n', 'ff', function() Snacks.picker.files({ hidden = true }) end)
-      vim.keymap.set('n', 'fg', Snacks.picker.grep)
-      vim.keymap.set('n', 'fh', Snacks.picker.help)
-      vim.keymap.set('n', 'fm', Snacks.picker.man)
-      vim.keymap.set('n', 'gd', function()
-        Snacks.picker.lsp_definitions({ confirm = vim.o.modified and 'vsplit' or 'jump' })
-      end)
-      vim.keymap.set('n', 'gs', function() Snacks.picker.lsp_definitions({ confirm = 'vsplit' }) end)
-      vim.keymap.set('n', 'gS', function() Snacks.picker.lsp_definitions({ confirm = 'split' }) end)
-      vim.keymap.set('n', 'gi', Snacks.picker.lsp_implementations)
-      vim.keymap.set('n', 'gr', Snacks.picker.lsp_references, { nowait = true })
-    end
   },
   {
     'ledger/vim-ledger',
