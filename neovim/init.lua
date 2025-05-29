@@ -82,13 +82,9 @@ require('lazy').setup({
     }
   },
   {
-    'williamboman/mason.nvim',
-    config = true,
-  },
-  {
-    'williamboman/mason-lspconfig.nvim',
+    'mason-org/mason-lspconfig.nvim',
     dependencies = {
-      'williamboman/mason.nvim',
+      { "mason-org/mason.nvim", opts = {} },
       'neovim/nvim-lspconfig',
       'saghen/blink.cmp',
     },
@@ -96,7 +92,7 @@ require('lazy').setup({
       require('mason-lspconfig').setup({
         ensure_installed = {
           'bashls', 'eslint', 'gopls', 'lua_ls', 'pyright', 'rust_analyzer', 'solargraph', 'ts_ls',
-          'volar'
+          'vue_ls'
         },
       })
 
@@ -169,49 +165,44 @@ require('lazy').setup({
       })
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
+      vim.lsp.config('*', {
+        capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
+      })
 
-      require('mason-lspconfig').setup_handlers({
-        function(server)
-          require('lspconfig')[server].setup({ capabilities = capabilities })
-        end,
-        eslint = function()
-          require('lspconfig').eslint.setup({
-            on_attach = function(client, bufnr)
-              vim.api.nvim_clear_autocmds({ event = 'BufWritePre', buffer = bufnr, group = 'user_format' })
-              vim.api.nvim_create_autocmd('BufWritePre', {
-                group = 'user_format',
-                buffer = bufnr,
-                command = 'EslintFixAll',
-              })
-            end,
-            capabilities = capabilities,
+      local eslint_on_attach = vim.lsp.config.eslint.on_attach
+      vim.lsp.config('eslint', {
+        on_attach = function(client, bufnr)
+          if not eslint_on_attach then return end
+          eslint_on_attach(client, bufnr)
+
+          vim.api.nvim_clear_autocmds({ event = 'BufWritePre', buffer = bufnr, group = 'user_format' })
+          vim.api.nvim_create_autocmd('BufWritePre', {
+            group = 'user_format',
+            buffer = bufnr,
+            command = 'LspEslintFixAll',
           })
         end,
-        lua_ls = function()
-          require('lspconfig').lua_ls.setup({
-            capabilities = capabilities,
-            settings = {
-              Lua = {
-                runtime = { version = 'LuaJIT' },
-                diagnostics = { globals = { 'vim' } },
-                workspace = { library = vim.api.nvim_get_runtime_file('', true), checkThirdParty = false },
-                telemetry = { enable = false },
-              },
+      })
+
+      vim.lsp.config('lua_ls', {
+        settings = {
+          Lua = {
+            runtime = { version = 'LuaJIT' },
+            workspace = {
+              checkThirdParty = false,
+              library = vim.api.nvim_get_runtime_file('', true),
             },
-          })
-        end,
-        rust_analyzer = function()
-          require('lspconfig').rust_analyzer.setup({
-            capabilities = capabilities,
-            settings = {
-              ['rust-analyzer'] = {
-                check = { command = 'clippy' },
-                interpret = { tests = true },
-              }
-            }
-          })
-        end
+          },
+        },
+      })
+
+      vim.lsp.config('rust_analyzer', {
+        settings = {
+          ['rust-analyzer'] = {
+            check = { command = 'clippy' },
+            interpret = { tests = true },
+          }
+        }
       })
     end,
   },
