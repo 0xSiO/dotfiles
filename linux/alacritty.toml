@@ -1,9 +1,0 @@
-[window]
-dimensions = { columns = 150, lines = 40 }
-
-[scrolling]
-history = 100000
-
-[font]
-normal = { family = "SauceCodePro Nerd Font", style = "Regular" }
-size = 11.5

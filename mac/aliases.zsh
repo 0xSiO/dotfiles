@@ -1,4 +1,3 @@
-# General
 alias backup="~/.dotfiles/mac/backup.sh"
 alias cat="bat -p"
 alias history="history 1"
