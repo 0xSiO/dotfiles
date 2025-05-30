@@ -192,10 +192,7 @@ require('lazy').setup({
         end,
       })
 
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      vim.lsp.config('*', {
-        capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
-      })
+      vim.lsp.config('*', { capabilities = require('blink.cmp').get_lsp_capabilities({}, true) })
 
       -- TODO: vim.lsp.config() + LspEslintFixAll in an autocmd currently doesn't work properly
       require('lspconfig').eslint.setup({
