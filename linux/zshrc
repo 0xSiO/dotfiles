@@ -26,12 +26,9 @@ export PATH="$HOME/.local/bin:$PATH"
 . $HOME/.cargo/env
 export RUST_SRC_PATH="$HOME/.rustup/toolchains/stable-$(arch)-unknown-linux-gnu/lib/rustlib/src/rust/library"
 
-# monero
-export PATH="$HOME/Crypto/monero-cli:$PATH"
-
 # asdf config
-. $HOME/.asdf/asdf.sh
-fpath=(${ASDF_DIR}/completions $fpath)
+export PATH="$HOME/.asdf/shims:$PATH"
+fpath=($HOME/.asdf/completions $fpath)
 
 source ~/.dotfiles/powerlevel10k/powerlevel10k.zsh-theme
 

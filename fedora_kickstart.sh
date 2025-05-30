@@ -23,10 +23,10 @@ dnf swap -y ffmpeg-free ffmpeg --allowerasing
 dnf install -y intel-media-driver
 
 # Basic goodies
-dnf install -y alacritty aria2 bat clang cronie-anacron eza fd-find ffmpegthumbnailer \
+dnf install -y alacritty aria2 bat clang cronie-anacron fd-find ffmpegthumbnailer \
     file-roller file-roller-nautilus firewall-config git-delta gnome-tweaks htop mpv mullvad-vpn \
     ncdu neovim numix-icon-theme-circle parallel postfix postgresql-server postgresql-contrib \
-    puddletag pv qbittorrent restic ripgrep s-nail tokei tmux zoxide zsh
+    puddletag pv qbittorrent restic ripgrep s-nail tokei tmux uv zoxide zsh
 
 echo -e "\n=== Miscellaneous configuration ==="
 
@@ -66,7 +66,7 @@ file://$HOME/Development Development" > ~/.config/gtk-3.0/bookmarks
 
 # Install Sauce Code Pro Nerd Font
 SCP_FONT_PATH=~/.local/share/fonts/SauceCodePro.tar.xz
-curl --create-dirs -Lo $SCP_FONT_PATH https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/SourceCodePro.tar.xz
+curl --create-dirs -Lo $SCP_FONT_PATH https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/SourceCodePro.tar.xz
 mkdir ~/.local/share/fonts/SauceCodePro
 tar -xvf $SCP_FONT_PATH -C ~/.local/share/fonts/SauceCodePro
 rm $SCP_FONT_PATH
@@ -87,54 +87,24 @@ git clone --single-branch --branch master --recursive https://github.com/0xSiO/d
 mkdir /etc/cron.daily
 ln -sf ~/.dotfiles/linux/update_tools.sh /etc/cron.daily/update-tools
 
-echo -e "\n=== Installing asdf ==="
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf
-source ~/.asdf/asdf.sh
+echo -e "\n=== Installing asdf & plugins ==="
+ASDF_PATH=~/.local/bin/asdf.tar.gz
+ASDF_VERSION=0.17.0
+curl --create-dirs -Lo $ASDF_PATH https://github.com/asdf-vm/asdf/releases/download/v$ASDF_VERSION/asdf-v$ASDF_VERSION-linux-amd64.tar.gz 
+tar -xvf $ASDF_PATH -C ~/.local/bin
+rm $ASDF_PATH
+
+dnf install -y autoconf gcc rust patch make bzip2 openssl-devel libyaml-devel libffi-devel readline-devel gdbm-devel ncurses-devel perl-FindBin zlib-ng-compat-devel
+asdf plugin add ruby
+asdf plugin add nodejs
+asdf plugin add golang
+asdf install
 
 echo -e "\n=== Installing rust ==="
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path --default-host $(arch)-unknown-linux-gnu --default-toolchain stable -c rust-src
 source ~/.cargo/env
 dnf install -y openssl-devel
 cargo install cargo-audit cargo-outdated cargo-update eza
-
-echo -e "\n=== Installing latest stable ruby ==="
-dnf install -y autoconf gcc patch make bzip2 openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel
-asdf plugin add ruby
-asdf install ruby latest
-asdf global ruby latest
-
-if [ $? -eq 0 ]; then
-    asdf reshim
-else
-    exit 2
-fi
-
-echo -e "\n=== Installing latest stable python / poetry ==="
-dnf install -y make gcc patch zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl-devel tk-devel libffi-devel xz-devel libuuid-devel gdbm-libs libnsl2
-asdf plugin add python
-asdf install python latest
-asdf global python latest
-
-if [ $? -eq 0 ]; then
-    pip install --upgrade pip wheel
-    pip install poetry pynvim
-    asdf reshim
-    poetry config virtualenvs.path ~/.venvs
-else
-    exit 3
-fi
-
-echo -e "\n=== Installing latest nodejs ==="
-asdf plugin add nodejs
-asdf install nodejs latest
-asdf global nodejs latest
-
-if [ $? -eq 0 ]; then
-    npm install -g npm
-    asdf reshim
-else
-    exit 4
-fi
 
 chown -hR $SUDO_USER:$SUDO_USER ~/
 
