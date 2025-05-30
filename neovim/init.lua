@@ -197,17 +197,14 @@ require('lazy').setup({
         capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
       })
 
-      local eslint_on_attach = vim.lsp.config.eslint.on_attach
-      vim.lsp.config('eslint', {
-        on_attach = function(client, bufnr)
-          if not eslint_on_attach then return end
-          eslint_on_attach(client, bufnr)
-
+      -- TODO: vim.lsp.config() + LspEslintFixAll in an autocmd currently doesn't work properly
+      require('lspconfig').eslint.setup({
+        on_attach = function(_, bufnr)
           vim.api.nvim_clear_autocmds({ event = 'BufWritePre', buffer = bufnr, group = 'user_format' })
           vim.api.nvim_create_autocmd('BufWritePre', {
             group = 'user_format',
             buffer = bufnr,
-            command = 'LspEslintFixAll',
+            command = 'EslintFixAll',
           })
         end,
       })
