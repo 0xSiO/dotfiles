@@ -4,4 +4,3 @@
 brew upgrade --greedy
 asdf plugin update --all
 rustup update stable
-pip install -U poetry
