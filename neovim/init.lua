@@ -364,6 +364,7 @@ vim.o.showmode = false
 vim.o.expandtab = true
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
+vim.o.scroll = 10
 vim.opt.diffopt:append({ 'algorithm:histogram' })
 vim.opt.fillchars:append({ diff = ' ' })
 
