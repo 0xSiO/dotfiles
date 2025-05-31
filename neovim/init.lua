@@ -340,6 +340,13 @@ require('lazy').setup({
       })
     end
   },
+  {
+    'm4xshen/hardtime.nvim',
+    config = function()
+      require('hardtime').setup({ disable_mouse = false })
+      vim.keymap.set('n', '<leader>ht', function() vim.cmd.Hardtime('toggle') end)
+    end
+  },
 })
 
 -- Other options
