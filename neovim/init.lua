@@ -343,7 +343,12 @@ require('lazy').setup({
   {
     'm4xshen/hardtime.nvim',
     config = function()
-      require('hardtime').setup({ disable_mouse = false })
+      require('hardtime').setup({
+        max_time = 1500,
+        max_count = 5,
+        disable_mouse = false,
+        restricted_keys = { ['<C-N>'] = false }
+      })
       vim.keymap.set('n', '<leader>ht', function() vim.cmd.Hardtime('toggle') end)
     end
   },
@@ -364,7 +369,6 @@ vim.o.showmode = false
 vim.o.expandtab = true
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
-vim.o.scroll = 10
 vim.opt.diffopt:append({ 'algorithm:histogram' })
 vim.opt.fillchars:append({ diff = ' ' })
 
