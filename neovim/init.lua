@@ -358,6 +358,7 @@ require('lazy').setup({
 vim.o.signcolumn = 'yes'
 vim.o.winborder = 'rounded'
 vim.o.number = true
+vim.o.relativenumber = true
 vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.undofile = true
@@ -373,6 +374,9 @@ vim.opt.diffopt:append({ 'algorithm:histogram' })
 vim.opt.fillchars:append({ diff = ' ' })
 
 -- Other keybindings
+vim.keymap.set('n', '<leader>n', function()
+  vim.o.relativenumber = not vim.o.relativenumber
+end)
 vim.keymap.set('n', '<M-t>', function()
   vim.cmd('vertical botright terminal')
   vim.cmd.startinsert()
