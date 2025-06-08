@@ -165,7 +165,9 @@ require('lazy').setup({
           vim.keymap.set({ 'n', 'v' }, '<leader>f', vim.lsp.buf.format, { buffer = args.buf })
           vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { buffer = args.buf })
           vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = args.buf })
-          vim.keymap.set('n', '<leader>lr', vim.cmd.LspRestart, { buffer = args.buf })
+          vim.keymap.set('n', '<leader>lr', function()
+            vim.iter(vim.lsp.get_clients()):map(function(c) vim.cmd.LspRestart(c.name) end)
+          end, { buffer = args.buf })
 
           vim.api.nvim_clear_autocmds({ buffer = args.buf, group = 'user_format' })
           vim.api.nvim_clear_autocmds({ buffer = args.buf, group = 'user_highlight' })
