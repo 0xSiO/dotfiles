@@ -59,8 +59,8 @@ require('lazy').setup({
     config = function()
       require('nvim-treesitter.configs').setup({
         ensure_installed = {
-          'bash', 'go', 'javascript', 'json', 'lua', 'markdown', 'python', 'regex', 'ruby', 'rust',
-          'sql', 'toml', 'typescript'
+          'bash', 'go', 'javascript', 'json', 'lua', 'markdown', 'php', 'python', 'regex', 'ruby', 'rust', 'sql', 'toml',
+          'tsx', 'typescript', 'yaml'
         },
         highlight = { enable = true },
         indent = { enable = true },
@@ -119,7 +119,7 @@ require('lazy').setup({
       require('mason-lspconfig').setup({
         automatic_enable = true,
         ensure_installed = {
-          'bashls', 'eslint', 'gopls', 'lua_ls', 'pyright', 'rust_analyzer', 'solargraph', 'ts_ls',
+          'bashls', 'biome', 'gopls', 'lua_ls', 'phpactor', 'pyright', 'rust_analyzer', 'solargraph', 'ts_ls', 'vacuum',
           'vue_ls'
         },
       })
@@ -133,9 +133,7 @@ require('lazy').setup({
           focusable = false,
           source = true,
           format = function(d)
-            if d.user_data.lsp
-                and d.user_data.lsp.codeDescription
-                and d.user_data.lsp.codeDescription.href then
+            if d.user_data.lsp and d.user_data.lsp.codeDescription and d.user_data.lsp.codeDescription.href then
               return d.message .. '\n  ' .. d.user_data.lsp.codeDescription.href
             else
               return d.message
@@ -151,9 +149,7 @@ require('lazy').setup({
         vim.api.nvim_clear_autocmds({ event = 'CursorMoved', group = 'user_hover' })
         vim.api.nvim_create_autocmd('CursorMoved', {
           group = 'user_hover',
-          callback = function()
-            vim.opt.eventignore:remove('CursorHold')
-          end,
+          callback = function() vim.opt.eventignore:remove('CursorHold') end,
           once = true
         })
       end
@@ -169,47 +165,36 @@ require('lazy').setup({
             vim.iter(vim.lsp.get_clients()):map(function(c) vim.cmd.LspRestart(c.name) end)
           end, { buffer = args.buf })
 
-          vim.api.nvim_clear_autocmds({ buffer = args.buf, group = 'user_format' })
-          vim.api.nvim_clear_autocmds({ buffer = args.buf, group = 'user_highlight' })
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
 
+          vim.api.nvim_clear_autocmds({ buffer = args.buf, group = 'user_format' })
           vim.api.nvim_create_autocmd('BufWritePre', {
             group = 'user_format',
             buffer = args.buf,
             callback = function() vim.lsp.buf.format({ bufnr = args.buf }) end,
           })
-          vim.api.nvim_create_autocmd('CursorHold', {
-            group = 'user_highlight',
-            buffer = args.buf,
-            callback = function()
-              vim.lsp.buf.clear_references()
-              vim.lsp.buf.document_highlight()
-              open_diagnostics()
-            end
-          })
-          vim.api.nvim_create_autocmd('CursorMoved', {
-            group = 'user_highlight',
-            buffer = args.buf,
-            callback = vim.lsp.buf.clear_references
-          })
+
+          if client and client:supports_method('textDocument/documentHighlight', args.buf) then
+            vim.api.nvim_clear_autocmds({ buffer = args.buf, group = 'user_highlight' })
+            vim.api.nvim_create_autocmd('CursorHold', {
+              group = 'user_highlight',
+              buffer = args.buf,
+              callback = function()
+                vim.lsp.buf.clear_references()
+                vim.lsp.buf.document_highlight()
+                open_diagnostics()
+              end
+            })
+            vim.api.nvim_create_autocmd('CursorMoved', {
+              group = 'user_highlight',
+              buffer = args.buf,
+              callback = vim.lsp.buf.clear_references
+            })
+          end
         end,
       })
 
       vim.lsp.config('*', { capabilities = require('blink.cmp').get_lsp_capabilities({}, true) })
-
-      local base_on_attach = vim.lsp.config.eslint.on_attach
-      vim.lsp.config('eslint', {
-        on_attach = function(client, bufnr)
-          if not base_on_attach then return end
-          base_on_attach(client, bufnr)
-
-          vim.api.nvim_clear_autocmds({ event = 'BufWritePre', buffer = bufnr, group = 'user_format' })
-          vim.api.nvim_create_autocmd('BufWritePre', {
-            group = 'user_format',
-            buffer = bufnr,
-            command = 'LspEslintFixAll',
-          })
-        end,
-      })
 
       vim.lsp.config('lua_ls', {
         settings = {
@@ -231,6 +216,14 @@ require('lazy').setup({
           }
         }
       })
+
+      -- For vacuum
+      vim.filetype.add {
+        pattern = {
+          ['openapi.*%.ya?ml'] = 'yaml.openapi',
+          ['openapi.*%.json'] = 'json.openapi',
+        },
+      }
     end,
   },
   {
@@ -349,6 +342,7 @@ require('lazy').setup({
     'm4xshen/hardtime.nvim',
     config = function()
       require('hardtime').setup({
+        enabled = false,
         max_time = 1500,
         max_count = 5,
         disable_mouse = false,
@@ -365,7 +359,6 @@ vim.o.hidden = false
 vim.o.ignorecase = true
 vim.o.number = true
 vim.o.relativenumber = true
-vim.o.shiftwidth = 4
 vim.o.showmode = false
 vim.o.signcolumn = 'yes'
 vim.o.smartcase = true
@@ -380,9 +373,7 @@ vim.opt.diffopt:append('algorithm:histogram')
 vim.opt.fillchars:append('diff: ')
 
 -- Other keybindings
-vim.keymap.set('n', '<leader>n', function()
-  vim.o.relativenumber = not vim.o.relativenumber
-end)
+vim.keymap.set('n', '<leader>n', function() vim.o.relativenumber = not vim.o.relativenumber end)
 vim.keymap.set('n', '<M-t>', function()
   vim.cmd('vertical botright terminal')
   vim.cmd.startinsert()
@@ -395,4 +386,4 @@ vim.cmd.command('Q :q')
 vim.cmd.command('Qa :qa')
 vim.cmd.command('QA :qa')
 
--- vim: sw=2 ts=2
+-- vim: sw=2

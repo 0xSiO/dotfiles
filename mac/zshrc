@@ -20,18 +20,8 @@ bindkey "^R" history-incremental-search-backward
 export HISTSIZE=10000
 export SAVEHIST=$HISTSIZE
 export EDITOR=nvim
-export PATH="/usr/local/sbin:$PATH"
 
-# rust config
-. $HOME/.cargo/env
-export RUST_SRC_PATH="$HOME/.rustup/toolchains/stable-$(uname -m)-apple-darwin/lib/rustlib/src/rust/library"
-
-# postgres
-export PATH="/usr/local/opt/postgresql@17/bin:$PATH"
-
-# asdf config
-. /usr/local/opt/asdf/libexec/asdf.sh
-
+# TODO: This is slow sometimes
 source ~/.dotfiles/powerlevel10k/powerlevel10k.zsh-theme
 
 # load homebrew completions
@@ -42,6 +32,7 @@ if type brew &>/dev/null; then
   compinit
 fi
 
+eval "$(mise activate zsh)"
 eval "$(zoxide init zsh)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
