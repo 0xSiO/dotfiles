@@ -87,24 +87,16 @@ git clone --single-branch --branch master --recursive https://github.com/0xSiO/d
 mkdir /etc/cron.daily
 ln -sf ~/.dotfiles/linux/update_tools.sh /etc/cron.daily/update-tools
 
-echo -e "\n=== Installing asdf & plugins ==="
-ASDF_PATH=~/.local/bin/asdf.tar.gz
-ASDF_VERSION=0.17.0
-curl --create-dirs -Lo $ASDF_PATH https://github.com/asdf-vm/asdf/releases/download/v$ASDF_VERSION/asdf-v$ASDF_VERSION-linux-amd64.tar.gz 
-tar -xvf $ASDF_PATH -C ~/.local/bin
-rm $ASDF_PATH
-
-dnf install -y autoconf gcc rust patch make bzip2 openssl-devel libyaml-devel libffi-devel readline-devel gdbm-devel ncurses-devel perl-FindBin zlib-ng-compat-devel
-asdf plugin add ruby
-asdf plugin add nodejs
-asdf plugin add golang
-asdf install
-
 echo -e "\n=== Installing rust ==="
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path --default-host $(arch)-unknown-linux-gnu --default-toolchain stable -c rust-src
 source ~/.cargo/env
 dnf install -y openssl-devel
-cargo install cargo-audit cargo-outdated cargo-update eza
+cargo install cargo-audit cargo-outdated cargo-update eza starship
+
+echo -e "\n=== Installing mise & tools ==="
+curl https://mise.run/zsh | sh
+source ~/.zshrc
+mise use -g go@latest node@latest
 
 chown -hR $SUDO_USER:$SUDO_USER ~/
 

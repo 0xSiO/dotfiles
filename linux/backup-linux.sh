@@ -12,7 +12,6 @@ echo "Starting backup."
 restic -r "$BACKUP_LOCATION" backup --verbose ~/ \
     -e ~/.local/share/Trash \
     -e ~/.local/share/containers \
-    -e ~/.asdf \
     -e ~/.cache \
     -e ~/.cargo \
     -e ~/.gradle \

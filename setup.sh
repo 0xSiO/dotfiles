@@ -24,10 +24,10 @@ link() {
 section "Setting up $platform-specific files"
 case $platform in
     linux)
-        platform_files="gitconfig tool-versions zshrc"
+        platform_files="gitconfig zshrc"
         ;;
     mac)
-        platform_files="gitconfig tool-versions zshrc"
+        platform_files="gitconfig zshrc"
         ;;
     *)
         echo "Unsupported platform: $platform"
@@ -43,7 +43,7 @@ for file in $platform_files; do
 done
 
 section "Setting up common files"
-common_files="alacritty.toml p10k.zsh tmux.conf"
+common_files="alacritty.toml tmux.conf"
 for file in $common_files; do
     echo "linking ~/.$file to $dir/$file"
     link $dir/$file ~/.$file
