@@ -84,8 +84,6 @@ echo -e "\n=== Downloading dotfiles ==="
 rm -rf ~/.dotfiles_old
 git clone --single-branch --branch master --recursive https://github.com/0xSiO/dotfiles ~/.dotfiles
 ~/.dotfiles/setup.sh linux
-mkdir /etc/cron.daily
-ln -sf ~/.dotfiles/linux/update_tools.sh /etc/cron.daily/update-tools
 
 echo -e "\n=== Installing rust ==="
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path --default-host $(arch)-unknown-linux-gnu --default-toolchain stable -c rust-src
