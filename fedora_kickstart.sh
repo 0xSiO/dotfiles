@@ -26,7 +26,7 @@ dnf install -y intel-media-driver
 dnf install -y alacritty aria2 bat clang cronie-anacron fd-find ffmpegthumbnailer \
     file-roller file-roller-nautilus firewall-config git-delta gnome-tweaks htop mpv mullvad-vpn \
     ncdu neovim numix-icon-theme-circle parallel postfix postgresql-server postgresql-contrib \
-    puddletag pv qbittorrent restic ripgrep s-nail tokei tmux uv zoxide zsh
+    puddletag pv qbittorrent restic ripgrep tokei tmux uv zoxide zsh
 
 echo -e "\n=== Miscellaneous configuration ==="
 
@@ -73,12 +73,6 @@ rm $SCP_FONT_PATH
 
 # Reload fonts
 fc-cache -r
-
-# Mail redirection
-echo "root:		$SUDO_USER" >> /etc/aliases
-newaliases
-systemctl enable postfix
-systemctl start postfix
 
 echo -e "\n=== Downloading dotfiles ==="
 rm -rf ~/.dotfiles_old
