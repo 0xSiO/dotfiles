@@ -119,8 +119,7 @@ require('lazy').setup({
       require('mason-lspconfig').setup({
         automatic_enable = true,
         ensure_installed = {
-          'bashls', 'biome', 'gopls', 'lua_ls', 'phpactor', 'pyright', 'rust_analyzer', 'solargraph', 'ts_ls', 'vacuum',
-          'vue_ls'
+          'bashls', 'biome', 'gopls', 'lua_ls', 'phpactor', 'pyright', 'rust_analyzer', 'solargraph', 'ts_ls', 'vacuum'
         },
       })
 
