@@ -315,7 +315,6 @@ require('lazy').setup({
           end
         }
       })
-      vim.notify = require('mini.notify').make_notify()
     end,
   },
   {
