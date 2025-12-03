@@ -119,7 +119,7 @@ require('lazy').setup({
       require('mason-lspconfig').setup({
         automatic_enable = true,
         ensure_installed = {
-          'bashls', 'biome', 'gopls', 'lua_ls', 'phpactor', 'pyright', 'rust_analyzer', 'solargraph', 'ts_ls', 'vacuum'
+          'bashls', 'biome', 'golangci_lint_ls', 'gopls', 'lua_ls', 'phpactor', 'rust_analyzer', 'ts_ls', 'ty'
         },
       })
 
@@ -138,7 +138,7 @@ require('lazy').setup({
               return d.message
             end
           end,
-          close_events = { 'CursorMoved', 'BufEnter', 'BufWritePre' }
+          close_events = { 'CursorMoved', 'BufEnter', 'BufWritePre', 'BufLeave' }
         })
       end
 
@@ -215,14 +215,6 @@ require('lazy').setup({
           }
         }
       })
-
-      -- For vacuum
-      vim.filetype.add {
-        pattern = {
-          ['openapi.*%.ya?ml'] = 'yaml.openapi',
-          ['openapi.*%.json'] = 'json.openapi',
-        },
-      }
     end,
   },
   {
@@ -238,8 +230,13 @@ require('lazy').setup({
       vim.api.nvim_create_autocmd('BufEnter', {
         nested = true,
         callback = function()
-          if #vim.api.nvim_list_wins() == 1 and require('nvim-tree.utils').is_nvim_tree_buf() then
-            vim.cmd.quit()
+          if require('nvim-tree.utils').is_nvim_tree_buf() then
+            if #vim.api.nvim_list_wins() == 1 then
+              vim.cmd.quit()
+            end
+          else
+            require('nvim-tree.api').tree.collapse_all()
+            require('nvim-tree.api').tree.find_file()
           end
         end
       })
@@ -272,6 +269,7 @@ require('lazy').setup({
       })
 
       vim.keymap.set('n', '<leader>gd', vim.cmd.DiffviewOpen)
+      vim.keymap.set('n', '<leader>gl', vim.cmd.DiffviewFileHistory)
       vim.keymap.set('n', '<leader>gf', function() vim.cmd.DiffviewFileHistory('%', '--follow') end)
     end,
   },
@@ -303,7 +301,7 @@ require('lazy').setup({
     end
   },
   {
-    'echasnovski/mini.nvim',
+    'nvim-mini/mini.nvim',
     config = function()
       require('mini.comment').setup()
       require('mini.pairs').setup()
@@ -357,6 +355,7 @@ vim.o.hidden = false
 vim.o.ignorecase = true
 vim.o.number = true
 vim.o.relativenumber = true
+vim.o.shiftwidth = 2
 vim.o.showmode = false
 vim.o.signcolumn = 'yes'
 vim.o.smartcase = true
@@ -372,6 +371,7 @@ vim.opt.fillchars:append('diff: ')
 
 -- Other keybindings
 vim.keymap.set('n', '<leader>n', function() vim.o.relativenumber = not vim.o.relativenumber end)
+vim.keymap.set('n', '<leader>bc', function() vim.cmd('%bd|e#') end)
 vim.keymap.set('n', '<M-t>', function()
   vim.cmd('vertical botright terminal')
   vim.cmd.startinsert()
