@@ -1,13 +1,6 @@
 # Silly Mac, see https://stackoverflow.com/a/41054093
 export GPG_TTY=$(tty)
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # User specific aliases and functions
 . ~/.dotfiles/mac/aliases.zsh
 
@@ -17,23 +10,18 @@ setopt histignorespace
 bindkey -v
 bindkey "^R" history-incremental-search-backward
 
-export HISTSIZE=10000
+export HISTSIZE=100000
 export SAVEHIST=$HISTSIZE
 export EDITOR=nvim
-
-# TODO: This is slow sometimes
-source ~/.dotfiles/powerlevel10k/powerlevel10k.zsh-theme
 
 # load homebrew completions
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 
   autoload -Uz compinit
-  compinit
+  compinit -C
 fi
 
 eval "$(mise activate zsh)"
+eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
