@@ -1,0 +1,21 @@
+- name: Deploy NetworkManager MAC randomization config
+  ansible.builtin.copy:
+    dest: /etc/NetworkManager/conf.d/00-macrandomize.conf
+    content: |
+      [device]
+      wifi.scan-rand-mac-address=yes
+
+      [connection]
+      wifi.cloned-mac-address=random
+      ethernet.cloned-mac-address=random
+      connection.stable-id=${CONNECTION}/${BOOT}
+    mode: "0644"
+  become: true
+  notify: Restart NetworkManager
+
+- name: Ensure NetworkManager is running
+  ansible.builtin.systemd:
+    name: NetworkManager
+    state: started
+    enabled: true
+  become: true

@@ -1,0 +1,25 @@
+name: Lint
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install Ansible and ansible-lint
+        run: pipx install ansible-lint
+
+      - name: Install Ansible collections
+        run: ansible-galaxy collection install -r requirements.yml
+
+      - name: Run ansible-lint
+        run: echo "ci" > .vault_pass && ansible-lint playbooks/site.yml
+
+      - name: Run syntax check
+        run: ansible-playbook playbooks/site.yml --syntax-check

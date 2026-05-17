@@ -1,0 +1,36 @@
+- name: Install RPM Fusion repositories
+  ansible.builtin.dnf:
+    name: "{{ fedora_extra_repos }}"
+    state: present
+  become: true
+
+- name: Add Mullvad VPN repository
+  ansible.builtin.yum_repository:
+    name: mullvad
+    description: Mullvad VPN
+    baseurl: https://repository.mullvad.net/rpm/stable/$basearch
+    gpgcheck: true
+    gpgkey: https://repository.mullvad.net/rpm/mullvad-keyring.asc
+    enabled: true
+  become: true
+
+- name: Remove unwanted packages
+  ansible.builtin.dnf:
+    name: "{{ packages_remove }}"
+    state: absent
+  become: true
+
+- name: Swap ffmpeg-free for ffmpeg
+  when: not ansible_check_mode
+  ansible.builtin.command:
+    cmd: dnf swap -y ffmpeg-free ffmpeg --allowerasing
+  become: true
+  register: ffmpeg_swap
+  changed_when: "'Nothing to do' not in ffmpeg_swap.stdout"
+  failed_when: ffmpeg_swap.rc != 0 and 'No match for argument' not in ffmpeg_swap.stderr
+
+- name: Install packages
+  ansible.builtin.dnf:
+    name: "{{ packages_install }}"
+    state: present
+  become: true

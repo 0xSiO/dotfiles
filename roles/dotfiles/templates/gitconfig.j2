@@ -1,14 +1,22 @@
 [user]
-    name = Luc Street
-    email = 6709262+0xSiO@users.noreply.github.com
-    signingkey = B50141371B40B526
+    name = "Luc Street"
+    email = "6709262+0xSiO@users.noreply.github.com"
+    signingkey = "B50141371B40B526"
 
 [core]
-    editor = vi
+    editor = vi --clean
 
 [init]
     defaultBranch = master
 
+{% if ansible_os_family == 'Darwin' %}
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+
+[credential]
+    helper = osxkeychain
+
+{% endif %}
 [commit]
     gpgsign = true
 

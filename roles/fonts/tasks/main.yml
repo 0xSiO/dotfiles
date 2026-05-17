@@ -1,0 +1,46 @@
+- name: Ensure fonts directory exists
+  check_mode: false
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.local/share/fonts/{{ fonts_nerd_font_name }}/{{ fonts_nerd_font_version }}"
+    state: directory
+    mode: "0755"
+
+- name: Find old font versions
+  ansible.builtin.find:
+    paths: "{{ ansible_user_dir }}/.local/share/fonts/{{ fonts_nerd_font_name }}"
+    file_type: directory
+    excludes:
+      - "{{ fonts_nerd_font_version }}"
+  register: old_font_dirs
+
+- name: Remove old font versions
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ old_font_dirs.files }}"
+
+- name: Check if font is already installed
+  ansible.builtin.find:
+    paths: "{{ ansible_user_dir }}/.local/share/fonts/{{ fonts_nerd_font_name }}/{{ fonts_nerd_font_version }}"
+    patterns: "*.ttf"
+  register: font_files
+
+- name: Download and extract Nerd Font
+  when: font_files.matched == 0 and not ansible_check_mode
+  block:
+    - name: Download Nerd Font archive
+      ansible.builtin.get_url:
+        url: "https://github.com/ryanoasis/nerd-fonts/releases/download/{{ fonts_nerd_font_version }}/{{ fonts_nerd_font_name }}.tar.xz"
+        dest: "/tmp/{{ fonts_nerd_font_name }}.tar.xz"
+        mode: "0644"
+
+    - name: Extract Nerd Font
+      ansible.builtin.unarchive:
+        src: "/tmp/{{ fonts_nerd_font_name }}.tar.xz"
+        dest: "{{ ansible_user_dir }}/.local/share/fonts/{{ fonts_nerd_font_name }}/{{ fonts_nerd_font_version }}"
+        remote_src: true
+
+    - name: Refresh font cache
+      ansible.builtin.command:
+        cmd: fc-cache -r
+      changed_when: false

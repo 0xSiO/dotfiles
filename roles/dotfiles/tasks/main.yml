@@ -1,0 +1,103 @@
+- name: Ensure config directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ ansible_user_dir }}/.config/alacritty"
+    - "{{ ansible_user_dir }}/.config/mise"
+    - "{{ ansible_user_dir }}/.config/mpv"
+    - "{{ ansible_user_dir }}/.config/nvim"
+    - "{{ ansible_user_dir }}/.local/bin"
+
+- name: Deploy zshrc
+  ansible.builtin.template:
+    src: zshrc.j2
+    dest: "{{ ansible_user_dir }}/.zshrc"
+    mode: "0644"
+
+- name: Deploy aliases
+  ansible.builtin.copy:
+    src: aliases.zsh
+    dest: "{{ ansible_user_dir }}/.aliases.zsh"
+    mode: "0644"
+
+- name: Deploy shell secrets
+  ansible.builtin.template:
+    src: secrets.zsh.j2
+    dest: "{{ ansible_user_dir }}/.secrets.zsh"
+    mode: "0600"
+
+- name: Deploy gitconfig
+  ansible.builtin.template:
+    src: gitconfig.j2
+    dest: "{{ ansible_user_dir }}/.gitconfig"
+    mode: "0644"
+
+- name: Deploy tmux config
+  ansible.builtin.copy:
+    src: tmux.conf
+    dest: "{{ ansible_user_dir }}/.tmux.conf"
+    mode: "0644"
+
+- name: Deploy alacritty config
+  ansible.builtin.copy:
+    src: alacritty.toml
+    dest: "{{ ansible_user_dir }}/.config/alacritty/alacritty.toml"
+    mode: "0644"
+
+- name: Deploy mise config
+  ansible.builtin.copy:
+    src: mise/config.toml
+    dest: "{{ ansible_user_dir }}/.config/mise/config.toml"
+    mode: "0644"
+
+- name: Deploy mpv config
+  ansible.builtin.copy:
+    src: "mpv/{{ item }}"
+    dest: "{{ ansible_user_dir }}/.config/mpv/{{ item }}"
+    mode: "0644"
+  loop:
+    - mpv.conf
+    - input.conf
+
+- name: Deploy neovim init.lua
+  ansible.builtin.copy:
+    src: neovim/init.lua
+    dest: "{{ ansible_user_dir }}/.config/nvim/init.lua"
+    mode: "0644"
+
+- name: Deploy neovim lazy-lock.json
+  ansible.builtin.copy:
+    src: neovim/lazy-lock.json
+    dest: "{{ ansible_user_dir }}/.config/nvim/lazy-lock.json"
+    mode: "0644"
+    force: false
+
+- name: Deploy backup script
+  ansible.builtin.copy:
+    src: "{{ 'backup-macos.sh' if ansible_os_family == 'Darwin' else 'backup-linux.sh' }}"
+    dest: "{{ ansible_user_dir }}/.local/bin/backup"
+    mode: "0755"
+
+- name: Deploy MTMR config
+  when: ansible_os_family == 'Darwin'
+  block:
+    - name: Ensure MTMR config directory exists
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/Library/Application Support/MTMR"
+        state: directory
+        mode: "0755"
+
+    - name: Deploy MTMR files
+      ansible.builtin.copy:
+        src: "mtmr/{{ item }}"
+        dest: "{{ ansible_user_dir }}/Library/Application Support/MTMR/{{ item }}"
+        mode: "0644"
+      loop:
+        - items.json
+        - camera.png
+        - cancel.png
+        - cpu.png
+        - memory.png
+        - thermometer.png

@@ -1,13 +1,17 @@
 # luc's dotfiles
 
-`setup.sh [platform]` creates the necessary symlinks. Existing dotfiles are
-backed up to `~/.dotfiles.old`.
+Workstation setup & config, managed with [Ansible](https://docs.ansible.com/).
 
-## Linux
-Run `setup.sh linux`.
+Fresh machine:
+```bash
+curl -sL https://raw.githubusercontent.com/0xSiO/dotfiles/master/bootstrap.sh | bash
+```
 
-`sudo bash fedora_kickstart.sh` will perform almost all needed configuration
-and installation on Fedora, including setting up these dotfiles.
-
-## macOS
-Run `setup.sh mac`.
+Make targets:
+```bash
+make apply # Apply configuration
+make check # Dry run
+make lint  # Run lints
+make vault # Edit secrets
+make deps  # Install Ansible deps
+```

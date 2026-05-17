@@ -1,0 +1,24 @@
+- name: Check if mise is installed
+  check_mode: false
+  ansible.builtin.stat:
+    path: "{{ mise_bin }}"
+  register: mise_check
+
+- name: Install mise
+  when: not mise_check.stat.exists and not ansible_check_mode
+  block:
+    - name: Download mise installer
+      ansible.builtin.get_url:
+        url: https://mise.run
+        dest: /tmp/mise-installer.sh
+        mode: "0755"
+
+    - name: Run mise installer
+      ansible.builtin.command:
+        cmd: /tmp/mise-installer.sh
+        creates: "{{ mise_bin }}"
+
+- name: Install mise tools globally
+  when: not ansible_check_mode
+  ansible.builtin.command:
+    cmd: "{{ mise_bin }} install"

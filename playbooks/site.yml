@@ -1,0 +1,40 @@
+- name: Detect platform
+  hosts: localhost
+  gather_facts: true
+  tasks:
+    - name: Classify host by OS
+      tags: always
+      ansible.builtin.group_by:
+        key: "{{ 'macos' if ansible_os_family == 'Darwin' else 'fedora' }}"
+
+- name: Set up workstation
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - role: base
+      tags: [packages]
+
+    - role: dotfiles
+      tags: [dotfiles]
+
+    - role: fonts
+      tags: [fonts]
+      when: ansible_distribution == 'Fedora'
+
+    - role: networking
+      tags: [networking]
+      when: ansible_distribution == 'Fedora'
+
+    - role: audio
+      tags: [audio]
+      when: ansible_distribution == 'Fedora'
+
+    - role: gui
+      tags: [gui]
+      when: ansible_distribution == 'Fedora'
+
+    - role: rust
+      tags: [rust]
+
+    - role: mise
+      tags: [mise]

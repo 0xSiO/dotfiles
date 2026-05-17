@@ -1,0 +1,19 @@
+mise_bin: /opt/homebrew/bin/mise
+
+packages_install:
+  - aria2
+  - bat
+  - bottom
+  - eza
+  - fd
+  - git-delta
+  - htop
+  - mise
+  - mpv
+  - ncdu
+  - neovim
+  - ripgrep
+  - starship
+  - tmux
+  - tokei
+  - zoxide

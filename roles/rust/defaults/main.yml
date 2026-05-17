@@ -1,0 +1,12 @@
+rust_default_toolchain: stable
+rust_components:
+  - rust-src
+
+rust_cargo_crates:
+  - battop
+  - cargo-audit
+  - cargo-outdated
+  - cargo-update
+  - sqlx-cli
+
+rust_cargo_crates_platform: []

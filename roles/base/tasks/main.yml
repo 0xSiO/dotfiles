@@ -1,0 +1,13 @@
+- name: Include Fedora package tasks
+  ansible.builtin.include_tasks: fedora.yml
+  when: ansible_distribution == 'Fedora'
+
+- name: Include macOS package tasks
+  ansible.builtin.include_tasks: macos.yml
+  when: ansible_os_family == 'Darwin'
+
+- name: Change default shell to zsh
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: /bin/zsh
+  become: true

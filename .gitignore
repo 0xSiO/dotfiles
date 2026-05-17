@@ -1,2 +1,3 @@
 .DS_Store
-mpv/watch_later/
+.vault_pass
+*.retry
