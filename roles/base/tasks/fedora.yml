@@ -25,9 +25,9 @@
   ansible.builtin.command:
     cmd: dnf swap -y ffmpeg-free ffmpeg --allowerasing
   become: true
-  register: ffmpeg_swap
-  changed_when: "'Nothing to do' not in ffmpeg_swap.stdout"
-  failed_when: ffmpeg_swap.rc != 0 and 'No match for argument' not in ffmpeg_swap.stderr
+  register: base_ffmpeg_swap
+  changed_when: "'Nothing to do' not in base_ffmpeg_swap.stdout"
+  failed_when: base_ffmpeg_swap.rc != 0 and 'No match for argument' not in base_ffmpeg_swap.stderr
 
 - name: Install packages
   ansible.builtin.dnf:

@@ -11,22 +11,22 @@
     file_type: directory
     excludes:
       - "{{ fonts_nerd_font_version }}"
-  register: old_font_dirs
+  register: fonts_old_font_dirs
 
 - name: Remove old font versions
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: absent
-  loop: "{{ old_font_dirs.files }}"
+  loop: "{{ fonts_old_font_dirs.files }}"
 
 - name: Check if font is already installed
   ansible.builtin.find:
     paths: "{{ ansible_user_dir }}/.local/share/fonts/{{ fonts_nerd_font_name }}/{{ fonts_nerd_font_version }}"
     patterns: "*.ttf"
-  register: font_files
+  register: fonts_font_files
 
 - name: Download and extract Nerd Font
-  when: font_files.matched == 0 and not ansible_check_mode
+  when: fonts_font_files.matched == 0 and not ansible_check_mode
   block:
     - name: Download Nerd Font archive
       ansible.builtin.get_url:

@@ -2,10 +2,10 @@
   check_mode: false
   ansible.builtin.stat:
     path: "{{ ansible_user_dir }}/.cargo/bin/rustup"
-  register: rustup_bin
+  register: rust_rustup_bin
 
 - name: Install rustup
-  when: not rustup_bin.stat.exists and not ansible_check_mode
+  when: not rust_rustup_bin.stat.exists and not ansible_check_mode
   block:
     - name: Download rustup installer
       ansible.builtin.get_url:
@@ -25,10 +25,10 @@
   check_mode: false
   ansible.builtin.stat:
     path: "{{ ansible_user_dir }}/.cargo/bin/cargo-binstall"
-  register: binstall_bin
+  register: rust_binstall_bin
 
 - name: Install cargo-binstall
-  when: not binstall_bin.stat.exists and not ansible_check_mode
+  when: not rust_binstall_bin.stat.exists and not ansible_check_mode
   ansible.builtin.command:
     cmd: "{{ ansible_user_dir }}/.cargo/bin/cargo install cargo-binstall"
     creates: "{{ ansible_user_dir }}/.cargo/bin/cargo-binstall"
@@ -38,5 +38,5 @@
   ansible.builtin.command:
     cmd: "{{ ansible_user_dir }}/.cargo/bin/cargo binstall -y {{ item }}"
   loop: "{{ rust_cargo_crates + rust_cargo_crates_platform }}"
-  register: cargo_install
-  changed_when: "'already installed' not in cargo_install.stdout"
+  register: rust_cargo_install
+  changed_when: "'already installed' not in rust_cargo_install.stdout"

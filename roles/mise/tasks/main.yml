@@ -22,3 +22,4 @@
   when: not ansible_check_mode
   ansible.builtin.command:
     cmd: "{{ mise_bin }} install"
+  changed_when: false
