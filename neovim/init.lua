@@ -316,6 +316,18 @@ require('lazy').setup({
     end,
   },
   {
+    'folke/sidekick.nvim',
+    config = function()
+      require('sidekick').setup({
+        cli = { mux = { enabled = true } }
+      })
+
+      local sidekick = require('sidekick.cli')
+      vim.keymap.set({ 'n', 't', 'i', 'x' }, '<C-a>', function() sidekick.toggle({ focus = true }) end)
+      vim.keymap.set({ 'n', 'x' }, '<leader>ap', function() sidekick.prompt() end)
+    end
+  },
+  {
     'ledger/vim-ledger',
     config = function()
       vim.g.ledger_date_format = '%Y-%m-%d'
