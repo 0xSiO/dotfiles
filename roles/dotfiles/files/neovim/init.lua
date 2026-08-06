@@ -28,336 +28,121 @@ require('lazy').setup({
   },
   {
     'folke/snacks.nvim',
-    priority = 1000,
-    config = function()
-      require('snacks').setup({
-        input = {},
-        picker = {
-          hidden = true,
-          win = {
-            input = { keys = { ['<Esc>'] = { 'close', mode = { 'n', 'i' } } } }
-          }
-        }
-      })
-
-      vim.keymap.set('n', 'ff', function() Snacks.picker.files({ hidden = true }) end)
-      vim.keymap.set('n', 'fg', Snacks.picker.grep)
-      vim.keymap.set('n', 'fh', Snacks.picker.help)
-      vim.keymap.set('n', 'fm', Snacks.picker.man)
-      vim.keymap.set('n', 'gd', function()
-        Snacks.picker.lsp_definitions({ confirm = vim.o.modified and 'vsplit' or 'jump' })
-      end)
-      vim.keymap.set('n', 'gs', function() Snacks.picker.lsp_definitions({ confirm = 'vsplit' }) end)
-      vim.keymap.set('n', 'gS', function() Snacks.picker.lsp_definitions({ confirm = 'split' }) end)
-      vim.keymap.set('n', 'gi', Snacks.picker.lsp_implementations)
-      vim.keymap.set('n', 'gr', Snacks.picker.lsp_references, { nowait = true })
-    end
-  },
-  {
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-    config = function()
-      require('nvim-treesitter.configs').setup({
-        ensure_installed = {
-          'bash', 'go', 'javascript', 'json', 'lua', 'markdown', 'php', 'python', 'regex', 'ruby', 'rust', 'sql', 'toml',
-          'tsx', 'typescript', 'yaml'
-        },
-        highlight = { enable = true },
-        indent = { enable = true },
-      })
-
-      vim.o.foldmethod = 'expr'
-      vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-      vim.o.foldlevel = 1
-    end,
-  },
-  {
-    'saghen/blink.compat',
-    version = '2.*',
-    lazy = true,
-    opts = {},
-  },
-  {
-    'saghen/blink.cmp',
-    dependencies = {
-      'rafamadriz/friendly-snippets',
-      'kirasok/cmp-hledger',
-    },
-    version = '1.*',
-    opts = {
-      keymap = {
-        preset = 'super-tab',
-        ['<C-j>'] = { 'select_next' },
-        ['<C-k>'] = { 'select_prev' },
-        ['<C-f>'] = { 'scroll_documentation_down' },
-        ['<C-b>'] = { 'scroll_documentation_up' },
-      },
-      completion = { documentation = { auto_show = true } },
-      signature = { enabled = true },
-      cmdline = {
-        keymap = {
-          ['<C-j>'] = { 'select_next' },
-          ['<C-k>'] = { 'select_prev' },
-        },
-      },
-      sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer', 'hledger' },
-        providers = {
-          hledger = { name = 'hledger', module = 'blink.compat.source' }
-        },
-      },
-    }
-  },
-  {
-    'mason-org/mason-lspconfig.nvim',
-    dependencies = {
-      { "mason-org/mason.nvim", opts = {} },
-      'neovim/nvim-lspconfig',
-      'saghen/blink.cmp',
-    },
-    config = function()
-      require('mason-lspconfig').setup({
-        automatic_enable = true,
-        ensure_installed = {
-          'bashls', 'biome', 'golangci_lint_ls', 'gopls', 'lua_ls', 'phpactor', 'rust_analyzer', 'ts_ls', 'ty'
-        },
-      })
-
-      vim.api.nvim_create_augroup('user_format', {})
-      vim.api.nvim_create_augroup('user_highlight', {})
-      vim.api.nvim_create_augroup('user_hover', {})
-
-      local function open_diagnostics()
-        vim.diagnostic.open_float({
-          focusable = false,
-          source = true,
-          format = function(d)
-            if d.user_data.lsp and d.user_data.lsp.codeDescription and d.user_data.lsp.codeDescription.href then
-              return d.message .. '\n  ' .. d.user_data.lsp.codeDescription.href
-            else
-              return d.message
-            end
-          end,
-          close_events = { 'CursorMoved', 'BufEnter', 'BufWritePre', 'BufLeave' }
-        })
-      end
-
-      local function persist_hover()
-        vim.opt.eventignore:append('CursorHold')
-        vim.lsp.buf.hover()
-        vim.api.nvim_clear_autocmds({ event = 'CursorMoved', group = 'user_hover' })
-        vim.api.nvim_create_autocmd('CursorMoved', {
-          group = 'user_hover',
-          callback = function() vim.opt.eventignore:remove('CursorHold') end,
-          once = true
-        })
-      end
-
-      -- LSP keybindings & autocommands
-      vim.api.nvim_create_autocmd('LspAttach', {
-        callback = function(args)
-          vim.keymap.set('n', '<C-Space>', persist_hover, { buffer = args.buf })
-          vim.keymap.set({ 'n', 'v' }, '<leader>f', vim.lsp.buf.format, { buffer = args.buf })
-          vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { buffer = args.buf })
-          vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = args.buf })
-          vim.keymap.set('n', '<leader>lr', function()
-            vim.iter(vim.lsp.get_clients()):map(function(c) vim.cmd.LspRestart(c.name) end)
-          end, { buffer = args.buf })
-
-          local client = vim.lsp.get_client_by_id(args.data.client_id)
-
-          vim.api.nvim_clear_autocmds({ buffer = args.buf, group = 'user_format' })
-          vim.api.nvim_create_autocmd('BufWritePre', {
-            group = 'user_format',
-            buffer = args.buf,
-            callback = function() vim.lsp.buf.format({ bufnr = args.buf }) end,
-          })
-
-          if client and client:supports_method('textDocument/documentHighlight', args.buf) then
-            vim.api.nvim_clear_autocmds({ buffer = args.buf, group = 'user_highlight' })
-            vim.api.nvim_create_autocmd('CursorHold', {
-              group = 'user_highlight',
-              buffer = args.buf,
-              callback = function()
-                vim.lsp.buf.clear_references()
-                vim.lsp.buf.document_highlight()
-                open_diagnostics()
-              end
-            })
-            vim.api.nvim_create_autocmd('CursorMoved', {
-              group = 'user_highlight',
-              buffer = args.buf,
-              callback = vim.lsp.buf.clear_references
-            })
-          end
-        end,
-      })
-
-      vim.lsp.config('*', { capabilities = require('blink.cmp').get_lsp_capabilities({}, true) })
-
-      vim.lsp.config('lua_ls', {
-        settings = {
-          Lua = {
-            runtime = { version = 'LuaJIT' },
-            workspace = {
-              checkThirdParty = false,
-              library = vim.api.nvim_get_runtime_file('', true),
-            },
-          },
-        },
-      })
-
-      vim.lsp.config('rust_analyzer', {
-        settings = {
-          ['rust-analyzer'] = {
-            check = { command = 'clippy' },
-            interpret = { tests = true },
-          }
-        }
-      })
-    end,
-  },
-  {
-    'nvim-tree/nvim-tree.lua',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function()
-      require('nvim-tree').setup({
-        view = { width = 40 },
-        filters = { dotfiles = true, git_ignored = false },
-      })
-
-      vim.keymap.set('n', '<C-n>', require('nvim-tree.api').tree.toggle)
-      vim.api.nvim_create_autocmd('BufEnter', {
-        nested = true,
+    priority = 1000,
+    lazy = false,
+    opts = {
+      dashboard = {},
+      input = {},
+      picker = {
+        win = {
+          input = { keys = { ['<Esc>'] = { 'close', mode = { 'n', 'i' } } } }
+        }
+      }
+    },
+    keys = {
+      -- Top Pickers & Explorer
+      { "<leader><space>", function() Snacks.picker.smart() end, desc = "Find Files (Smart)" },
+      { "<leader>e", function() Snacks.explorer() end, desc = "File Explorer" },
+      -- Find
+      { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Find Buffers" },
+      { "<leader>fs", function() Snacks.picker.scratch() end, desc = "Find Scratch Buffers" },
+      { "<leader>fc", function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config Files" },
+      { "<leader>ff", function() Snacks.picker.files() end, desc = "Find Files" },
+      { "<leader>fg", function() Snacks.picker.git_files() end, desc = "Find Git Files" },
+      { "<leader>fp", function() Snacks.picker.projects() end, desc = "Find Projects" },
+      { "<leader>fr", function() Snacks.picker.recent() end, desc = "Find Recent" },
+      -- Git & GitHub
+      { "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git Branches" },
+      { "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git Log" },
+      { "<leader>gL", function() Snacks.picker.git_log_line() end, desc = "Git Log (Line)" },
+      { "<leader>gs", function() Snacks.picker.git_status() end, desc = "Git Status" },
+      { "<leader>gS", function() Snacks.picker.git_stash() end, desc = "Git Stash" },
+      { "<leader>gd", function() Snacks.picker.git_diff() end, desc = "Git Diff" },
+      { "<leader>gf", function() Snacks.picker.git_log_file() end, desc = "Git Log (File)" },
+      { "<leader>gi", function() Snacks.picker.gh_issue() end, desc = "GitHub Issues (Open)" },
+      { "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub Issues (All)" },
+      { "<leader>gp", function() Snacks.picker.gh_pr() end, desc = "GitHub Pull Requests (Open)" },
+      { "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end, desc = "GitHub Pull Requests (All)" },
+      -- Grep
+      { "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Buffers" },
+      { "<leader>sg", function() Snacks.picker.grep() end, desc = "Grep" },
+      { "<leader>sw", function() Snacks.picker.grep_word() end, desc = "Grep Selection/Word", mode = { "n", "x" } },
+      -- Search
+      { '<leader>s"', function() Snacks.picker.registers() end, desc = "Search Registers" },
+      { '<leader>s/', function() Snacks.picker.search_history() end, desc = "Search Search History" },
+      { "<leader>sa", function() Snacks.picker.autocmds() end, desc = "Search Autocmds" },
+      { "<leader>sb", function() Snacks.picker.lines() end, desc = "Search Buffer Lines" },
+      { "<leader>sc", function() Snacks.picker.command_history() end, desc = "Search Command History" },
+      { "<leader>sC", function() Snacks.picker.commands() end, desc = "Search Commands" },
+      { "<leader>sd", function() Snacks.picker.diagnostics() end, desc = "Search Diagnostics" },
+      { "<leader>sD", function() Snacks.picker.diagnostics_buffer() end, desc = "Search Buffer Diagnostics" },
+      { "<leader>sh", function() Snacks.picker.help() end, desc = "Search Help Pages" },
+      { "<leader>sH", function() Snacks.picker.highlights() end, desc = "Search Highlights" },
+      { "<leader>si", function() Snacks.picker.icons() end, desc = "Search Icons" },
+      { "<leader>sj", function() Snacks.picker.jumps() end, desc = "Search Jumps" },
+      { "<leader>sk", function() Snacks.picker.keymaps() end, desc = "Search Keymaps" },
+      { "<leader>sl", function() Snacks.picker.loclist() end, desc = "Search Location List" },
+      { "<leader>sm", function() Snacks.picker.marks() end, desc = "Search Marks" },
+      { "<leader>sM", function() Snacks.picker.man() end, desc = "Search Man Pages" },
+      { "<leader>sn", function() Snacks.picker.notifications() end, desc = "Search Notification History" },
+      { "<leader>sp", function() Snacks.picker.pickers() end, desc = "Search Pickers" },
+      { "<leader>sq", function() Snacks.picker.qflist() end, desc = "Search Quickfix List" },
+      { "<leader>sR", function() Snacks.picker.resume() end, desc = "Resume Search" },
+      { "<leader>su", function() Snacks.picker.undo() end, desc = "Search Undo History" },
+      { "<leader>uC", function() Snacks.picker.colorschemes() end, desc = "Search Colorschemes" },
+      -- LSP
+      { 'gd', function() Snacks.picker.lsp_definitions({ confirm = vim.o.modified and 'vsplit' or 'jump' }) end, desc = "LSP Definitions" },
+      { 'gs', function() Snacks.picker.lsp_definitions({ confirm = 'vsplit' }) end, desc = "LSP Definitions (V-Split)" },
+      { 'gS', function() Snacks.picker.lsp_definitions({ confirm = 'split' }) end, desc = "LSP Definitions (H-Split)" },
+      { "gD", function() Snacks.picker.lsp_declarations() end, desc = "LSP Declarations" },
+      { "gr", function() Snacks.picker.lsp_references() end, nowait = true, desc = "LSP References" },
+      { "gI", function() Snacks.picker.lsp_implementations() end, desc = "LSP Implementations" },
+      { "gy", function() Snacks.picker.lsp_type_definitions() end, desc = "LSP Type Definitions" },
+      { "gai", function() Snacks.picker.lsp_incoming_calls() end, desc = "LSP Incoming Calls" },
+      { "gao", function() Snacks.picker.lsp_outgoing_calls() end, desc = "LSP Outgoing Calls" },
+      { "<leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
+      { "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
+      -- Other
+      { "<leader>z",  function() Snacks.zen() end, desc = "Toggle Zen Mode" },
+      { "<leader>.",  function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
+      { "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
+      { "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
+      { "<c-/>",      function() Snacks.terminal() end, desc = "Toggle Terminal" },
+      { "]]",         function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
+      { "[[",         function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
+    },
+    init = function()
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "VeryLazy",
         callback = function()
-          if require('nvim-tree.utils').is_nvim_tree_buf() then
-            if #vim.api.nvim_list_wins() == 1 then
-              vim.cmd.quit()
-            end
-          else
-            require('nvim-tree.api').tree.collapse_all()
-            require('nvim-tree.api').tree.find_file()
-          end
-        end
+          _G.dd = function(...) Snacks.debug.inspect(...) end
+          _G.bt = function() Snacks.debug.backtrace() end
+          vim._print = function(_, ...) dd(...) end
+
+          Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
+          Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
+          Snacks.toggle.option("relativenumber", { name = "Toggle Relative Number" }):map("<leader>n")
+          Snacks.toggle.diagnostics():map("<leader>ud")
+          Snacks.toggle.line_number():map("<leader>ul")
+          Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 }):map("<leader>uc")
+          Snacks.toggle.treesitter():map("<leader>uT")
+          Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
+          Snacks.toggle.inlay_hints():map("<leader>uh")
+          Snacks.toggle.indent():map("<leader>ug")
+          Snacks.toggle.dim():map("<leader>uD")
+        end,
       })
     end,
   },
   {
     'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {
       options = { globalstatus = true },
       sections = {
         lualine_c = { { 'filename', path = 1 }, 'lsp_status' }
       }
     },
-  },
-  {
-    'sindrets/diffview.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function()
-      local actions = require('diffview.actions')
-      require('diffview').setup({
-        keymaps = {
-          view = { { 'n', 'q', vim.cmd.tabclose } },
-          file_history_panel = {
-            { 'n', 'q', vim.cmd.tabclose },
-            { 'n', 'd', actions.open_in_diffview }
-          },
-          file_panel = { { 'n', 'q', vim.cmd.tabclose } }
-        }
-      })
-
-      vim.keymap.set('n', '<leader>gd', vim.cmd.DiffviewOpen)
-      vim.keymap.set('n', '<leader>gl', vim.cmd.DiffviewFileHistory)
-      vim.keymap.set('n', '<leader>gf', function() vim.cmd.DiffviewFileHistory('%', '--follow') end)
-    end,
-  },
-  {
-    'lewis6991/gitsigns.nvim',
-    dependencies = { 'sindrets/diffview.nvim' },
-    config = function()
-      local gitsigns = require('gitsigns')
-
-      local function git_show()
-        local commit = vim.b.gitsigns_blame_line_dict.sha
-        -- Do nothing if changes haven't been committed
-        if commit == '0000000000000000000000000000000000000000' then return end
-
-        vim.cmd.DiffviewOpen(commit .. '^..' .. commit)
-      end
-
-      gitsigns.setup({
-        current_line_blame = true,
-        current_line_blame_opts = { virt_text = false, delay = 250 },
-        on_attach = function(bufnr)
-          vim.keymap.set('n', '<leader>gs', git_show, { buffer = bufnr })
-          vim.keymap.set('n', '<leader>d', gitsigns.preview_hunk, { buffer = bufnr })
-          vim.keymap.set('n', '<leader>b', function()
-            gitsigns.blame_line({ full = true })
-          end, { buffer = bufnr })
-        end
-      })
-    end
-  },
-  {
-    'nvim-mini/mini.nvim',
-    config = function()
-      require('mini.comment').setup()
-      require('mini.pairs').setup()
-      require('mini.surround').setup()
-      require('mini.notify').setup({
-        window = {
-          config = function()
-            return { anchor = 'SE', col = vim.o.columns, row = vim.o.lines - vim.o.cmdheight - 1 }
-          end
-        }
-      })
-    end,
-  },
-  {
-    'folke/sidekick.nvim',
-    config = function()
-      require('sidekick').setup({
-        cli = { mux = { enabled = true } }
-      })
-
-      local sidekick = require('sidekick.cli')
-      vim.keymap.set({ 'n', 't', 'i', 'x' }, '<C-a>', function() sidekick.toggle({ focus = true }) end)
-      vim.keymap.set({ 'n', 'x' }, '<leader>ap', function() sidekick.prompt() end)
-    end
-  },
-  {
-    'ledger/vim-ledger',
-    config = function()
-      vim.g.ledger_date_format = '%Y-%m-%d'
-      vim.g.ledger_extra_options = '--strict'
-
-      vim.api.nvim_create_augroup('user_hledger', {})
-      vim.api.nvim_create_autocmd('BufWritePre', {
-        group = 'user_hledger',
-        pattern = '*.journal',
-        command = 'LedgerAlignBuffer',
-      })
-      vim.api.nvim_create_autocmd('BufWritePost', {
-        group = 'user_hledger',
-        pattern = '*.journal',
-        command = 'silent make | redraw! | cwindow',
-      })
-    end
-  },
-  {
-    'm4xshen/hardtime.nvim',
-    config = function()
-      require('hardtime').setup({
-        enabled = false,
-        max_time = 1500,
-        max_count = 5,
-        disable_mouse = false,
-        restricted_keys = { ['<C-N>'] = false }
-      })
-      vim.keymap.set('n', '<leader>ht', function() vim.cmd.Hardtime('toggle') end)
-    end
   },
 })
 
@@ -382,7 +167,6 @@ vim.opt.diffopt:append('algorithm:histogram')
 vim.opt.fillchars:append('diff: ')
 
 -- Other keybindings
-vim.keymap.set('n', '<leader>n', function() vim.o.relativenumber = not vim.o.relativenumber end)
 vim.keymap.set('n', '<leader>bc', function() vim.cmd('%bd|e#') end)
 vim.keymap.set('n', '<M-t>', function()
   vim.cmd('vertical botright terminal')
