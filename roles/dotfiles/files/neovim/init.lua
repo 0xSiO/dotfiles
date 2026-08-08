@@ -26,7 +26,16 @@ require('lazy').setup({
     config = function()
       vim.g.edge_show_eob = 0
       vim.g.edge_better_performance = 1
-      vim.cmd.colorscheme('edge')
+      -- vim.cmd.colorscheme('edge')
+    end,
+  },
+  {
+  "Aejkatappaja/cendre",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("cendre").setup({ background = "soft", italic_virtual_text = false })
+      vim.cmd.colorscheme('cendre')
     end,
   },
   {
@@ -82,8 +91,8 @@ require('lazy').setup({
       -- Search
       -- { '<leader>s"', function() Snacks.picker.registers() end, desc = "Search Registers" },
       -- { '<leader>s/', function() Snacks.picker.search_history() end, desc = "Search Search History" },
-      -- { "<leader>sa", function() Snacks.picker.autocmds() end, desc = "Search Autocmds" },
-      -- { "<leader>sb", function() Snacks.picker.lines() end, desc = "Search Buffer Lines" },
+      { "<leader>sa", function() Snacks.picker.autocmds() end, desc = "Search Autocmds" },
+      { "<leader>sb", function() Snacks.picker.lines() end, desc = "Search Buffer Lines" },
       { "<leader>sc", function() Snacks.picker.command_history() end, desc = "Search Command History" },
       -- { "<leader>sC", function() Snacks.picker.commands() end, desc = "Search Commands" },
       -- { "<leader>sd", function() Snacks.picker.diagnostics() end, desc = "Search Diagnostics" },
@@ -98,7 +107,7 @@ require('lazy').setup({
       { "<leader>sM", function() Snacks.picker.man() end, desc = "Search Man Pages" },
       { "<leader>sn", function() Snacks.picker.notifications() end, desc = "Search Notification History" },
       { "<leader>sp", function() Snacks.picker.pickers() end, desc = "Search Pickers" },
-      -- { "<leader>sq", function() Snacks.picker.qflist() end, desc = "Search Quickfix List" },
+      { "<leader>sq", function() Snacks.picker.qflist() end, desc = "Search Quickfix List" },
       { "<leader>sr", function() Snacks.picker.resume() end, desc = "Resume Search" },
       -- { "<leader>su", function() Snacks.picker.undo() end, desc = "Search Undo History" },
       -- { "<leader>uC", function() Snacks.picker.colorschemes() end, desc = "Search Colorschemes" },
@@ -143,6 +152,30 @@ require('lazy').setup({
           -- Snacks.toggle.inlay_hints():map("<leader>uh")
           -- Snacks.toggle.indent():map("<leader>ug")
           -- Snacks.toggle.dim():map("<leader>uD")
+        end,
+      })
+    end,
+  },
+  {
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    config = function()
+      require('nvim-treesitter').install({
+        'bash', 'go', 'javascript', 'json', 'lua', 'markdown', 'php', 'python', 'regex',
+        'ruby', 'rust', 'sql', 'toml', 'tsx', 'typescript', 'yaml'
+      })
+
+      vim.o.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      vim.o.foldmethod = 'expr'
+      vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+      vim.o.foldlevel = 1
+
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(opts)
+          local lang = vim.treesitter.language.get_lang(vim.bo[opts.buf].filetype)
+          if vim.treesitter.language.add(lang) then
+             vim.treesitter.start()
+          end
         end,
       })
     end,
