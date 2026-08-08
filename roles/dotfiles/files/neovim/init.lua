@@ -27,11 +27,11 @@ require('lazy').setup({
     end,
   },
   {
-    "Aejkatappaja/cendre",
+    'Aejkatappaja/cendre',
     lazy = false,
     priority = 1000,
     config = function()
-      require("cendre").setup({ background = "soft", italic_virtual_text = false })
+      require('cendre').setup({ background = 'soft', italic_virtual_text = false })
       vim.cmd.colorscheme('cendre')
     end,
   },
@@ -87,7 +87,7 @@ require('lazy').setup({
 
       -- Search
       -- { '<leader>s"', function() Snacks.picker.registers() end, desc = "Search Registers" },
-      -- { '<leader>s/', function() Snacks.picker.search_history() end, desc = "Search Search History" },
+      { '<leader>s/',      function() Snacks.picker.search_history() end,                                                     desc = "Search Search History" },
       { "<leader>sa",      function() Snacks.picker.autocmds() end,                                                           desc = "Search Autocmds" },
       { "<leader>sb",      function() Snacks.picker.lines() end,                                                              desc = "Search Buffer Lines" },
       { "<leader>sc",      function() Snacks.picker.command_history() end,                                                    desc = "Search Command History" },
@@ -135,7 +135,6 @@ require('lazy').setup({
         pattern = "VeryLazy",
         callback = function()
           _G.dd = function(...) Snacks.debug.inspect(...) end
-          _G.bt = function() Snacks.debug.backtrace() end
           vim._print = function(_, ...) dd(...) end
 
           -- Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
@@ -158,8 +157,8 @@ require('lazy').setup({
     build = ':TSUpdate',
     config = function()
       require('nvim-treesitter').install({
-        'bash', 'go', 'javascript', 'json', 'lua', 'markdown', 'php', 'python', 'regex',
-        'ruby', 'rust', 'sql', 'toml', 'tsx', 'typescript', 'yaml'
+        'bash', 'go', 'javascript', 'json', 'lua', 'markdown', 'php', 'python', 'regex', 'ruby', 'rust', 'sql', 'toml',
+        'tsx', 'typescript', 'yaml'
       })
 
       vim.o.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
@@ -202,15 +201,15 @@ require('lazy').setup({
   {
     'mason-org/mason-lspconfig.nvim',
     dependencies = {
-      { "mason-org/mason.nvim", opts = {} },
+      { 'mason-org/mason.nvim', opts = {} },
       'neovim/nvim-lspconfig',
-      'saghen/blink.cmp',
     },
     config = function()
       require('mason-lspconfig').setup({
         automatic_enable = true,
         ensure_installed = {
-          'bashls', 'biome', 'golangci_lint_ls', 'gopls', 'lua_ls', 'phpantom_lsp', 'rust_analyzer', 'ts_ls', 'ty'
+          'bashls', 'biome', 'golangci_lint_ls', 'gopls', 'lua_ls', 'phpantom_lsp', 'rust_analyzer', 'tombi', 'ts_ls',
+          'ty'
         },
       })
 
@@ -290,7 +289,6 @@ require('lazy').setup({
       })
     end,
   },
-
   {
     'nvim-lualine/lualine.nvim',
     opts = {
@@ -348,6 +346,25 @@ require('lazy').setup({
       })
     end
   },
+  {
+    'nvim-mini/mini.nvim',
+    config = function()
+      require('mini.pairs').setup()
+      require('mini.surround').setup()
+    end,
+  },
+  {
+    'folke/sidekick.nvim',
+    config = function()
+      require('sidekick').setup({
+        cli = { mux = { enabled = true } }
+      })
+
+      local sidekick = require('sidekick.cli')
+      vim.keymap.set({ 'n', 't', 'i', 'x' }, '<C-a>', function() sidekick.toggle({ focus = true }) end)
+      vim.keymap.set({ 'n', 'x' }, '<leader>ap', function() sidekick.prompt() end)
+    end
+  },
 })
 
 -- Other options
@@ -383,5 +400,3 @@ vim.cmd.command('W :w')
 vim.cmd.command('Q :q')
 vim.cmd.command('Qa :qa')
 vim.cmd.command('QA :qa')
-
--- vim: sw=2
