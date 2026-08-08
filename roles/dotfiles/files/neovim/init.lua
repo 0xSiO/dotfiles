@@ -1,6 +1,3 @@
--- TODO:
---   - Snacks: look into statuscolumn
-
 -- Disable unneeded dynamic providers
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
@@ -30,7 +27,7 @@ require('lazy').setup({
     end,
   },
   {
-  "Aejkatappaja/cendre",
+    "Aejkatappaja/cendre",
     lazy = false,
     priority = 1000,
     config = function()
@@ -58,14 +55,14 @@ require('lazy').setup({
     },
     keys = {
       -- Top Pickers & Explorer
-      { "<leader><space>", function() Snacks.picker.smart() end, desc = "Find Files (Smart)" },
-      { "<leader>e", function() Snacks.explorer() end, desc = "File Explorer" },
+      { "<leader><space>", function() Snacks.picker.smart() end,                                                              desc = "Find Files (Smart)" },
+      { "<leader>e",       function() Snacks.explorer() end,                                                                  desc = "File Explorer" },
 
       -- Find
       -- { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Find Buffers" },
       -- { "<leader>fs", function() Snacks.picker.scratch() end, desc = "Find Scratch Buffers" },
-      { "<leader>fc", function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config Files" },
-      { "<leader>ff", function() Snacks.picker.files() end, desc = "Find Files" },
+      { "<leader>fc",      function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end,                            desc = "Find Config Files" },
+      { "<leader>ff",      function() Snacks.picker.files() end,                                                              desc = "Find Files" },
       -- { "<leader>fg", function() Snacks.picker.git_files() end, desc = "Find Git Files" },
       -- { "<leader>fp", function() Snacks.picker.projects() end, desc = "Find Projects" },
       -- { "<leader>fr", function() Snacks.picker.recent() end, desc = "Find Recent" },
@@ -85,43 +82,43 @@ require('lazy').setup({
 
       -- Grep
       -- { "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Buffers" },
-      { "<leader>sg", function() Snacks.picker.grep() end, desc = "Grep" },
+      { "<leader>sg",      function() Snacks.picker.grep() end,                                                               desc = "Grep" },
       -- { "<leader>sw", function() Snacks.picker.grep_word() end, desc = "Grep Selection/Word", mode = { "n", "x" } },
 
       -- Search
       -- { '<leader>s"', function() Snacks.picker.registers() end, desc = "Search Registers" },
       -- { '<leader>s/', function() Snacks.picker.search_history() end, desc = "Search Search History" },
-      { "<leader>sa", function() Snacks.picker.autocmds() end, desc = "Search Autocmds" },
-      { "<leader>sb", function() Snacks.picker.lines() end, desc = "Search Buffer Lines" },
-      { "<leader>sc", function() Snacks.picker.command_history() end, desc = "Search Command History" },
+      { "<leader>sa",      function() Snacks.picker.autocmds() end,                                                           desc = "Search Autocmds" },
+      { "<leader>sb",      function() Snacks.picker.lines() end,                                                              desc = "Search Buffer Lines" },
+      { "<leader>sc",      function() Snacks.picker.command_history() end,                                                    desc = "Search Command History" },
       -- { "<leader>sC", function() Snacks.picker.commands() end, desc = "Search Commands" },
-      -- { "<leader>sd", function() Snacks.picker.diagnostics() end, desc = "Search Diagnostics" },
-      -- { "<leader>sD", function() Snacks.picker.diagnostics_buffer() end, desc = "Search Buffer Diagnostics" },
-      { "<leader>sh", function() Snacks.picker.help() end, desc = "Search Help Pages" },
+      { "<leader>sd",      function() Snacks.picker.diagnostics() end,                                                        desc = "Search Diagnostics" },
+      { "<leader>sD",      function() Snacks.picker.diagnostics_buffer() end,                                                 desc = "Search Buffer Diagnostics" },
+      { "<leader>sh",      function() Snacks.picker.help() end,                                                               desc = "Search Help Pages" },
       -- { "<leader>sH", function() Snacks.picker.highlights() end, desc = "Search Highlights" },
       -- { "<leader>si", function() Snacks.picker.icons() end, desc = "Search Icons" },
       -- { "<leader>sj", function() Snacks.picker.jumps() end, desc = "Search Jumps" },
-      { "<leader>sk", function() Snacks.picker.keymaps() end, desc = "Search Keymaps" },
+      { "<leader>sk",      function() Snacks.picker.keymaps() end,                                                            desc = "Search Keymaps" },
       -- { "<leader>sl", function() Snacks.picker.loclist() end, desc = "Search Location List" },
       -- { "<leader>sm", function() Snacks.picker.marks() end, desc = "Search Marks" },
-      { "<leader>sM", function() Snacks.picker.man() end, desc = "Search Man Pages" },
-      { "<leader>sn", function() Snacks.picker.notifications() end, desc = "Search Notification History" },
-      { "<leader>sp", function() Snacks.picker.pickers() end, desc = "Search Pickers" },
-      { "<leader>sq", function() Snacks.picker.qflist() end, desc = "Search Quickfix List" },
-      { "<leader>sr", function() Snacks.picker.resume() end, desc = "Resume Search" },
+      { "<leader>sM",      function() Snacks.picker.man() end,                                                                desc = "Search Man Pages" },
+      { "<leader>sn",      function() Snacks.picker.notifications() end,                                                      desc = "Search Notification History" },
+      { "<leader>sp",      function() Snacks.picker.pickers() end,                                                            desc = "Search Pickers" },
+      { "<leader>sq",      function() Snacks.picker.qflist() end,                                                             desc = "Search Quickfix List" },
+      { "<leader>sr",      function() Snacks.picker.resume() end,                                                             desc = "Resume Search" },
       -- { "<leader>su", function() Snacks.picker.undo() end, desc = "Search Undo History" },
       -- { "<leader>uC", function() Snacks.picker.colorschemes() end, desc = "Search Colorschemes" },
 
       -- LSP
-      { 'gd', function() Snacks.picker.lsp_definitions({ confirm = vim.o.modified and 'vsplit' or 'jump' }) end, desc = "LSP Definitions" },
-      { 'gs', function() Snacks.picker.lsp_definitions({ confirm = 'vsplit' }) end, desc = "LSP Definitions (V-Split)" },
-      { 'gS', function() Snacks.picker.lsp_definitions({ confirm = 'split' }) end, desc = "LSP Definitions (H-Split)" },
-      { "gD", function() Snacks.picker.lsp_declarations() end, desc = "LSP Declarations" },
-      { "gr", function() Snacks.picker.lsp_references() end, nowait = true, desc = "LSP References" },
-      { "gi", function() Snacks.picker.lsp_implementations() end, desc = "LSP Implementations" },
-      { "gy", function() Snacks.picker.lsp_type_definitions() end, desc = "LSP Type Definitions" },
-      { "gai", function() Snacks.picker.lsp_incoming_calls() end, desc = "LSP Incoming Calls" },
-      { "gao", function() Snacks.picker.lsp_outgoing_calls() end, desc = "LSP Outgoing Calls" },
+      { 'gd',              function() Snacks.picker.lsp_definitions({ confirm = vim.o.modified and 'vsplit' or 'jump' }) end, desc = "LSP Definitions" },
+      { 'gs',              function() Snacks.picker.lsp_definitions({ confirm = 'vsplit' }) end,                              desc = "LSP Definitions (V-Split)" },
+      { 'gS',              function() Snacks.picker.lsp_definitions({ confirm = 'split' }) end,                               desc = "LSP Definitions (H-Split)" },
+      { "gD",              function() Snacks.picker.lsp_declarations() end,                                                   desc = "LSP Declarations" },
+      { "gr",              function() Snacks.picker.lsp_references() end,                                                     nowait = true,                       desc = "LSP References" },
+      { "gi",              function() Snacks.picker.lsp_implementations() end,                                                desc = "LSP Implementations" },
+      { "gy",              function() Snacks.picker.lsp_type_definitions() end,                                               desc = "LSP Type Definitions" },
+      { "gai",             function() Snacks.picker.lsp_incoming_calls() end,                                                 desc = "LSP Incoming Calls" },
+      { "gao",             function() Snacks.picker.lsp_outgoing_calls() end,                                                 desc = "LSP Outgoing Calls" },
       -- { "<leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
       -- { "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
 
@@ -129,9 +126,9 @@ require('lazy').setup({
       -- { "<leader>z",  function() Snacks.zen() end, desc = "Toggle Zen Mode" },
       -- { "<leader>.",  function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
       -- { "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
-      { "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
-      { "]]",         function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
-      { "[[",         function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
+      { "<leader>un",      function() Snacks.notifier.hide() end,                                                             desc = "Dismiss All Notifications" },
+      { "]]",              function() Snacks.words.jump(vim.v.count1) end,                                                    desc = "Next Reference",             mode = { "n", "t" } },
+      { "[[",              function() Snacks.words.jump(-vim.v.count1) end,                                                   desc = "Prev Reference",             mode = { "n", "t" } },
     },
     init = function()
       vim.api.nvim_create_autocmd("User", {
@@ -149,8 +146,8 @@ require('lazy').setup({
           -- Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 }):map("<leader>uc")
           -- Snacks.toggle.treesitter():map("<leader>uT")
           -- Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
-          -- Snacks.toggle.inlay_hints():map("<leader>uh")
-          -- Snacks.toggle.indent():map("<leader>ug")
+          Snacks.toggle.inlay_hints():map("<leader>uh")
+          Snacks.toggle.indent():map("<leader>ug")
           -- Snacks.toggle.dim():map("<leader>uD")
         end,
       })
@@ -173,13 +170,127 @@ require('lazy').setup({
       vim.api.nvim_create_autocmd('FileType', {
         callback = function(opts)
           local lang = vim.treesitter.language.get_lang(vim.bo[opts.buf].filetype)
-          if vim.treesitter.language.add(lang) then
-             vim.treesitter.start()
+          if lang and vim.treesitter.language.add(lang) then
+            vim.treesitter.start()
           end
         end,
       })
     end,
   },
+  {
+    'saghen/blink.cmp',
+    dependencies = { 'rafamadriz/friendly-snippets' },
+    version = '1.*',
+    opts = {
+      keymap = {
+        preset = 'super-tab',
+        ['<C-j>'] = { 'select_next' },
+        ['<C-k>'] = { 'select_prev' },
+        ['<C-f>'] = { 'scroll_documentation_down' },
+        ['<C-b>'] = { 'scroll_documentation_up' },
+      },
+      completion = { documentation = { auto_show = true } },
+      signature = { enabled = true },
+      cmdline = {
+        keymap = {
+          ['<C-j>'] = { 'select_next' },
+          ['<C-k>'] = { 'select_prev' },
+        },
+      },
+    },
+  },
+  {
+    'mason-org/mason-lspconfig.nvim',
+    dependencies = {
+      { "mason-org/mason.nvim", opts = {} },
+      'neovim/nvim-lspconfig',
+      'saghen/blink.cmp',
+    },
+    config = function()
+      require('mason-lspconfig').setup({
+        automatic_enable = true,
+        ensure_installed = {
+          'bashls', 'biome', 'golangci_lint_ls', 'gopls', 'lua_ls', 'phpantom_lsp', 'rust_analyzer', 'ts_ls', 'ty'
+        },
+      })
+
+      vim.api.nvim_create_augroup('user_format', {})
+      vim.api.nvim_create_augroup('user_diagnostics', {})
+      vim.api.nvim_create_augroup('user_hover', {})
+
+      local function open_diagnostics()
+        vim.diagnostic.open_float({
+          focusable = false,
+          source = true,
+          format = function(d)
+            if d.user_data.lsp and d.user_data.lsp.codeDescription and d.user_data.lsp.codeDescription.href then
+              return d.message .. '\n  ' .. d.user_data.lsp.codeDescription.href
+            else
+              return d.message
+            end
+          end,
+          close_events = { 'CursorMoved', 'BufEnter', 'BufWritePre', 'BufLeave' }
+        })
+      end
+
+      local function persist_hover()
+        vim.opt.eventignore:append('CursorHold')
+        vim.lsp.buf.hover()
+        vim.api.nvim_clear_autocmds({ event = 'CursorMoved', group = 'user_hover' })
+        vim.api.nvim_create_autocmd('CursorMoved', {
+          group = 'user_hover',
+          callback = function() vim.opt.eventignore:remove('CursorHold') end,
+          once = true
+        })
+      end
+
+      -- LSP keybindings & autocommands
+      vim.api.nvim_create_autocmd('LspAttach', {
+        callback = function(args)
+          vim.keymap.set('n', '<C-Space>', persist_hover, { buffer = args.buf })
+          vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { buffer = args.buf })
+          vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = args.buf })
+          vim.keymap.set('n', '<leader>lr', function() vim.cmd.lsp('restart') end, { buffer = args.buf })
+
+          vim.api.nvim_clear_autocmds({ buffer = args.buf, group = 'user_format' })
+          vim.api.nvim_create_autocmd('BufWritePre', {
+            group = 'user_format',
+            buffer = args.buf,
+            callback = function() vim.lsp.buf.format({ bufnr = args.buf }) end,
+          })
+
+          vim.api.nvim_clear_autocmds({ buffer = args.buf, group = 'user_diagnostics' })
+          vim.api.nvim_create_autocmd('CursorHold', {
+            group = 'user_diagnostics',
+            buffer = args.buf,
+            callback = open_diagnostics
+          })
+        end,
+      })
+
+      vim.lsp.config('lua_ls', {
+        settings = {
+          Lua = {
+            runtime = { version = 'LuaJIT' },
+            workspace = {
+              checkThirdParty = false,
+              library = vim.api.nvim_get_runtime_file('', true),
+            },
+          },
+        },
+      })
+
+      vim.lsp.config('rust_analyzer', {
+        settings = {
+          ['rust-analyzer'] = {
+            check = { command = 'clippy' },
+            interpret = { tests = true },
+          }
+        }
+      })
+    end,
+  },
+
   {
     'nvim-lualine/lualine.nvim',
     opts = {
