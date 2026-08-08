@@ -64,11 +64,11 @@ require('lazy').setup({
       { "<leader>fc",      function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end,                            desc = "Find Config Files" },
       { "<leader>ff",      function() Snacks.picker.files() end,                                                              desc = "Find Files" },
       -- { "<leader>fg", function() Snacks.picker.git_files() end, desc = "Find Git Files" },
-      -- { "<leader>fp", function() Snacks.picker.projects() end, desc = "Find Projects" },
+      { "<leader>fp",      function() Snacks.picker.projects() end,                                                           desc = "Find Projects" },
       -- { "<leader>fr", function() Snacks.picker.recent() end, desc = "Find Recent" },
 
       -- Git & GitHub
-      -- { "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git Branches" },
+      { "<leader>gb",      function() Snacks.picker.git_branches() end,                                                       desc = "Git Branches" },
       -- { "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git Log" },
       -- { "<leader>gL", function() Snacks.picker.git_log_line() end, desc = "Git Log (Line)" },
       -- { "<leader>gs", function() Snacks.picker.git_status() end, desc = "Git Status" },
@@ -91,17 +91,17 @@ require('lazy').setup({
       { "<leader>sa",      function() Snacks.picker.autocmds() end,                                                           desc = "Search Autocmds" },
       { "<leader>sb",      function() Snacks.picker.lines() end,                                                              desc = "Search Buffer Lines" },
       { "<leader>sc",      function() Snacks.picker.command_history() end,                                                    desc = "Search Command History" },
-      -- { "<leader>sC", function() Snacks.picker.commands() end, desc = "Search Commands" },
+      { "<leader>sC",      function() Snacks.picker.commands() end,                                                           desc = "Search Commands" },
       { "<leader>sd",      function() Snacks.picker.diagnostics() end,                                                        desc = "Search Diagnostics" },
       { "<leader>sD",      function() Snacks.picker.diagnostics_buffer() end,                                                 desc = "Search Buffer Diagnostics" },
       { "<leader>sh",      function() Snacks.picker.help() end,                                                               desc = "Search Help Pages" },
       -- { "<leader>sH", function() Snacks.picker.highlights() end, desc = "Search Highlights" },
-      -- { "<leader>si", function() Snacks.picker.icons() end, desc = "Search Icons" },
-      -- { "<leader>sj", function() Snacks.picker.jumps() end, desc = "Search Jumps" },
+      { "<leader>si",      function() Snacks.picker.icons() end,                                                              desc = "Search Icons" },
+      { "<leader>sj",      function() Snacks.picker.jumps() end,                                                              desc = "Search Jumps" },
       { "<leader>sk",      function() Snacks.picker.keymaps() end,                                                            desc = "Search Keymaps" },
       -- { "<leader>sl", function() Snacks.picker.loclist() end, desc = "Search Location List" },
-      -- { "<leader>sm", function() Snacks.picker.marks() end, desc = "Search Marks" },
-      { "<leader>sM",      function() Snacks.picker.man() end,                                                                desc = "Search Man Pages" },
+      { "<leader>sm",      function() Snacks.picker.man() end,                                                                desc = "Search Man Pages" },
+      -- { "<leader>sM", function() Snacks.picker.marks() end, desc = "Search Marks" },
       { "<leader>sn",      function() Snacks.picker.notifications() end,                                                      desc = "Search Notification History" },
       { "<leader>sp",      function() Snacks.picker.pickers() end,                                                            desc = "Search Pickers" },
       { "<leader>sq",      function() Snacks.picker.qflist() end,                                                             desc = "Search Quickfix List" },
@@ -338,8 +338,8 @@ require('lazy').setup({
         current_line_blame_opts = { virt_text = false, delay = 250 },
         on_attach = function(bufnr)
           vim.keymap.set('n', '<leader>gs', git_show, { buffer = bufnr })
-          vim.keymap.set('n', '<leader>d', gitsigns.preview_hunk, { buffer = bufnr })
-          vim.keymap.set('n', '<leader>b', function()
+          vim.keymap.set('n', '<leader>hp', gitsigns.preview_hunk, { buffer = bufnr })
+          vim.keymap.set('n', '<leader>hb', function()
             gitsigns.blame_line({ full = true })
           end, { buffer = bufnr })
         end
