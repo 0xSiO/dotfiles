@@ -1,1 +1,0 @@
-mise_bin: "{{ ansible_user_dir }}/.local/bin/mise"

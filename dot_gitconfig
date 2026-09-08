@@ -1,0 +1,33 @@
+# vim: ft=gitconfig
+
+[user]
+    name = "Luc Street"
+    email = "6709262+0xSiO@users.noreply.github.com"
+    signingkey = "B50141371B40B526"
+
+[core]
+    editor = nvim --clean
+
+[init]
+    defaultBranch = master
+
+[commit]
+    gpgsign = true
+
+[diff]
+    algorithm = histogram
+
+[pull]
+    rebase = false
+
+[pager]
+    diff = delta
+    show = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    features = side-by-side
+    plus-style = syntax "#003800"
+    wrap-max-lines = unlimited

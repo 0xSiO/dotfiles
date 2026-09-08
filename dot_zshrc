@@ -1,0 +1,31 @@
+# vim: ft=zsh
+
+export GPG_TTY=$(tty)
+
+alias backup="$HOME/.local/bin/backup"
+alias cat="bat -p"
+alias history="history 1"
+alias hx="distrobox-host-exec"
+alias ls="eza --git --group-directories-first -lgh"
+alias rm="rm -v"
+alias uuid="uuidgen | tr '[:upper:]' '[:lower:]'"
+alias vim=nvim
+
+setopt histignoredups
+setopt histignorespace
+
+bindkey -v
+bindkey "^R" history-incremental-search-backward
+
+export HISTFILE="$HOME/.zsh_history"
+export HISTSIZE=100000
+export SAVEHIST=$HISTSIZE
+export EDITOR=nvim
+export PATH="$HOME/.local/bin:$PATH"
+
+autoload -Uz compinit && compinit
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+eval "$(mise activate zsh)"
+eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"

@@ -1,0 +1,15 @@
+[general]
+import = ["cendre.toml"]
+
+[window]
+dimensions = { columns = 150, lines = 40 }
+option_as_alt = "OnlyLeft"
+opacity = 0.85
+blur = true
+
+[scrolling]
+history = 100000
+
+[font]
+normal = { family = "SauceCodePro Nerd Font", style = "Regular" }
+size = 12.0
