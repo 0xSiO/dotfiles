@@ -297,6 +297,7 @@ require('lazy').setup({
       local gitsigns = require('gitsigns')
 
       local function git_show()
+        if not vim.b.gitsigns_blame_line_dict then return end
         local commit = vim.b.gitsigns_blame_line_dict.sha
         -- Do nothing if changes haven't been committed
         if commit == '0000000000000000000000000000000000000000' then return end
